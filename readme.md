@@ -1,8 +1,16 @@
 Init readme:
 
-To run server (python 3.10)
-pip install fastapi
-pip install uvicorn
-uvicorn main:app --reload
+python 3.10
+
+### Install
+python3 -m venv .venv
+
+source .venv/bin/activate  # Linux
+
+pip install -r requirements.txt
+
+### RUN
+python3 main.py
 
 http://127.0.0.1:8000/docs Swagger
+http://127.0.0.1:8000 API
