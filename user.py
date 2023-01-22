@@ -1,4 +1,5 @@
 from typing import List
+from urllib import request
 
 from fastapi import APIRouter, FastAPI, HTTPException
 from pydantic import BaseModel
@@ -29,9 +30,10 @@ async def user_register(user: User):
 
 
 @router.post("/logout")
-async def user_logout():
-    return {}
-
+async def logout():
+    # Remove the logged in user from the session
+    del database[request.user.username]
+    return {"success": True}
 
 @router.post("/connect")
 async def user_connect():
