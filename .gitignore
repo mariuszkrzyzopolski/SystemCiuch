@@ -188,3 +188,7 @@ fabric.properties
 /.idea/inspectionProfiles/profiles_settings.xml
 /.idea/SystemCiuch.iml
 /.idea/vcs.xml
+
+#images
+*.jpg
+*.png
