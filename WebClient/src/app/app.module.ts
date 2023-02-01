@@ -4,14 +4,14 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { MenuChoiceComponent } from './menu-choice/menu-choice.component';
 import { FooterComponent } from './footer/footer.component';
-import { CollectionPreviewComponent } from 'src/app/pages/collection-preview/collection-preview.component';
+import { ClothesPreviewComponent } from 'src/app/pages/clothes-preview/clothes-preview.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './pages/home/home.component';
-import { AddToCollectionComponent } from './pages/add-to-collection/add-to-collection.component';
+import { AddClothesComponent } from './pages/add-clothes/add-clothes.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { WardrobeConnectionComponent } from './pages/wardrobe-connection/wardrobe-connection.component';
-import { HelpComponentComponent } from './pages/help-component/help-component.component';
-import { CollectionSelectionComponent } from './pages/collection-selection/collection-selection.component';
+import { CreateSetComponent } from './pages/create-set/create-set.component';
+import { PreviewSetsComponent } from './pages/preview-sets/preview-sets.component';
 
 
 @NgModule({
@@ -20,13 +20,13 @@ import { CollectionSelectionComponent } from './pages/collection-selection/colle
     MenuChoiceComponent,
     HeaderComponent,
     FooterComponent,
-    CollectionPreviewComponent,
+    ClothesPreviewComponent,
     HomeComponent,
-    AddToCollectionComponent,
-    CollectionSelectionComponent,
+    AddClothesComponent,
+    CreateSetComponent,
     WardrobeConnectionComponent,
     SettingsComponent,
-    HelpComponentComponent
+    PreviewSetsComponent
   ],
   imports: [
     BrowserModule,

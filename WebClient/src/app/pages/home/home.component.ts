@@ -9,11 +9,12 @@ import { MenuItem } from '../../model/MenuItem';
 export class HomeComponent {
   
   public MenuItems: Array<MenuItem> = [
-    { name: 'Dodawanie do kolekcji', route: '/add-to-collection' },
-    { name: 'Podgląd kolekcji', route: '/collection-preview' },
-    { name: 'Dobór kolekcji', route: '/collection-selection' },
+    { name: 'Dodaj ubranie', route: '/add-clothes' },
+    { name: 'Podgląd ubrań', route: '/clothes-preview' },
+    { name: 'Tworzenie zestawu', route: '/create-set' },
+    { name: 'Podgląd zestawów', route: '/prewiew-sets' },
     { name: 'Połącz z szafą', route:'/wardrobe-connection'},
-    { name: 'Ustawienia', route: '/settings' },
-    { name: 'Pomoc', route: '/help-component' }]
+    { name: 'Ustawienia', route: '/settings' }]
+    
 
 }

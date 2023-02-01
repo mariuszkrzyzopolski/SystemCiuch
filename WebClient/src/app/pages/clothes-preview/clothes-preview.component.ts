@@ -2,11 +2,11 @@ import { Component, Input } from '@angular/core';
 import { Collection } from 'src/app/model/Collection';
 
 @Component({
-  selector: 'app-collection-prviev',
-  templateUrl: './collection-preview.component.html',
-  styleUrls: ['./collection-preview.component.css']
+  selector: 'app-clothes-prviev',
+  templateUrl: './clothes-preview.component.html',
+  styleUrls: ['./clothes-preview.component.css']
 })
-export class CollectionPreviewComponent {
+export class ClothesPreviewComponent {
   public collections: Array<Collection> = [
     { name: 'Kolekcja 1', route: './collection1' },
     { name: 'Kolekcja 2', route: './collection2' },

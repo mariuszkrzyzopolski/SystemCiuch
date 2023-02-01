@@ -1,3 +1,15 @@
-  <div class="mt-6 space-y-12 lg:grid lg:grid-cols-2 lg:gap-x-6 lg:space-y-0 " >
-        <app-menu-choice *ngFor="let item of MenuItems;" [name]="item.name" [route]="item.route"></app-menu-choice>
-  </div>
+<div class="grid grid-rows-[100px_minmax(900px,_1fr)_50px]">
+      <div class="help absolute top-14 right-12 h-16 w-16 ">
+            <button
+                  class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                  Pomoc
+            </button>
+
+      </div>
+      <div>
+            <div class="mt-6 space-y-12 lg:grid lg:grid-cols-2 lg:gap-x-6 lg:space-y-0 ">
+                  <app-menu-choice *ngFor="let item of MenuItems;" [name]="item.name"
+                        [route]="item.route"></app-menu-choice>
+            </div>
+      </div>
+</div>
