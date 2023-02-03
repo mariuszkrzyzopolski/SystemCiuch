@@ -5,14 +5,9 @@ from pydantic import BaseModel
 from pydantic.class_validators import Optional
 
 router = APIRouter()
-class Shelf(BaseModel):
-    name: str
-    clothing_items: List
 
-shelves = dict()
-database = dict()
-
-@router.post("/sets/{set_id}")
+# TODO Patch for sets and items
+@router.post("/sets")
 async def post_set(set_id):
     return {}
 
@@ -20,24 +15,40 @@ async def post_set(set_id):
 @router.get("/sets/{set_id}")
 async def get_set(set_id):
     return {}
+
+@router.get("/sets")
+async def get_sets():
+    # Need user id to retrieve list
+    return {}
+
+@router.get("/sets_with_item/{item_id}")
+async def get_sets_with_item(item_id):
+    return {}
 @router.post("/items")
 async def post_item(
-        name:str = Form(...),
         type: str = Form(...),
-        description: str = Form(...),
+        description: str = Form(None),
+        tags: List[str] = Form(...),
         image: UploadFile = File(...)
 ):
-    database[name] = {"name":name,"type":type,"description":description,"image":image.filename}
-    return {"Form":{"name":name,"type":type,"description":description},"image":image.filename}
+    return {"Form":{"tags":tags,"type":type,"description":description},"image":image.filename}
 
-
+@router.get("/items")
+async def get_items():
+    # Need user id to retrieve list
+    items = []
+    """
+    items
+    - top
+    -- item1
+    -- item2
+    - bottom
+    -- item3
+    -- item4
+    - shoes
+    -- item5
+    """
+    return {}
 @router.get("/items/{item_id}")
 async def get_item(item_name):
-    return {"item": database[item_name]}
-
-# @router.put("/shelves/{shelf_id}")
-# async def put_item_on_shelf(shelf_id: int, clothing_items: List):
-#     if shelf_id not in shelves:
-#         raise HTTPException(status_code=404, detail="Shelf not found")
-#     shelves[shelf_id].clothing_items = clothing_items
-#     return {"success": True}
+    return {}
