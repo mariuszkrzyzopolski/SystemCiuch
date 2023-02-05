@@ -12,7 +12,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { WardrobeConnectionComponent } from './pages/wardrobe-connection/wardrobe-connection.component';
 import { CreateSetComponent } from './pages/create-set/create-set.component';
 import { PreviewSetsComponent } from './pages/preview-sets/preview-sets.component';
-
+import { SwiperModule } from "swiper/angular";
 
 @NgModule({
   declarations: [
@@ -26,11 +26,14 @@ import { PreviewSetsComponent } from './pages/preview-sets/preview-sets.componen
     CreateSetComponent,
     WardrobeConnectionComponent,
     SettingsComponent,
-    PreviewSetsComponent
+    PreviewSetsComponent,
+   
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule  
+    AppRoutingModule,
+    SwiperModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
