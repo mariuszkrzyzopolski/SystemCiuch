@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-add-clothes',
@@ -6,5 +7,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./add-clothes.component.css']
 })
 export class AddClothesComponent {
+  @ViewChild('f') addclothesForm: NgForm;
+  defaultType='Góra';
 
+// onSubmit(form:NgForm){
+//   console.log(form);
+// }
+onSubmit(){
+console.log(this.addclothesForm);
+}
 }
