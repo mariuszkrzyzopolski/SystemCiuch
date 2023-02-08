@@ -1,7 +1,6 @@
 from typing import List, Union
 
 from fastapi import Form, APIRouter, HTTPException, File, UploadFile
-from pydantic import BaseModel
 from pydantic.class_validators import Optional
 
 router = APIRouter()
