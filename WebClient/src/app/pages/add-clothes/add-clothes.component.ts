@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AddClothes } from '../../model/AddClothes';
@@ -8,6 +9,8 @@ import { AddClothes } from '../../model/AddClothes';
   styleUrls: ['./add-clothes.component.css']
 })
 export class AddClothesComponent implements OnInit {
+
+  constructor(private http: HttpClient) { }
 
   type = ['Góra', 'Dół', 'Buty'];
   addclothesForm: FormGroup;
@@ -31,7 +34,9 @@ export class AddClothesComponent implements OnInit {
       description: formGroupData.description,
       type: this.addclothesForm.value.type
     } as AddClothes;
-
-    console.log(addclothesFormData);
+    
+    this.http.post('http://127.0.0.1:8000/collection/items', addclothesFormData).subscribe(result => {
+      console.log(result);
+    });
   }
 }
