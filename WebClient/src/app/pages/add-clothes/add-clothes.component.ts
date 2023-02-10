@@ -9,7 +9,8 @@ import { AddClothes } from '../../model/AddClothes';
   styleUrls: ['./add-clothes.component.css']
 })
 export class AddClothesComponent implements OnInit {
-  fielesToUpload: File[];
+  
+  fielesToUpload: File[] = [];
 
   constructor(private http: HttpClient) { }
 
