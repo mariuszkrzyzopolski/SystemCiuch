@@ -6,7 +6,7 @@
 <div>
   <div class="md:grid md:grid-cols-1 md:gap-6">
     <form [formGroup]="addclothesForm" (ngSubmit)="onSubmit()">
-      <div class="shadow sm:overflow-hidden sm:rounded-md">
+      <div (dragover)="onDragOver($event)" (drop)="onDropSuccess($event)" class="shadow sm:overflow-hidden sm:rounded-md">
         <div class="bg-white px-4 sm:p-6">
           <div>
             <label class="block text-sm font-medium text-gray-700">Wybierz zdjęcie</label>
@@ -22,7 +22,7 @@
                   <label for="file-upload"
                     class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
                     <span>Prześlij plik</span>
-                    <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                    <input id="file-upload" name="file-upload" (change)="onChange($event)" type="file" class="sr-only">
                   </label>
                   <p class="pl-1">lub przeciągnij i upuść</p>
                 </div>
