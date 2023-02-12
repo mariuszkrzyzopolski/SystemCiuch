@@ -1,5 +1,6 @@
 export interface AddClothes {
     type: string,
     tags: string,
-    description: string
+    description: string,
+    image: File
 }

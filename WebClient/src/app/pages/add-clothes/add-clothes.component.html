@@ -6,7 +6,7 @@
 <div>
   <div class="md:grid md:grid-cols-1 md:gap-6">
     <form [formGroup]="addclothesForm" (ngSubmit)="onSubmit()">
-      <div class="shadow sm:overflow-hidden sm:rounded-md">
+      <div (dragover)="onDragOver($event)" (drop)="onDropSuccess($event)" class="shadow sm:overflow-hidden sm:rounded-md">
         <div class="bg-white px-4 sm:p-6">
           <div>
             <label class="block text-sm font-medium text-gray-700">Wybierz zdjęcie</label>
@@ -19,15 +19,18 @@
                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
                 <div class="flex text-sm text-gray-600">
-                  <label for="file-upload"
+                  <label for="file-upload" 
                     class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
                     <span>Prześlij plik</span>
-                    <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                    <input id="file-upload" name="file-upload" (change)="onChange($event)" type="file" class="sr-only">
                   </label>
                   <p class="pl-1">lub przeciągnij i upuść</p>
                 </div>
                 <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
               </div>
+            </div>
+            <div *ngIf="fielesToUpload.length == 0">
+             Wymagane jest zdjęcie!
             </div>
             <div class="inline-block relative w-64 py-6">
               <label>
@@ -66,16 +69,18 @@
                   class="form-control w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                   formControlName="description">
                 </textarea>
-                <span *ngIf="!addclothesForm.get('formGroupData.description')!.valid"> Proszę dodaj opis!</span>
+                <span *ngIf="!addclothesForm.get('formGroupData.description')"></span>
               </div>
             </div>
           </div>
         </div>
         <div class="bg-white px-4 py-3 text-center sm:px-6">
           <button type="submit"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-8 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-80">Zapisz</button>
-          <button type="submit"
-            class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-8 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Anuluj</button>
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-8 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-80" 
+            [disabled]="!addclothesForm.valid">Zapisz</button>
+         <a routerLink='../'>
+          <button class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-8 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Anuluj</button>
+         </a>
         </div>
       </div>
     </form>

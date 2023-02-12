@@ -14,6 +14,7 @@ import { CreateSetComponent } from './pages/create-set/create-set.component';
 import { PreviewSetsComponent } from './pages/preview-sets/preview-sets.component';
 import { SwiperModule } from "swiper/angular";
 import { ReactiveFormsModule } from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     SwiperModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
