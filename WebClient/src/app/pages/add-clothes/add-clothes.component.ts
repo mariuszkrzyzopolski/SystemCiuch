@@ -37,9 +37,20 @@ export class AddClothesComponent implements OnInit {
       image: this.fielesToUpload[0]
     } as AddClothes;
     
-    this.http.post('http://127.0.0.1:8000/collection/items', addclothesFormData).subscribe(result => {
-      console.log(result);
-    });
+    this.submitForm(addclothesFormData);
+  }
+
+  submitForm(addClothes: AddClothes){
+    var formData: any = new FormData();
+    formData.append("tags", addClothes.tags);
+    formData.append("description", addClothes.description);
+    formData.append("type", addClothes.type);
+    formData.append("image", addClothes.image);
+
+    this.http.post('http://127.0.0.1:8000/collection/items', formData).subscribe(
+      (response) => console.log(response),
+      (error) => console.log(error)
+    )
   }
 
   onDragOver(event: any) {

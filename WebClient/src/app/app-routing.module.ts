@@ -4,12 +4,14 @@ import { ClothesPreviewComponent } from 'src/app/pages/clothes-preview/clothes-p
 import { AddClothesComponent } from './pages/add-clothes/add-clothes.component';
 import { CreateSetComponent } from './pages/create-set/create-set.component';
 import { HomeComponent } from './pages/home/home.component';
+import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { PreviewSetsComponent } from './pages/preview-sets/preview-sets.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { WardrobeConnectionComponent } from './pages/wardrobe-connection/wardrobe-connection.component';
 
 
 const routes: Routes = [
+  {path:'login', component:LoginPageComponent},
   { path: '', component: HomeComponent },
   {path: 'add-clothes', component:AddClothesComponent },
   { path: 'clothes-preview', component: ClothesPreviewComponent },

@@ -15,6 +15,9 @@ import { PreviewSetsComponent } from './pages/preview-sets/preview-sets.componen
 import { SwiperModule } from "swiper/angular";
 import { ReactiveFormsModule } from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
+import { LoginPageComponent } from './pages/login-page/login-page.component';
+
+
 
 
 @NgModule({
@@ -30,6 +33,7 @@ import {HttpClientModule} from '@angular/common/http';
     WardrobeConnectionComponent,
     SettingsComponent,
     PreviewSetsComponent,
+    LoginPageComponent,
   ],
   imports: [
     BrowserModule,
