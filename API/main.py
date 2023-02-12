@@ -12,6 +12,7 @@ origins = [
     "http://localhost",
     "http://localhost:8080",
     "http://localhost:8000",
+    "http://localhost:4200",
 ]
 
 app.include_router(collection.router, prefix="/collection", tags=["collection"])
