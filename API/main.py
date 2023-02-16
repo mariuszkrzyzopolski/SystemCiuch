@@ -1,5 +1,9 @@
+import random
+
 import uvicorn as uvicorn
 from fastapi import FastAPI
+from starlette.middleware.sessions import SessionMiddleware
+
 import collection
 from fastapi.middleware.cors import CORSMiddleware
 import ai_model
@@ -25,6 +29,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(SessionMiddleware, secret_key=random.random())
 
 if __name__ == '__main__':
     conn = get_database()

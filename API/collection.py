@@ -16,8 +16,8 @@ database = DB(conn)
 router = APIRouter()
 
 # TODO Patch for sets and items
-@router.post("/sets")
-async def post_set(set_id):
+@router.post("/set")
+async def post_set():
     return {}
 
 
@@ -27,22 +27,28 @@ async def get_set(set_id):
 
 @router.get("/sets")
 async def get_sets():
-   with Session(database.conn) as session:
-            q = select(Set)
-            data = session.execute(q).all()
-            return data
+    with Session(database.conn) as session:
+        q = select(Set)
+        data = session.execute(q).all()
+        return data
 
 @router.get("/sets_with_item/{item_id}")
 async def get_sets_with_item(item_id):
     return {}
-@router.post("/items")
+@router.post("/item")
 async def post_item(
-        type: str = Form(...),
-        description: str = Form(None),
-        tags: List[str] = Form(...),
-        image: UploadFile = File(...)
+    type: str = Form(...),
+    description: str = Form(None),
+    tags: List[str] = Form(...),
+    image: UploadFile = File(...)
 ):
-    return {"Form":{"tags":tags,"type":type,"description":description},"image":image.filename}
+    with Session(database.conn) as session:
+        # TODO add collection id, preferably from session
+        item = Item(type=type, description=description, tags=','.join(tags), image=image.filename)
+        session.add(item)
+        session.commit()
+        session.refresh(item)
+        return item #{"Form":{"tags":tags,"type":type,"description":description},"image":image.filename}
 
 @router.get("/items")
 async def get_items():
@@ -52,18 +58,6 @@ async def get_items():
         q = select(Item)
         data = session.execute(q).all()
         return data
-    """
-    items
-    - top
-    -- item1
-    -- item2
-    - bottom
-    -- item3
-    -- item4
-    - shoes
-    -- item5
-    """
-    return {}
 @router.get("/items/{item_id}")
 async def get_item(item_name):
     return {}
@@ -75,15 +69,3 @@ async def get_collection():
         q = select(Collection)
         data = session.execute(q).all()
         return data
-    """
-    items
-    - top
-    -- item1
-    -- item2
-    - bottom
-    -- item3
-    -- item4
-    - shoes
-    -- item5
-    """
-    return {}
