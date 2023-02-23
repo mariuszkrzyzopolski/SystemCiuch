@@ -3,76 +3,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def removebg(myimage, lower_limit: np.array, upper_limit: np.array):
-    hsv_frame = cv2.cvtColor(myimage, cv2.COLOR_BGR2HLS)
-    mask = cv2.inRange(hsv_frame, lower_limit, upper_limit)
-    mask = cv2.bitwise_not(mask)
-    cv2.imshow("mask", mask)
-
-    result = cv2.bitwise_and(myimage, myimage, mask=mask)
-    result[np.where((result == [0, 0, 0]).all(axis=2))] = [255, 255, 255]
-    return result
-
-
-def euclidean_dist(ax, ay, bx, by):
-    return -np.sqrt(pow((ax - bx), 2) + pow((ay - by), 2))
-
-
-def givebg(myimage):
-    myimage = cv2.cvtColor(myimage, cv2.COLOR_BGR2HLS)
-    midium = [0, 0, 0]
-    weigths = 0
-    for y in range(len(myimage)):
-        for x in range(len(myimage[y])):
-            weigth = euclidean_dist(x, y, len(myimage) / 2, len(myimage[y]) / 2)
-            midium = midium + myimage[y, x] * weigth
-            weigths += weigth
-    result = midium / weigths
-    result = [int(result[0]), int(result[1]), int(result[2])]
-    return result
-
-
-def inspect_img(image: np.ndarray):
+def analyze_image(image: np.ndarray):
     myimage_hls = cv2.cvtColor(image, cv2.COLOR_BGR2HLS)
     h, l, s = cv2.split(myimage_hls)
 
-    value_counts_h = {i: 0 for i in range(256)}
-    value_counts_l = {i: 0 for i in range(256)}
-    value_counts_s = {i: 0 for i in range(256)}
+    value_counts_h = analyze_layer(h)
+    value_counts_l = analyze_layer(l)
+    value_counts_s = analyze_layer(s)
 
-    unique_values = np.unique(h)
-    sums = np.zeros(len(unique_values))
-    for i, value in enumerate(unique_values):
-        mask = (h == value)
-        sums[i] = np.sum(mask)
-        value_counts_h[value] = int(sums[i])
+    background = find_bg_color(image)
 
-    plt.subplot(311), plt.plot(list(value_counts_h.keys())[1:-1], list(value_counts_h.values())[1:-1])
-
-    unique_values = np.unique(l)
-    sums = np.zeros(len(unique_values))
-    for i, value in enumerate(unique_values):
-        mask = (l == value)
-        sums[i] = np.sum(mask)
-        value_counts_l[value] = int(sums[i])
-
-    plt.subplot(312), plt.plot(list(value_counts_l.keys())[1:-1], list(value_counts_l.values())[1:-1])
-
-    unique_values = np.unique(s)
-    sums = np.zeros(len(unique_values))
-    for i, value in enumerate(unique_values):
-        mask = (s == value)
-        sums[i] = np.sum(mask)
-        value_counts_s[value] = int(sums[i])
-
-    plt.subplot(313), plt.plot(list(value_counts_s.keys())[1:-1], list(value_counts_s.values())[1:-1])
-    plt.tight_layout()
-    plt.show()
-
-    background = givebg(image)
-    print(background)
     lower_limit = np.array([0, 0, 0])
     upper_limit = np.array([255, 255, 255])
+
     h_a, h_b, h_high = find_peak(value_counts_h, "h", background)
     l_a, l_b, l_high = find_peak(value_counts_l, "l", background)
     s_a, s_b, s_high = find_peak(value_counts_s, "s", background)
@@ -90,6 +33,39 @@ def inspect_img(image: np.ndarray):
     print("h l s", lower_limit, upper_limit)
 
     return lower_limit, upper_limit
+
+
+def analyze_layer(layer):
+    unique_values = np.unique(layer)
+    sums = np.zeros(len(unique_values))
+    value_counts = {i: 0 for i in range(256)}
+    for i, value in enumerate(unique_values):
+        mask = (layer == value)
+        sums[i] = np.sum(mask)
+        value_counts[value] = int(sums[i])
+
+    plt.plot(list(value_counts.keys())[1:-1], list(value_counts.values())[1:-1])
+    plt.tight_layout()
+    plt.show()
+    return value_counts
+
+
+def find_bg_color(myimage):
+    myimage = cv2.cvtColor(myimage, cv2.COLOR_BGR2HLS)
+    midium = [0, 0, 0]
+    weigths = 0
+    for y in range(len(myimage)):
+        for x in range(len(myimage[y])):
+            weigth = euclidean_dist(x, y, len(myimage) / 2, len(myimage[y]) / 2)
+            midium = midium + myimage[y, x] * weigth
+            weigths += weigth
+    result = midium / weigths
+    result = [int(result[0]), int(result[1]), int(result[2])]
+    return result
+
+
+def euclidean_dist(ax, ay, bx, by):
+    return -np.sqrt(pow((ax - bx), 2) + pow((ay - by), 2))
 
 
 def find_peak(dictionary: dict, dimension: str, background: list):
@@ -142,6 +118,9 @@ def find_peak(dictionary: dict, dimension: str, background: list):
     return peak_center - r, peak_center + r, power
 
 
+def score(d, key, r):
+    return sum(value for k, value in d.items() if abs(key - k) <= r)
+
 def get_key_from_value(d, val):
     keys = [k for k, v in d.items() if v == val]
     if keys:
@@ -149,22 +128,30 @@ def get_key_from_value(d, val):
     return None
 
 
-def score(d, key, r):
-    return sum(value for k, value in d.items() if abs(key - k) <= r)
+def remove_bacground(myimage, lower_limit: np.array, upper_limit: np.array):
+    hsv_frame = cv2.cvtColor(myimage, cv2.COLOR_BGR2HLS)
+    mask = cv2.inRange(hsv_frame, lower_limit, upper_limit)
+    mask = cv2.bitwise_not(mask)
+    cv2.imshow("mask", mask)
+
+    result = cv2.bitwise_and(myimage, myimage, mask=mask)
+    result[np.where((result == [0, 0, 0]).all(axis=2))] = [255, 255, 255]
+    return result
 
 
-img = cv2.imread("Assets/1/20230209_191911.jpg", cv2.IMREAD_COLOR)
-img = cv2.resize(img, (512, 512), interpolation=cv2.INTER_AREA)
-cv2.imshow("img orginal", img)
+if __name__ == '__main__':
+    img = cv2.imread("Assets/1/20230209_191911.jpg", cv2.IMREAD_COLOR)
+    img = cv2.resize(img, (512, 512), interpolation=cv2.INTER_AREA)
+    cv2.imshow("img orginal", img)
 
-lower_limit, upper_limit = inspect_img(img)
-img_without_background = removebg(img, lower_limit, upper_limit)
-cv2.imshow("img_without_background", img_without_background)
-lower_limit, upper_limit = inspect_img(img_without_background)
+    lower_limit, upper_limit = analyze_image(img)
+    img_without_background = remove_bacground(img, lower_limit, upper_limit)
+    cv2.imshow("img_without_background", img_without_background)
+    lower_limit, upper_limit = analyze_image(img_without_background)
 
-while True:
-    if cv2.waitKey(1) == 27:
-        print(" ")
-        break
+    while True:
+        if cv2.waitKey(1) == 27:
+            print(" ")
+            break
 
-cv2.destroyAllWindows()
+    cv2.destroyAllWindows()
