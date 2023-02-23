@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
@@ -14,6 +14,7 @@ class Item(Base):
     tags: Mapped[str] = mapped_column()
     image: Mapped[str] = mapped_column()
     collection_id: Mapped[int] = mapped_column(ForeignKey("Collection.id"))
+    set_id: Mapped[Optional[List[int]]] = mapped_column(ForeignKey("Set.id"))
 
     collection: Mapped["Collection"] = relationship(back_populates="items")
     # parents: Mapped[List["Set"]] = relationship()

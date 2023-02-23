@@ -4,10 +4,10 @@ router = APIRouter()
 
 
 @router.post("/predict")
-async def predict():
+def predict():
     return {}
 
 
 @router.get("/train")
-async def train():
+def train():
     return {}

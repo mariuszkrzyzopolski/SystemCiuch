@@ -15,10 +15,6 @@ class User(Base):
     # wardrobe: Mapped["Wardrobe"] = relationship(back_populates="wardrobe")
     city:Mapped[str] = mapped_column()
 
-    # user = relationship("User", back_populates="room")
-    # users = relationship("User", secondary=users_rooms, back_populates="rooms")
-    # votes = relationship("Vote", back_populates="room")
-
 # class User(BaseModel):
 #     id: int
 #     mail: str

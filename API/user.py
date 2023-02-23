@@ -18,7 +18,7 @@ database = DB(conn)
 router = APIRouter()
 
 @router.post("/login")
-async def user_login(request: Request, mail: str, password: str):
+def user_login(request: Request, mail: str, password: str):
     with Session(database.conn) as session:
         data = session.query(Model_User).filter(Model_User.mail == mail, Model_User.password == password).first()
         if data is None:
@@ -30,7 +30,7 @@ async def user_login(request: Request, mail: str, password: str):
             raise HTTPException(status_code=401, detail="Incorrect password")
 
 @router.post("/register")
-async def user_register(request: Request, user: User):
+def user_register(request: Request, user: User):
     if user.password != user.repeated_password:
         raise HTTPException(status_code=401, detail="Passwords must be the identical!")
     with Session(database.conn) as session:
@@ -46,22 +46,22 @@ async def user_register(request: Request, user: User):
 
 
 @router.post("/logout")
-async def logout(request: Request):
+def logout(request: Request):
     del request.session["user"]
     return {"success": True}
 
 
 @router.post("/connect")
-async def user_connect(request: Request, wadrobe_id: int):
+def user_connect(request: Request, wadrobe_id: int):
     return {}
 
 @router.post("/disconnect")
-async def user_disconnect(request: Request):
+def user_disconnect(request: Request):
     del request.session["wardrobe"]
     return {"success": True}
 
 @router.post("/register_wardrobe")
-async def register_wardrobe(request: Request):
+def register_wardrobe(request: Request):
     # TODO verification of user session
     with Session(database.conn) as session:
         new_wardrobe = Wardrobe(user_id=request.session["user"])
@@ -69,7 +69,6 @@ async def register_wardrobe(request: Request):
         session.commit()
         new_collection = Collection(id_wardrobe=new_wardrobe.id)
         session.add(new_collection)
-        request.session["collection"] = new_collection.id
         session.commit()
         session.refresh(new_wardrobe)
         new_wardrobe.id_collection = new_collection.id
@@ -78,6 +77,6 @@ async def register_wardrobe(request: Request):
         user = session.query(Model_User).get(request.session["user"])
         user.id_wardrobe = new_wardrobe.id
         session.commit()
-
+        request.session["collection"] = new_collection.id
         request.session["wardrobe"] = new_wardrobe.id
         return new_wardrobe
