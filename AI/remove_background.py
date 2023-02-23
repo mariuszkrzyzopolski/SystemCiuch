@@ -13,26 +13,16 @@ def analyze_image(image: np.ndarray):
 
     background = find_bg_color(image)
 
-    lower_limit = np.array([0, 0, 0])
-    upper_limit = np.array([255, 255, 255])
-
-    h_a, h_b, h_high = find_peak(value_counts_h, "h", background)
-    l_a, l_b, l_high = find_peak(value_counts_l, "l", background)
-    s_a, s_b, s_high = find_peak(value_counts_s, "s", background)
+    h_x, h_method, h_high = find_peak(value_counts_h, "h", background)
+    l_x, l_method, l_high = find_peak(value_counts_l, "l", background)
+    s_x, s_method, s_high = find_peak(value_counts_s, "s", background)
 
     if h_high > l_high and h_high > s_high:
-        lower_limit[0] = h_a
-        upper_limit[0] = h_b
+        return h, h_x, h_method
     elif l_high > h_high and l_high > s_high:
-        lower_limit[1] = l_a
-        upper_limit[1] = l_b
-    elif s_high > h_high and s_high > l_high:
-        lower_limit[2] = s_a
-        upper_limit[2] = s_b
-
-    print("h l s", lower_limit, upper_limit)
-
-    return lower_limit, upper_limit
+        return l, l_x, l_method
+    else:
+        return s, s_x, s_method
 
 
 def analyze_layer(layer):
@@ -90,7 +80,7 @@ def find_peak(dictionary: dict, dimension: str, background: list):
 
         points.update({r: score(dictionary, peak_center, r)})
         keys.update({r: peak_center})
-        if points.get(r - 1) * 1.001 > points.get(r):
+        if points.get(r - 1) * 1.01 > points.get(r):
             break
     max_score = max(points.values())
     r = get_key_from_value(points, max_score)
@@ -106,20 +96,23 @@ def find_peak(dictionary: dict, dimension: str, background: list):
         else:
             if peak_key_not_in_range is None or dictionary[key] > dictionary[peak_key_not_in_range]:
                 peak_key_not_in_range = key
-    print(peak_center, r)
-    print(peak_key_in_range, peak_key_not_in_range)
     if dictionary[peak_key_in_range] > dictionary[peak_key_not_in_range]:
         power = abs(peak_key_not_in_range - peak_key_in_range) / dictionary[peak_key_in_range] * dictionary[
             peak_key_not_in_range]
     else:
         power = abs(peak_key_not_in_range - peak_key_in_range) * dictionary[peak_key_in_range] / dictionary[
             peak_key_not_in_range]
-
-    return peak_center - r, peak_center + r, power
+        # TODO
+        # other range for second peak
+    if peak_key_in_range < peak_key_not_in_range:
+        return peak_center + r, cv2.THRESH_BINARY, power
+    else:
+        return peak_center - r, cv2.THRESH_BINARY_INV, power
 
 
 def score(d, key, r):
     return sum(value for k, value in d.items() if abs(key - k) <= r)
+
 
 def get_key_from_value(d, val):
     keys = [k for k, v in d.items() if v == val]
@@ -128,10 +121,9 @@ def get_key_from_value(d, val):
     return None
 
 
-def remove_bacground(myimage, lower_limit: np.array, upper_limit: np.array):
-    hsv_frame = cv2.cvtColor(myimage, cv2.COLOR_BGR2HLS)
-    mask = cv2.inRange(hsv_frame, lower_limit, upper_limit)
-    mask = cv2.bitwise_not(mask)
+def remove_background(myimage):
+    lay, x, method = analyze_image(img)
+    ret, mask = cv2.threshold(lay, x, 255, method)
     cv2.imshow("mask", mask)
 
     result = cv2.bitwise_and(myimage, myimage, mask=mask)
@@ -140,14 +132,12 @@ def remove_bacground(myimage, lower_limit: np.array, upper_limit: np.array):
 
 
 if __name__ == '__main__':
-    img = cv2.imread("Assets/1/20230209_191911.jpg", cv2.IMREAD_COLOR)
+    img = cv2.imread("Assets/1/20230209_183349.jpg", cv2.IMREAD_COLOR)
     img = cv2.resize(img, (512, 512), interpolation=cv2.INTER_AREA)
     cv2.imshow("img orginal", img)
 
-    lower_limit, upper_limit = analyze_image(img)
-    img_without_background = remove_bacground(img, lower_limit, upper_limit)
+    img_without_background = remove_background(img)
     cv2.imshow("img_without_background", img_without_background)
-    lower_limit, upper_limit = analyze_image(img_without_background)
 
     while True:
         if cv2.waitKey(1) == 27:
