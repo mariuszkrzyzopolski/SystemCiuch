@@ -14,6 +14,7 @@ class Item(Base):
     tags: Mapped[str] = mapped_column()
     image: Mapped[str] = mapped_column()
     collection_id: Mapped[int] = mapped_column(ForeignKey("Collection.id"))
+    # TODO probably need association table to connect set and item table
     set_id: Mapped[Optional[List[int]]] = mapped_column(ForeignKey("Set.id"))
 
     collection: Mapped["Collection"] = relationship(back_populates="items")

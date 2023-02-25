@@ -16,10 +16,16 @@ router = APIRouter()
 
 # TODO Patch for sets and items
 @router.post("/set")
-def post_set(top: int, pants: int, shoes: int):
+def post_set(top_id: int, pants_id: int, shoes_id: int):
     with Session(database.conn) as session:
+        top = session.query(Item).get(top_id)
+        pants = session.query(Item).get(pants_id)
+        shoes = session.query(Item).get(shoes_id)
         new_set = Set(top=top, pants=pants, shoes=shoes)
         session.add(new_set)
+        top.set_id = new_set.id
+        pants.set_id = new_set.id
+        shoes.set_id = new_set.id
         session.commit()
         session.refresh(new_set)
         return new_set
