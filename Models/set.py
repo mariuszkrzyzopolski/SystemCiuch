@@ -10,7 +10,3 @@ class Set(Base):
     top: Mapped[int] = ForeignKey("Item.id")
     pants: Mapped[int] = ForeignKey("Item.id")
     shoes: Mapped[int] = ForeignKey("Item.id")
-    # def __init__(self, top, pants, shoes):
-    #     self.brand = top
-    #     self.model = pants
-    #     self.color = shoes

@@ -12,3 +12,7 @@ class Collection(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     items: Mapped[List[Item]] = relationship(back_populates="collection")
     id_wardrobe: Mapped[int] = mapped_column(ForeignKey("Wardrobe.id"))
+    id_user: Mapped[int] = mapped_column(ForeignKey("User.id"))
+
+    # user: Mapped["User"] = relationship(back_populates="collection")
+    # wardrobe: Mapped["Wardrobe"] = relationship(back_populates="collection")

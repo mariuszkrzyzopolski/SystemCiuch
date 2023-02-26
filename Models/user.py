@@ -12,11 +12,8 @@ class User(Base):
     mail: Mapped[str] = mapped_column()
     password: Mapped[str] = mapped_column()
     id_wardrobe: Mapped[Optional[int]] = mapped_column(ForeignKey("Wardrobe.id"))
-    # wardrobe: Mapped["Wardrobe"] = relationship(back_populates="wardrobe")
+    id_collection: Mapped[Optional[int]] = mapped_column(ForeignKey("Collection.id"))
     city:Mapped[str] = mapped_column()
 
-# class User(BaseModel):
-#     id: int
-#     mail: str
-#     city: str
-#     id_warderobe: int
+    # collection: Mapped[Optional["Collection"]] = relationship(back_populates="user")
+    # wardrobe: Mapped[Optional["Wardrobe"]] = relationship(back_populates="user")

@@ -10,3 +10,6 @@ class Wardrobe(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("User.id"))
     id_collection: Mapped[Optional[int]] = mapped_column(ForeignKey("Collection.id"))
+
+    # collection: Mapped["Collection"] = relationship(back_populates="wardrobe")
+    # user: Mapped["User"] = relationship(back_populates="wardrobe")

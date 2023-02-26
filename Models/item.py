@@ -18,4 +18,3 @@ class Item(Base):
     set_id: Mapped[Optional[List[int]]] = mapped_column(ForeignKey("Set.id"))
 
     collection: Mapped["Collection"] = relationship(back_populates="items")
-    # parents: Mapped[List["Set"]] = relationship()
