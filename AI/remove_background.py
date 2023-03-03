@@ -102,12 +102,11 @@ def find_peak(dictionary: dict, dimension: str, background: list):
     else:
         power = abs(peak_key_not_in_range - peak_key_in_range) * dictionary[peak_key_in_range] / dictionary[
             peak_key_not_in_range]
-        # TODO
-        # other range for second peak
+
     if peak_key_in_range < peak_key_not_in_range:
-        return peak_center + r, cv2.THRESH_BINARY, power
+        return peak_center+r, cv2.THRESH_BINARY, power
     else:
-        return peak_center - r, cv2.THRESH_BINARY_INV, power
+        return peak_center-r, cv2.THRESH_BINARY_INV, power
 
 
 def score(d, key, r):
@@ -121,9 +120,10 @@ def get_key_from_value(d, val):
     return None
 
 
-def remove_background(myimage):
-    lay, x, method = analyze_image(img)
-    ret, mask = cv2.threshold(lay, x, 255, method)
+def remove_bacground(myimage, lower_limit: np.array, upper_limit: np.array):
+    hsv_frame = cv2.cvtColor(myimage, cv2.COLOR_BGR2HLS)
+    mask = cv2.inRange(hsv_frame, lower_limit, upper_limit)
+    mask = cv2.bitwise_not(mask)
     cv2.imshow("mask", mask)
 
     result = cv2.bitwise_and(myimage, myimage, mask=mask)
@@ -132,16 +132,16 @@ def remove_background(myimage):
 
 
 if __name__ == '__main__':
-    img = cv2.imread("Assets/1/20230209_183349.jpg", cv2.IMREAD_COLOR)
+    img = cv2.imread('Assets/1/20230209_183349.jpg')
     img = cv2.resize(img, (512, 512), interpolation=cv2.INTER_AREA)
-    cv2.imshow("img orginal", img)
 
-    img_without_background = remove_background(img)
-    cv2.imshow("img_without_background", img_without_background)
+    lay, x, method = analyze_image(img)
+    ret, thresh = cv2.threshold(lay, x, 255, method)
+    cv2.imshow("maskfwef", thresh)
 
-    while True:
-        if cv2.waitKey(1) == 27:
-            print(" ")
-            break
+    result = cv2.bitwise_and(img, img, mask=thresh)
+    result[np.where((result == [0, 0, 0]).all(axis=2))] = [255, 255, 255]
 
-    cv2.destroyAllWindows()
+    # De-allocate any associated memory usage
+    if cv2.waitKey(0) == 27:
+        cv2.destroyAllWindows()

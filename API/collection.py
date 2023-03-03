@@ -1,7 +1,4 @@
-from typing import List, Union
-
-from fastapi import Form, APIRouter, HTTPException, File, UploadFile
-from pydantic.class_validators import Optional
+from fastapi import APIRouter
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -9,81 +6,46 @@ from API.database import get_database, DB
 from Models.collection import Collection
 from Models.item import Item
 from Models.set import Set
-from Models.wardrobe import Wardrobe
+from starlette.requests import Request
 
 conn = get_database()
 database = DB(conn)
 router = APIRouter()
 
 # TODO Patch for sets and items
-@router.post("/sets")
-async def post_set(set_id):
-    return {}
+@router.post("/set")
+def post_set(top_id: int, pants_id: int, shoes_id: int):
+    with Session(database.conn) as session:
+        top = session.query(Item).get(top_id)
+        pants = session.query(Item).get(pants_id)
+        shoes = session.query(Item).get(shoes_id)
+        new_set = Set(top=top, pants=pants, shoes=shoes)
+        session.add(new_set)
+        top.set_id = new_set.id
+        pants.set_id = new_set.id
+        shoes.set_id = new_set.id
+        session.commit()
+        session.refresh(new_set)
+        return new_set
 
 
 @router.get("/sets/{set_id}")
-async def get_set(set_id):
-    return {}
+def get_set(set_id):
+    with Session(database.conn) as session:
+        q = select(Set).filter(Set.id == set_id)
+        data = session.execute(q).mappings().first()
+        return data
 
 @router.get("/sets")
-async def get_sets():
-   with Session(database.conn) as session:
-            q = select(Set)
-            data = session.execute(q).all()
-            return data
-
-@router.get("/sets_with_item/{item_id}")
-async def get_sets_with_item(item_id):
-    return {}
-@router.post("/items")
-async def post_item(
-        type: str = Form(...),
-        description: str = Form(None),
-        tags: List[str] = Form(...),
-        image: UploadFile = File(...)
-):
-    return {"Form":{"tags":tags,"type":type,"description":description},"image":image.filename}
-
-@router.get("/items")
-async def get_items():
-    # Need user id to retrieve list
+def get_sets():
     with Session(database.conn) as session:
-        s = select(Wardrobe)
-        q = select(Item)
-        data = session.execute(q).all()
+        q = select(Set)
+        data = session.execute(q).mappings().all()
         return data
-    """
-    items
-    - top
-    -- item1
-    -- item2
-    - bottom
-    -- item3
-    -- item4
-    - shoes
-    -- item5
-    """
-    return {}
-@router.get("/items/{item_id}")
-async def get_item(item_name):
-    return {}
 
 @router.get("/")
-async def get_collection():
-    # Need user id to retrieve list
+def get_collection(request: Request):
     with Session(database.conn) as session:
-        q = select(Collection)
-        data = session.execute(q).all()
+        q = select(Collection).filter(Collection.id == request.session["collection"])
+        data = session.execute(q).mappings().first()
         return data
-    """
-    items
-    - top
-    -- item1
-    -- item2
-    - bottom
-    -- item3
-    -- item4
-    - shoes
-    -- item5
-    """
-    return {}
