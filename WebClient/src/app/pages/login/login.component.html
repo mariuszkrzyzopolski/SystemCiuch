@@ -1,0 +1,32 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="bg-grey-lighter min-h-screen flex flex-col">
+        <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
+            <div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
+                <h1 class="mb-8 text-3xl text-center">Zaloguj się</h1>
+                <input type="text" class="block border border-grey-light w-full p-3 rounded mb-4" placeholder="Email"
+                    formControName="email" />
+                <input type="password" class="block border border-grey-light w-full p-3 rounded mb-4"
+                    placeholder="Hasło" formControName="password" />
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input id="remember-me" name="remember-me" type="checkbox"
+                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
+                        <label for="remember-me" class="ml-2 block text-sm text-gray-900">Zapamiętaj</label>
+                    </div>
+                    <div class="text-sm">
+                        <a href="..." class="font-medium text-indigo-600 hover:text-indigo-500">NIe pamiętam hasła</a>
+                    </div>
+                </div>
+                <button type="submit"
+                    class="w-full text-center py-3 rounded bg-green-300 text-white hover:bg-green-dark focus:outline-none my-1">Zaloguj
+                    się</button>
+            </div>
+            <div class="text-grey-dark mt-6">
+                Nie masz konta?
+                <a class="no-underline border-b border-blue text-blue" href="../sign-up/">
+                    Zarejestruj się
+                </a>.
+            </div>
+        </div>
+    </div>
+</form>
