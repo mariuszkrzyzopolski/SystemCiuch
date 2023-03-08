@@ -1,10 +1,13 @@
 import sys
+import datetime
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from starlette.authentication import AuthenticationError
 from starlette.requests import Request
 
 from API.database import get_database, DB
+import jwt
 
 sys.path.append('../')
 from Validators.user import User
@@ -23,8 +26,14 @@ def user_login(request: Request, mail: str, password: str):
             raise HTTPException(status_code=404, detail="User not found")
         elif data.password == password:
             request.session["user"] = data.id
-            return {"success": True}
+            jwt_payload = jwt.encode(
+                {"exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=15),
+                 "sub": data.id},
+                "secret"
+            )
+            return {"token": jwt_payload}
         else:
+
             raise HTTPException(status_code=401, detail="Incorrect password")
 
 @router.post("/register")
@@ -40,7 +49,24 @@ def user_register(request: Request, user: User):
         session.commit()
         session.refresh(new_user)
         request.session["user"] = new_user.id
-        return new_user
+        jwt_payload = jwt.encode(
+            {"exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=15),
+             "sub": new_user.id},
+            "secret"
+        )
+        return {"token": jwt_payload}
+
+@router.post("/refresh")
+def refresh_token(request: Request):
+    try:
+        jwt_payload = jwt.encode(
+            {"exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=15),
+             "sub": request.session["user"]},
+            "secret"
+        )
+    except AuthenticationError:
+        raise HTTPException(status_code=403, detail="Invalid token!")
+    return {"token": jwt_payload}
 
 
 @router.post("/logout")
