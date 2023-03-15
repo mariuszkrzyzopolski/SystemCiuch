@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'sign-up.component',
@@ -7,20 +7,21 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./sign-up.component.css']
 })
 export class SignUpComponent implements OnInit {
-  signupForm: FormGroup;
+  signUpForm: FormGroup;
 
   ngOnInit() {
-    this.signupForm = new FormGroup({
-      'name': new FormControl("Nazwa użytkownika"),
-      'email': new FormControl(null),
-      'password': new FormControl(null),
-      'confirm_password': new FormControl(null)
+    this.signUpForm = new FormGroup({
+      'email': new FormControl(null,[Validators.required, Validators.email]),
+      'city': new FormControl(null,[Validators.required]),
+      'password': new FormControl(null, [Validators.required, Validators.minLength(6)]),
+      'confirm_password': new FormControl(null, [Validators.required, Validators.minLength(6)])
     }
     );
   }
   onSubmit() {
-    console.log(this.signupForm);
+    console.log(this.signUpForm.value);
+  }
   }
 
-}
+
 
