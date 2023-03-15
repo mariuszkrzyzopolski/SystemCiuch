@@ -4,6 +4,11 @@ import matplotlib.pyplot as plt
 
 
 def analyze_image(image: np.ndarray):
+    """
+    This function finds the layer and parameter needed to calculate the mask.
+    :param image:
+    :return:
+    """
     myimage_hls = cv2.cvtColor(image, cv2.COLOR_BGR2HLS)
     h, l, s = cv2.split(myimage_hls)
 
@@ -11,31 +16,28 @@ def analyze_image(image: np.ndarray):
     value_counts_l = analyze_layer(l)
     value_counts_s = analyze_layer(s)
 
-    background = find_bg_color(image)
+    # background in hls
+    background = find_bg_color(myimage_hls)
 
-    lower_limit = np.array([0, 0, 0])
-    upper_limit = np.array([255, 255, 255])
-
-    h_a, h_b, h_high = find_peak(value_counts_h, "h", background)
-    l_a, l_b, l_high = find_peak(value_counts_l, "l", background)
-    s_a, s_b, s_high = find_peak(value_counts_s, "s", background)
+    # split point, binary or inv, score
+    h_x, h_method, h_high = find_peaks(value_counts_h, "h", background)
+    l_x, l_method, l_high = find_peaks(value_counts_l, "l", background)
+    s_x, s_method, s_high = find_peaks(value_counts_s, "s", background)
 
     if h_high > l_high and h_high > s_high:
-        lower_limit[0] = h_a
-        upper_limit[0] = h_b
+        return h, h_x, h_method
     elif l_high > h_high and l_high > s_high:
-        lower_limit[1] = l_a
-        upper_limit[1] = l_b
-    elif s_high > h_high and s_high > l_high:
-        lower_limit[2] = s_a
-        upper_limit[2] = s_b
-
-    print("h l s", lower_limit, upper_limit)
-
-    return lower_limit, upper_limit
+        return l, l_x, l_method
+    else:
+        return s, s_x, s_method
 
 
-def analyze_layer(layer):
+def analyze_layer(layer: np.ndarray):
+    """
+    Returns a graph of the number of pixels for each value.
+    :param layer:
+    :return:
+    """
     unique_values = np.unique(layer)
     sums = np.zeros(len(unique_values))
     value_counts = {i: 0 for i in range(256)}
@@ -44,114 +46,187 @@ def analyze_layer(layer):
         sums[i] = np.sum(mask)
         value_counts[value] = int(sums[i])
 
-    plt.plot(list(value_counts.keys())[1:-1], list(value_counts.values())[1:-1])
-    plt.tight_layout()
-    plt.show()
+    # plt.plot(list(value_counts.keys())[:], list(value_counts.values())[:])
+    # plt.tight_layout()
+    # plt.show()
     return value_counts
 
 
-def find_bg_color(myimage):
-    myimage = cv2.cvtColor(myimage, cv2.COLOR_BGR2HLS)
-    midium = [0, 0, 0]
+def find_bg_color(myimage: np.ndarray):
+    """
+    Predict background color.
+    :param myimage:
+    :return:
+    """
+    result = [0, 0, 0]
     weigths = 0
     for y in range(len(myimage)):
         for x in range(len(myimage[y])):
-            weigth = euclidean_dist(x, y, len(myimage) / 2, len(myimage[y]) / 2)
-            midium = midium + myimage[y, x] * weigth
+            weigth = euclidean_dist(x, y, int(len(myimage) / 2), int(len(myimage[y]) / 2))
+            result = result + myimage[y, x] * weigth
             weigths += weigth
-    result = midium / weigths
+    result = result / weigths
     result = [int(result[0]), int(result[1]), int(result[2])]
     return result
 
 
-def euclidean_dist(ax, ay, bx, by):
-    return -np.sqrt(pow((ax - bx), 2) + pow((ay - by), 2))
+def euclidean_dist(ax: int, ay: int, bx: int, by: int):
+    """
+    Support function - Euclidean distance.
+    :param ax:
+    :param ay:
+    :param bx:
+    :param by:
+    :return:
+    """
+    return np.sqrt(pow((ax - bx), 2) + pow((ay - by), 2))
 
 
-def find_peak(dictionary: dict, dimension: str, background: list):
-    if dimension == "h":
-        peak_center = background[0]
-    elif dimension == "l":
-        peak_center = background[1]
-    else:  # dimension == "s"
-        peak_center = background[2]
-
-    points = {i: -1 for i in range(-1, 256)}
-    keys = {i: -1 for i in range(-1, 256)}
-    for r in range(len(dictionary)):
-        if peak_center - r < 0:
+def find_peak(dictionary: dict, peak_center: int):
+    """
+    Find the peak center, range and number of pixels in peak.
+    :param dictionary:
+    :param peak_center:
+    :return:
+    """
+    points = {i: 0 for i in range(256)}
+    keys = {i: 0 for i in range(256)}
+    for r in range(1, len(dictionary)):
+        if peak_center - r <= 0:
             peak_center = 0 + r
-        elif peak_center + r > 255:
+        elif peak_center + r >= 255:
             peak_center = 255 - r
         elif dictionary.get(peak_center + r) > dictionary.get(peak_center - r):
             peak_center += 1
         elif dictionary.get(peak_center + r) < dictionary.get(peak_center - r):
             peak_center -= 1
+        start = peak_center - r
+        stop = peak_center + r
 
-        points.update({r: score(dictionary, peak_center, r)})
         keys.update({r: peak_center})
-        if points.get(r - 1) * 1.001 > points.get(r):
+        points.update({r: sum(value for k, value in dictionary.items() if start <= k <= stop)})
+        if points.get(r) / (stop - start) > 3 * (points.get(r) - points.get(r - 1)):
             break
-    max_score = max(points.values())
-    r = get_key_from_value(points, max_score)
-    peak_center = keys.get(r)
+    pixel_counter = max(points.values())
+    return start, peak_center, stop, pixel_counter
 
-    peak_key_in_range = 0
-    peak_key_not_in_range = 0
 
-    for key in dictionary:
-        if peak_center - r < key < peak_center + r:
-            if peak_key_in_range is None or dictionary[key] > dictionary[peak_key_in_range]:
-                peak_key_in_range = key
-        else:
-            if peak_key_not_in_range is None or dictionary[key] > dictionary[peak_key_not_in_range]:
-                peak_key_not_in_range = key
-    print(peak_center, r)
-    print(peak_key_in_range, peak_key_not_in_range)
-    if dictionary[peak_key_in_range] > dictionary[peak_key_not_in_range]:
-        power = abs(peak_key_not_in_range - peak_key_in_range) / dictionary[peak_key_in_range] * dictionary[
-            peak_key_not_in_range]
+def find_peaks(dictionary: dict, dimension: str, background: list):
+    """
+    Predict two peaks in the chart.
+    :param dictionary:
+    :param dimension:
+    :param background:
+    :return:
+    """
+    if dimension == "h":
+        bg_peak = background[0]
+    elif dimension == "l":
+        bg_peak = background[1]
+    else:  # dimension == "s"
+        bg_peak = background[2]
+
+    # Find backgraung peak
+    bg_start, bg_center, bg_stop, bg_pixel_counter = find_peak(dictionary, bg_peak)
+
+    # Find foreground peak
+    dictionary_without_background = {key: 0 if bg_start <= key <= bg_stop else dictionary[key] for key in dictionary}
+    second_peak_center = get_key_from_value(dictionary_without_background, max(dictionary_without_background.values()))
+    fg_start, fg_center, fg_stop, fg_pixel_counter = find_peak(dictionary_without_background, second_peak_center)
+
+    # Predicting layer importance
+    if bg_pixel_counter < fg_pixel_counter:
+        power = (bg_pixel_counter * (bg_stop - bg_start + fg_stop - fg_start))
     else:
-        power = abs(peak_key_not_in_range - peak_key_in_range) * dictionary[peak_key_in_range] / dictionary[
-            peak_key_not_in_range]
+        power = (fg_pixel_counter * (bg_stop - bg_start + fg_stop - fg_start))
 
-    return peak_center - r, peak_center + r, power
+    if bg_center < fg_center:
+        cut_off_point = int(abs((fg_start + bg_stop) / 2))
+        return cut_off_point, cv2.THRESH_BINARY, power
+    else:
+        cut_off_point = int(abs((fg_stop + bg_start) / 2))
+        return cut_off_point, cv2.THRESH_BINARY_INV, power
 
 
-def score(d, key, r):
-    return sum(value for k, value in d.items() if abs(key - k) <= r)
-
-def get_key_from_value(d, val):
+def get_key_from_value(d: dict, val: int):
+    """
+    Support function to find key in dict via value.
+    :param d:
+    :param val:
+    :return:
+    """
     keys = [k for k, v in d.items() if v == val]
     if keys:
         return keys[0]
     return None
 
 
-def remove_bacground(myimage, lower_limit: np.array, upper_limit: np.array):
-    hsv_frame = cv2.cvtColor(myimage, cv2.COLOR_BGR2HLS)
-    mask = cv2.inRange(hsv_frame, lower_limit, upper_limit)
-    mask = cv2.bitwise_not(mask)
-    cv2.imshow("mask", mask)
+def resize_cv(img: np.ndarray):
+    """
+    Simple function to resize image to 512px width using openCV.
+    :param img:
+    :return:
+    """
+    output_width = 512
+    wpercent = (output_width / float(len(img)))
+    output_hight = int((float(len(img[1])) * float(wpercent)))
+    return cv2.resize(img, (output_hight, output_width), interpolation=cv2.INTER_AREA)
 
-    result = cv2.bitwise_and(myimage, myimage, mask=mask)
+
+def cv2_remove_backgound(img: np.ndarray):
+    """
+    Function to remove background using openCV and own heuristic.
+    :param img:
+    :return:
+    """
+    # Find mask
+    layer, x, method = analyze_image(img)
+    ret, thresh = cv2.threshold(layer, x, 255, method)
+    thresh = cv2.medianBlur(thresh, 11)
+    # cv2.imshow("mask", thresh)
+    # Remove background
+    result = cv2.bitwise_and(img, img, mask=thresh)
     result[np.where((result == [0, 0, 0]).all(axis=2))] = [255, 255, 255]
     return result
 
 
 if __name__ == '__main__':
-    img = cv2.imread("Assets/1/20230209_191911.jpg", cv2.IMREAD_COLOR)
-    img = cv2.resize(img, (512, 512), interpolation=cv2.INTER_AREA)
-    cv2.imshow("img orginal", img)
+    """
+    Simple test to check how work remove_backgound()
+    """
+    # Read & resize image
+    img = cv2.imread('Assets/1/20230209_191911.jpg')
+    img = resize_cv(img)
+    img_without_bg = cv2_remove_backgound(img)
+    cv2.imshow("img", img)
+    cv2.imshow("img_without_background", img_without_bg)
 
-    lower_limit, upper_limit = analyze_image(img)
-    img_without_background = remove_bacground(img, lower_limit, upper_limit)
-    cv2.imshow("img_without_background", img_without_background)
-    lower_limit, upper_limit = analyze_image(img_without_background)
+    # De-allocate any associated memory usage
+    if cv2.waitKey(0) == 27:
+        cv2.destroyAllWindows()
 
-    while True:
-        if cv2.waitKey(1) == 27:
-            print(" ")
-            break
+        img = cv2.imread('Assets/1/20230209_192338.jpg')
+        img = resize_cv(img)
+        img_without_bg = cv2_remove_backgound(img)
+        cv2.imshow("img", img)
+        cv2.imshow("img_without_background", img_without_bg)
 
-    cv2.destroyAllWindows()
+    if cv2.waitKey(0) == 27:
+        cv2.destroyAllWindows()
+        img = cv2.imread('Assets/1/20230209_192954.jpg')
+        img = resize_cv(img)
+        img_without_bg = cv2_remove_backgound(img)
+        cv2.imshow("img", img)
+        cv2.imshow("img_without_background", img_without_bg)
+
+    if cv2.waitKey(0) == 27:
+        cv2.destroyAllWindows()
+
+        img = cv2.imread('Assets/1/20230209_191819.jpg')
+        img = resize_cv(img)
+        img_without_bg = cv2_remove_backgound(img)
+        cv2.imshow("img", img)
+        cv2.imshow("img_without_background", img_without_bg)
+
+    if cv2.waitKey(0) == 27:
+        cv2.destroyAllWindows()
