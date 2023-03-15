@@ -4,9 +4,9 @@
             <div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
                 <h1 class="mb-8 text-3xl text-center">Zaloguj się</h1>
                 <input type="text" class="block border border-grey-light w-full p-3 rounded mb-4" placeholder="Email"
-                    formControName="email" />
+                    formControlName="email" />
                 <input type="password" class="block border border-grey-light w-full p-3 rounded mb-4"
-                    placeholder="Hasło" formControName="password" />
+                    placeholder="Hasło" formControlName="password" />
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
                         <input id="remember-me" name="remember-me" type="checkbox"
@@ -14,18 +14,18 @@
                         <label for="remember-me" class="ml-2 block text-sm text-gray-900">Zapamiętaj</label>
                     </div>
                     <div class="text-sm">
-                        <a href="..." class="font-medium text-indigo-600 hover:text-indigo-500">NIe pamiętam hasła</a>
+                        <a href="..." class="font-medium text-indigo-600 hover:text-indigo-500">Nie pamiętam hasła</a>
                     </div>
                 </div>
-                <button type="submit"
-                    class="w-full text-center py-3 rounded bg-green-300 text-white hover:bg-green-dark focus:outline-none my-1">Zaloguj
+                <button type="submit" [disabled]="!loginForm.valid"   [ngClass]="{'bg-green-300': !loginForm.valid, 'bg-green-500' : loginForm.valid}"
+                    class="w-full text-center py-3 rounded text-white hover:bg-green-dark focus:outline-none my-1">Zaloguj
                     się</button>
             </div>
             <div class="text-grey-dark mt-6">
                 Nie masz konta?
-                <a class="no-underline border-b border-blue text-blue" href="../sign-up/">
+                <button (click)="onRegister()" class="no-underline border-b border-blue text-blue">
                     Zarejestruj się
-                </a>.
+                </button>.
             </div>
         </div>
     </div>

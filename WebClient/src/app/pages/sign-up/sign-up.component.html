@@ -1,17 +1,17 @@
-<form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
     <div class="bg-grey-lighter min-h-screen flex flex-col">
         <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
             <div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
                 <h1 class="mb-8 text-3xl text-center">Rejestracja</h1>
-                <input type="text" class="block border border-grey-light w-full p-3 rounded mb-4"
-                    placeholder="Nazwa użytkownika" formControName="name" />
                 <input type="text" class="block border border-grey-light w-full p-3 rounded mb-4" placeholder="Email"
-                    formControName="email" />
+                    formControlName="email" />
+                    <input type="text" class="block border border-grey-light w-full p-3 rounded mb-4" placeholder="City"
+                    formControlName="city" />
                 <input type="password" class="block border border-grey-light w-full p-3 rounded mb-4"
-                    placeholder="Hasło" formControName="password" />
+                    placeholder="Hasło" formControlName="password" />
                 <input type="password" class="block border border-grey-light w-full p-3 rounded mb-4"
-                    placeholder="Potwierdź hasło" formControName="confirm_password" />
-                <button type="submit"
+                    placeholder="Potwierdź hasło" formControlName="confirm_password" />
+                <button type="submit" [disabled]="!signUpForm.valid"  [ngClass]="{'bg-green-300': !signUpForm.valid, 'bg-green-500' : signUpForm.valid}"
                     class="w-full text-center py-3 rounded bg-green-300 text-white hover:bg-green-dark focus:outline-none my-1">Zarejestruj</button>
                 <div class="text-center text-sm text-grey-dark mt-4">
                     Rejestrując się,
