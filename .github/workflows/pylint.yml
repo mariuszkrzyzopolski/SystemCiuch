@@ -1,0 +1,35 @@
+name: flake8 Lint
+
+on: pull_request
+
+jobs:
+  flake8-lint:
+    runs-on: ubuntu-latest
+    name: Lint
+    steps:
+      - name: Check out source repository
+        uses: actions/checkout@v3
+      - name: Set up Python environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: AI style
+        uses: py-actions/flake8@v2
+        with:
+          path: "AI"
+          plugins: "flake8-black flake8-simplify flake8-isort"
+      - name: API style
+        uses: py-actions/flake8@v2
+        with:
+          path: "API"
+          plugins: "flake8-black flake8-simplify flake8-fastapi flake8-isort"
+      - name: Model style
+        uses: py-actions/flake8@v2
+        with:
+          path: "Models"
+          plugins: "flake8-black flake8-simplify flake8-isort"
+      - name: Validator style
+        uses: py-actions/flake8@v2
+        with:
+          path: "Validators"
+          plugins: "flake8-black flake8-simplify flake8-isort"
