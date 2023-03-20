@@ -10,7 +10,7 @@ from API.database import get_database, DB
 import jwt
 
 sys.path.append('../')
-from Validators.user import User
+from Validators.user import User, LoginUser
 from Models.user import User as Model_User
 from fastapi import APIRouter, HTTPException
 
@@ -18,13 +18,15 @@ conn = get_database()
 database = DB(conn)
 router = APIRouter()
 
+
 @router.post("/login")
-def user_login(request: Request, mail: str, password: str):
+def user_login(request: Request, user: LoginUser):
     with Session(database.conn) as session:
-        data = session.query(Model_User).filter(Model_User.mail == mail, Model_User.password == password).first()
+        data = session.query(Model_User).filter(Model_User.mail == user.mail,
+                                                Model_User.password == user.password).first()
         if data is None:
             raise HTTPException(status_code=404, detail="User not found")
-        elif data.password == password:
+        elif data.password == user.password:
             request.session["user"] = data.id
             exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=15)
             jwt_payload = jwt.encode(
@@ -36,6 +38,7 @@ def user_login(request: Request, mail: str, password: str):
         else:
 
             raise HTTPException(status_code=401, detail="Incorrect password")
+
 
 @router.post("/register")
 def user_register(request: Request, user: User):
