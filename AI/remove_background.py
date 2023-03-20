@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
+
+import Common.image_functions as fimg
 
 
 def analyze_image(image: np.ndarray):
@@ -140,11 +141,22 @@ def find_peaks(dictionary: dict, dimension: str, background: list):
     else:
         power = (fg_pixel_counter * (bg_stop - bg_start + fg_stop - fg_start))
 
+    # Finding best cut-off point
     if bg_center < fg_center:
         cut_off_point = int(abs((fg_start + bg_stop) / 2))
-        return cut_off_point, cv2.THRESH_BINARY, power
     else:
         cut_off_point = int(abs((fg_stop + bg_start) / 2))
+
+    # Selecting a true background peak center
+    if abs(bg_peak - bg_center) < abs(bg_peak - fg_center):
+        correct_bg_peak = bg_center
+    else:
+        correct_bg_peak = fg_center
+
+    # Choose direction of the cut
+    if correct_bg_peak < bg_peak:
+        return cut_off_point, cv2.THRESH_BINARY, power
+    else:
         return cut_off_point, cv2.THRESH_BINARY_INV, power
 
 
@@ -159,18 +171,6 @@ def get_key_from_value(d: dict, val: int):
     if keys:
         return keys[0]
     return None
-
-
-def resize_cv(img: np.ndarray):
-    """
-    Simple function to resize image to 512px width using openCV.
-    :param img:
-    :return:
-    """
-    output_width = 512
-    wpercent = (output_width / float(len(img)))
-    output_hight = int((float(len(img[1])) * float(wpercent)))
-    return cv2.resize(img, (output_hight, output_width), interpolation=cv2.INTER_AREA)
 
 
 def cv2_remove_backgound(img: np.ndarray):
@@ -196,7 +196,7 @@ if __name__ == '__main__':
     """
     # Read & resize image
     img = cv2.imread('Assets/1/20230209_191911.jpg')
-    img = resize_cv(img)
+    img = fimg.resize_cv(img)
     img_without_bg = cv2_remove_backgound(img)
     cv2.imshow("img", img)
     cv2.imshow("img_without_background", img_without_bg)
@@ -206,7 +206,7 @@ if __name__ == '__main__':
         cv2.destroyAllWindows()
 
         img = cv2.imread('Assets/1/20230209_192338.jpg')
-        img = resize_cv(img)
+        img = fimg.resize_cv(img)
         img_without_bg = cv2_remove_backgound(img)
         cv2.imshow("img", img)
         cv2.imshow("img_without_background", img_without_bg)
@@ -214,7 +214,7 @@ if __name__ == '__main__':
     if cv2.waitKey(0) == 27:
         cv2.destroyAllWindows()
         img = cv2.imread('Assets/1/20230209_192954.jpg')
-        img = resize_cv(img)
+        img = fimg.resize_cv(img)
         img_without_bg = cv2_remove_backgound(img)
         cv2.imshow("img", img)
         cv2.imshow("img_without_background", img_without_bg)
@@ -223,7 +223,7 @@ if __name__ == '__main__':
         cv2.destroyAllWindows()
 
         img = cv2.imread('Assets/1/20230209_191819.jpg')
-        img = resize_cv(img)
+        img = fimg.resize_cv(img)
         img_without_bg = cv2_remove_backgound(img)
         cv2.imshow("img", img)
         cv2.imshow("img_without_background", img_without_bg)
