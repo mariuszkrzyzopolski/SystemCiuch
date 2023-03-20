@@ -49,7 +49,7 @@ def rgb_to_color_name(code):
 
     return closest_color
 
-
+'''
 if __name__ == '__main__':
     input_name = 'example.jpg'
     input_name = "Assets/1/20230209_183057.jpg"
@@ -66,3 +66,4 @@ if __name__ == '__main__':
         top_color_rgb = df_color.iloc[1]['rgb']
 
     print(top_color_rgb, rgb_to_color_name(top_color_rgb))
+'''

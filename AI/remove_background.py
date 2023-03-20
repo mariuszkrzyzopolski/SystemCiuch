@@ -189,7 +189,7 @@ def cv2_remove_backgound(img: np.ndarray):
     result[np.where((result == [0, 0, 0]).all(axis=2))] = [255, 255, 255]
     return result
 
-
+'''
 if __name__ == '__main__':
     """
     Simple test to check how work remove_backgound()
@@ -230,3 +230,4 @@ if __name__ == '__main__':
 
     if cv2.waitKey(0) == 27:
         cv2.destroyAllWindows()
+'''

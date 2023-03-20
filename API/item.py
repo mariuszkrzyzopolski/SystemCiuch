@@ -17,11 +17,11 @@ router = APIRouter()
 
 @router.post("/")
 def post_item(
-        request: Request,
-        type: str = Form(...),
-        description: str = Form(None),
-        tags: List[str] = Form(...),
-        image: UploadFile = File(...)
+    request: Request,
+    type: str = Form(...),
+    description: str = Form(None),
+    tags: List[str] = Form(...),
+    image: UploadFile = File(...)
 ):
     with Session(database.conn) as session:
         extension = image.filename.split(".")[-1] in ("jpg", "jpeg", "png")
