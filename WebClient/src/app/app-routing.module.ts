@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ClothesPreviewComponent } from 'src/app/pages/clothes-preview/clothes-preview.component';
+import { AuthGuard } from './authService/auth-guard';
 import { AddClothesComponent } from './pages/add-clothes/add-clothes.component';
 import { CreateSetComponent } from './pages/create-set/create-set.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -12,16 +13,16 @@ import { WardrobeConnectionComponent } from './pages/wardrobe-connection/wardrob
 
 
 const routes: Routes = [
-  {path:'sign-up', component:SignUpComponent},
-  {path:'login', component:LoginComponent},
-  { path: '', component: HomeComponent },
-  {path: 'add-clothes', component:AddClothesComponent },
-  { path: 'clothes-preview', component: ClothesPreviewComponent },
-  { path: 'create-set', component: CreateSetComponent},
-  { path: 'preview-sets', component: PreviewSetsComponent},
-  { path: 'wardrobe-connection', component: WardrobeConnectionComponent  },
-  { path: 'settings', component: SettingsComponent },
- 
+  { path: 'sign-up', component: SignUpComponent },
+  { path: 'login', component: LoginComponent },
+  { path: '', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'add-clothes', component: AddClothesComponent, canActivate: [AuthGuard] },
+  { path: 'clothes-preview', component: ClothesPreviewComponent, canActivate: [AuthGuard] },
+  { path: 'create-set', component: CreateSetComponent, canActivate: [AuthGuard] },
+  { path: 'preview-sets', component: PreviewSetsComponent, canActivate: [AuthGuard] },
+  { path: 'wardrobe-connection', component: WardrobeConnectionComponent, canActivate: [AuthGuard] },
+  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
+
 ];
 
 @NgModule({
@@ -29,5 +30,5 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule {
-  
- }
+
+}

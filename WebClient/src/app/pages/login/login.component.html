@@ -7,25 +7,16 @@
                     formControlName="email" />
                 <input type="password" class="block border border-grey-light w-full p-3 rounded mb-4"
                     placeholder="Hasło" formControlName="password" />
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <input id="remember-me" name="remember-me" type="checkbox"
-                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
-                        <label for="remember-me" class="ml-2 block text-sm text-gray-900">Zapamiętaj</label>
-                    </div>
-                    <div class="text-sm">
-                        <a href="..." class="font-medium text-indigo-600 hover:text-indigo-500">Nie pamiętam hasła</a>
-                    </div>
-                </div>
-                <button type="submit" [disabled]="!loginForm.valid"   [ngClass]="{'bg-green-300': !loginForm.valid, 'bg-green-500' : loginForm.valid}"
+                <button type="submit" [disabled]="!loginForm.valid"
+                    [ngClass]="{'bg-green-300': !loginForm.valid, 'bg-green-500' : loginForm.valid}"
                     class="w-full text-center py-3 rounded text-white hover:bg-green-dark focus:outline-none my-1">Zaloguj
                     się</button>
             </div>
             <div class="text-grey-dark mt-6">
                 Nie masz konta?
-                <button (click)="onRegister()" class="no-underline border-b border-blue text-blue">
-                    Zarejestruj się
-                </button>.
+                    <button (click)="onRegister()" class="no-underline border-b border-blue text-blue">
+                        Zarejestruj się
+                    </button>.
             </div>
         </div>
     </div>

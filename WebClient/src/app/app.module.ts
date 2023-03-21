@@ -14,13 +14,12 @@ import { CreateSetComponent } from './pages/create-set/create-set.component';
 import { PreviewSetsComponent } from './pages/preview-sets/preview-sets.component';
 import { SwiperModule } from "swiper/angular";
 import { ReactiveFormsModule } from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { LoginComponent } from './pages/login/login.component';
-
-
-
-
+import { AuthService} from './authService/auth-service.component';
+import { AuthInterceptor } from './auth-interceptor/auth-interceptor';
+import { AuthGuard } from './authService/auth-guard';
 
 @NgModule({
   declarations: [
@@ -36,16 +35,21 @@ import { LoginComponent } from './pages/login/login.component';
     SettingsComponent,
     PreviewSetsComponent,
     SignUpComponent,
-    LoginComponent
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     SwiperModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true,
+  },
+    AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
