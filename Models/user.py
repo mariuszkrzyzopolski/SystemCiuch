@@ -7,7 +7,7 @@ from API.database import Base
 
 
 class User(Base):
-    __tablename__ = 'User'
+    __tablename__ = "User"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     mail: Mapped[str] = mapped_column()

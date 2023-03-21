@@ -12,7 +12,7 @@ from API.database import DB, get_database
 from Models.user import User as Model_User
 from Validators.user import User
 
-sys.path.append('../')
+sys.path.append("../")
 
 conn = get_database()
 database = DB(conn)
@@ -22,7 +22,11 @@ router = APIRouter()
 @router.post("/login")
 def user_login(request: Request, mail: str, password: str):
     with Session(database.conn) as session:
-        data = session.query(Model_User).filter(Model_User.mail == mail, Model_User.password == password).first()
+        data = (
+            session.query(Model_User)
+            .filter(Model_User.mail == mail, Model_User.password == password)
+            .first()
+        )
         if data is None:
             raise HTTPException(status_code=404, detail="User not found")
         elif data.password == password:
@@ -35,7 +39,6 @@ def user_login(request: Request, mail: str, password: str):
             )
             return {"token": jwt_payload, "expiresIn": exp}
         else:
-
             raise HTTPException(status_code=401, detail="Incorrect password")
 
 

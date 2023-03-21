@@ -9,7 +9,7 @@ from Models.collection import Collection
 from Models.user import User as Model_User
 from Models.wardrobe import Wardrobe
 
-sys.path.append('../')
+sys.path.append("../")
 conn = get_database()
 database = DB(conn)
 router = APIRouter()
@@ -33,7 +33,9 @@ def register_wardrobe(request: Request):
         new_wardrobe = Wardrobe(user_id=request.session["user"])
         session.add(new_wardrobe)
         session.commit()
-        new_collection = Collection(id_wardrobe=new_wardrobe.id, id_user=request.session["user"])
+        new_collection = Collection(
+            id_wardrobe=new_wardrobe.id, id_user=request.session["user"]
+        )
         session.add(new_collection)
         session.commit()
         session.refresh(new_wardrobe)

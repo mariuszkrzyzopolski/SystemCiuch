@@ -5,7 +5,7 @@ Base = declarative_base()
 
 
 def get_database():
-    return create_engine('sqlite:///sql.db')
+    return create_engine("sqlite:///sql.db")
 
 
 class DB:

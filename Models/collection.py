@@ -8,7 +8,7 @@ from Models.item import Item
 
 
 class Collection(Base):
-    __tablename__ = 'Collection'
+    __tablename__ = "Collection"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     items: Mapped[List[Item]] = relationship(back_populates="collection")

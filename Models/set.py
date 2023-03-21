@@ -5,7 +5,7 @@ from API.database import Base
 
 
 class Set(Base):
-    __tablename__ = 'Set'
+    __tablename__ = "Set"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     top: Mapped[int] = ForeignKey("Item.id")

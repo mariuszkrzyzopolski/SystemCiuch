@@ -7,7 +7,7 @@ from API.database import Base
 
 
 class Wardrobe(Base):
-    __tablename__ = 'Wardrobe'
+    __tablename__ = "Wardrobe"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("User.id"))

@@ -8,7 +8,7 @@ from API.database import Base
 
 
 class Item(Base):
-    __tablename__ = 'Item'
+    __tablename__ = "Item"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     type: Mapped[str] = mapped_column()

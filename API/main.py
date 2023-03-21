@@ -32,7 +32,7 @@ app.add_middleware(
 )
 app.add_middleware(SessionMiddleware, secret_key=random.random())
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     conn = get_database()
     database = DB(conn)
     database.initialize_db()
