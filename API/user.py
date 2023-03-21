@@ -31,12 +31,10 @@ def user_login(request: Request, mail: str, password: str):
             raise HTTPException(status_code=404, detail="User not found")
         elif data.password == password:
             request.session["user"] = data.id
-            exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=15)
-            jwt_payload = jwt.encode(
-                {"exp": exp,
-                 "sub": data.id},
-                "secret"
+            exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(
+                minutes=15
             )
+            jwt_payload = jwt.encode({"exp": exp, "sub": data.id}, "secret")
             return {"token": jwt_payload, "expiresIn": exp}
         else:
             raise HTTPException(status_code=401, detail="Incorrect password")
@@ -55,28 +53,23 @@ def user_register(request: Request, user: User):
         session.commit()
         session.refresh(new_user)
         request.session["user"] = new_user.id
-        exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=15)
-        jwt_payload = jwt.encode(
-            {"exp": exp,
-             "sub": new_user.id},
-            "secret"
+        exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(
+            minutes=15
         )
+        jwt_payload = jwt.encode({"exp": exp, "sub": new_user.id}, "secret")
         return {"token": jwt_payload, "expiresIn": exp}
 
 
 @router.post("/refresh")
 def refresh_token(request: Request):
     try:
-        exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=15)
-        jwt_payload = jwt.encode(
-            {"exp": exp,
-             "sub": request.session["user"]},
-            "secret"
+        exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(
+            minutes=15
         )
+        jwt_payload = jwt.encode({"exp": exp, "sub": request.session["user"]}, "secret")
         return {"token": jwt_payload, "expiresIn": exp}
     except AuthenticationError:
         raise HTTPException(status_code=403, detail="Invalid token!")
-
 
 
 @router.post("/logout")
