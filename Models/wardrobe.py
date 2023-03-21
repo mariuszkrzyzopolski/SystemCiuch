@@ -1,8 +1,10 @@
 from typing import Optional
 
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import relationship, Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column
+
 from API.database import Base
+
 
 class Wardrobe(Base):
     __tablename__ = 'Wardrobe'

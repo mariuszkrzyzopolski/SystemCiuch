@@ -1,22 +1,23 @@
-import sys
 import datetime
+import sys
 
+import jwt
+from fastapi import APIRouter, HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from starlette.authentication import AuthenticationError
 from starlette.requests import Request
 
-from API.database import get_database, DB
-import jwt
+from API.database import DB, get_database
+from Models.user import User as Model_User
+from Validators.user import User
 
 sys.path.append('../')
-from Validators.user import User
-from Models.user import User as Model_User
-from fastapi import APIRouter, HTTPException
 
 conn = get_database()
 database = DB(conn)
 router = APIRouter()
+
 
 @router.post("/login")
 def user_login(request: Request, mail: str, password: str):
@@ -36,6 +37,7 @@ def user_login(request: Request, mail: str, password: str):
         else:
 
             raise HTTPException(status_code=401, detail="Incorrect password")
+
 
 @router.post("/register")
 def user_register(request: Request, user: User):
@@ -57,6 +59,7 @@ def user_register(request: Request, user: User):
             "secret"
         )
         return {"token": jwt_payload, "expiresIn": exp}
+
 
 @router.post("/refresh")
 def refresh_token(request: Request):

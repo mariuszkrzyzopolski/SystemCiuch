@@ -17,19 +17,23 @@ jobs:
         uses: py-actions/flake8@v2
         with:
           path: "AI"
+          max-line-length: "120"
           plugins: "flake8-black flake8-simplify flake8-isort"
       - name: API style
         uses: py-actions/flake8@v2
         with:
           path: "API"
+          max-line-length: "120"
           plugins: "flake8-black flake8-simplify flake8-fastapi flake8-isort"
       - name: Model style
         uses: py-actions/flake8@v2
         with:
           path: "Models"
+          max-line-length: "120"
           plugins: "flake8-black flake8-simplify flake8-isort"
       - name: Validator style
         uses: py-actions/flake8@v2
         with:
           path: "Validators"
+          max-line-length: "120"
           plugins: "flake8-black flake8-simplify flake8-isort"

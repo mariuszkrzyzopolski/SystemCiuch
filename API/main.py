@@ -1,12 +1,13 @@
 import random
 
+import ai_model
 import uvicorn as uvicorn
 from fastapi import FastAPI
-from starlette.middleware.sessions import SessionMiddleware
 from fastapi.middleware.cors import CORSMiddleware
-import ai_model
-from API import user, collection, wardrobe, item
-from API.database import get_database, DB
+from starlette.middleware.sessions import SessionMiddleware
+
+from API import collection, item, user, wardrobe
+from API.database import DB, get_database
 
 app = FastAPI()
 

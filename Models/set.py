@@ -1,7 +1,8 @@
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import mapped_column, Mapped, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 
 from API.database import Base
+
 
 class Set(Base):
     __tablename__ = 'Set'
