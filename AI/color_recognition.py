@@ -2,16 +2,8 @@ import extcolors
 import pandas as pd
 import cv2
 
-from PIL import Image
-
 import AI.remove_background as rmbg
-
-def resize_img(input_image):
-    output_width = 512
-    wpercent = (output_width / float(img.size[0]))
-    output_hight = int((float(img.size[1]) * float(wpercent)))
-    ret = input_image.resize((output_width, output_hight), Image.Resampling.BICUBIC)
-    return ret
+import Common.image_functions as fimg
 
 
 def color_to_df(image):
@@ -57,17 +49,15 @@ def rgb_to_color_name(code):
 
     return closest_color
 
-
+'''
 if __name__ == '__main__':
     input_name = 'example.jpg'
     input_name = "Assets/1/20230209_183057.jpg"
 
     img = cv2.imread(input_name)
-    img = rmbg.resize_cv(img)
+    img = fimg.resize_cv(img)
     img = rmbg.cv2_remove_backgound(img)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    pil_img = Image.fromarray(img)
-    pil_img = pil_img.convert('RGB')
+    pil_img = fimg.cv2_to_pil(img)
     df_color = color_to_df(pil_img)
 
     if tuple(df_color['rgb'].iloc[0]) != (255, 255, 255):
@@ -76,3 +66,4 @@ if __name__ == '__main__':
         top_color_rgb = df_color.iloc[1]['rgb']
 
     print(top_color_rgb, rgb_to_color_name(top_color_rgb))
+'''

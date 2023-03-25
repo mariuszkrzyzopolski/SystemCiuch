@@ -5,6 +5,11 @@ from tensorflow import keras
 import matplotlib.pyplot as plt
 import cv2
 import numpy as np
+from PIL import Image, ImageOps
+
+import AI.remove_background as rmbg
+import Common.image_functions as fimg
+
 
 def train_and_save_model():
     tf.keras.utils.disable_interactive_logging()
@@ -74,16 +79,15 @@ def train_and_save_model():
     test_loss, test_acc = model_smaller.evaluate(test_images, test_labels, verbose=2)
     print('\nTest accuracy:', test_acc)
 
-    model.save("Assets/typer")
+    model.save("Models")
 
 
-def recognize_type(img_path):
-    model = keras.models.load_model("Assets/typer")
-    img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
-    img = cv2.resize(img, (28, 28), interpolation = cv2.INTER_AREA)
+def recognize_type(img):
+    model = keras.models.load_model("Models")
+    img = cv2.resize(img, (28, 28), interpolation=cv2.INTER_AREA)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img = cv2.bitwise_not(img)
     img = img / 255
-    cv2.imshow("image", img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     img = img[np.newaxis]
@@ -92,11 +96,16 @@ def recognize_type(img_path):
     class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
                    'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
     print("Rozpoznana klasa:", class_names[np.argmax(result)])
-    return "t-shirt"
+    return class_names[np.argmax(result)]
 
+"""
 if __name__ == '__main__':
-    #train_and_save_model()
-    recognize_type("Assets/Images/product-17996.jpg")
-    recognize_type("Assets/Images/product-17997.jpg")
-    recognize_type("Assets/Images/ant-tshirt-ant-blu-m.jpg")
-
+    # train_and_save_model()
+    img = Image.open("Assets/Images/product-17997.jpg")
+    img = ImageOps.exif_transpose(img)
+    img = fimg.resize_img(img)
+    cv2_img = fimg.pil_to_cv2(img)
+    cv2_img = rmbg.cv2_remove_backgound(cv2_img)
+    cv2.imshow("img", cv2_img)
+    recognize_type(cv2_img)
+"""
