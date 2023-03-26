@@ -39,7 +39,9 @@ def rgb_to_color_name(code):
     closest_color = None
     for color_value, color_name in color_map.items():
         distance = (
-            (color_value[0] - r) ** 2 + (color_value[1] - g) ** 2 + (color_value[2] - b) ** 2
+            (color_value[0] - r) ** 2
+            + (color_value[1] - g) ** 2
+            + (color_value[2] - b) ** 2
         )
         if distance < min_distance:
             min_distance = distance
