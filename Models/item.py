@@ -18,4 +18,6 @@ class Item(Base):
     # TODO probably need association table to connect set and item table
     set_id: Mapped[Optional[List[int]]] = mapped_column(ForeignKey("Set.id"))
 
-    collection: Mapped["Collection"] = relationship(back_populates="items")
+    collection: Mapped["Collection"] = relationship(  # noqa: F821
+        back_populates="items"
+    )
