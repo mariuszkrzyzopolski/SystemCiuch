@@ -1,18 +1,18 @@
 from typing import List
 
-from fastapi import Form, APIRouter, File, UploadFile
+from fastapi import APIRouter, File, Form, UploadFile
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from starlette.requests import Request
 
 import AI.remove_background as ai
 import Common.image_functions as fimg
-from API.database import get_database, DB
+from API.database import DB, get_database
 from Models.item import Item
-from starlette.requests import Request
 
 conn = get_database()
 database = DB(conn)
-router = APIRouter()
+router = APIRouter(prefix="/item")
 
 
 @router.post("/")
@@ -21,7 +21,7 @@ def post_item(
     type: str = Form(...),
     description: str = Form(None),
     tags: List[str] = Form(...),
-    image: UploadFile = File(...)
+    image: UploadFile = File(...),
 ):
     with Session(database.conn) as session:
         extension = image.filename.split(".")[-1] in ("jpg", "jpeg", "png")
@@ -34,8 +34,13 @@ def post_item(
         cv2_img = ai.cv2_remove_backgound(cv2_img)
         image = fimg.cv2_to_pil(cv2_img)
 
-        item = Item(type=type, description=description, tags=','.join(tags), image=image.filename,
-                    collection_id=request.session["collection"])
+        item = Item(
+            type=type,
+            description=description,
+            tags=",".join(tags),
+            image=image.filename,
+            collection_id=request.session["collection"],
+        )
         session.add(item)
         session.commit()
         session.refresh(item)

@@ -1,9 +1,5 @@
 import extcolors
 import pandas as pd
-import cv2
-
-import AI.remove_background as rmbg
-import Common.image_functions as fimg
 
 
 def color_to_df(image):
@@ -13,7 +9,7 @@ def color_to_df(image):
     for color in colors:
         df_colors.append(list(color[0]))
         df_occurrence.append(color[1])
-    df = pd.DataFrame(zip(df_colors, df_occurrence), columns=['rgb', 'occurrence'])
+    df = pd.DataFrame(zip(df_colors, df_occurrence), columns=["rgb", "occurrence"])
     return df
 
 
@@ -35,21 +31,26 @@ def rgb_to_color_name(code):
         (128, 0, 128): "Purpurowy",
         (0, 128, 128): "Błękitny",
         (245, 245, 220): "Ecru",
-        (115, 59, 36): "Brązowy"
+        (115, 59, 36): "Brązowy",
     }
 
     r, g, b = code
     min_distance = float("inf")
     closest_color = None
     for color_value, color_name in color_map.items():
-        distance = (color_value[0] - r) ** 2 + (color_value[1] - g) ** 2 + (color_value[2] - b) ** 2
+        distance = (
+            (color_value[0] - r) ** 2
+            + (color_value[1] - g) ** 2
+            + (color_value[2] - b) ** 2
+        )
         if distance < min_distance:
             min_distance = distance
             closest_color = color_name
 
     return closest_color
 
-'''
+
+"""
 if __name__ == '__main__':
     input_name = 'example.jpg'
     input_name = "Assets/1/20230209_183057.jpg"
@@ -66,4 +67,4 @@ if __name__ == '__main__':
         top_color_rgb = df_color.iloc[1]['rgb']
 
     print(top_color_rgb, rgb_to_color_name(top_color_rgb))
-'''
+"""

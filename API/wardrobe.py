@@ -1,26 +1,30 @@
 import sys
+
+from fastapi import APIRouter
 from sqlalchemy.orm import Session
 from starlette.requests import Request
 
-from API.database import get_database, DB
+from API.database import DB, get_database
 from Models.collection import Collection
+from Models.user import User as Model_User
 from Models.wardrobe import Wardrobe
 
-sys.path.append('../')
-from Models.user import User as Model_User
-from fastapi import APIRouter
-
+sys.path.append("../")
 conn = get_database()
 database = DB(conn)
-router = APIRouter()
+router = APIRouter(prefix="/wardrobe")
+
+
 @router.post("/connect")
 def user_connect(request: Request, wadrobe_id: int):
     return {}
+
 
 @router.post("/disconnect")
 def user_disconnect(request: Request):
     del request.session["wardrobe"]
     return {"success": True}
+
 
 @router.post("/register")
 def register_wardrobe(request: Request):
@@ -29,7 +33,9 @@ def register_wardrobe(request: Request):
         new_wardrobe = Wardrobe(user_id=request.session["user"])
         session.add(new_wardrobe)
         session.commit()
-        new_collection = Collection(id_wardrobe=new_wardrobe.id, id_user=request.session["user"])
+        new_collection = Collection(
+            id_wardrobe=new_wardrobe.id, id_user=request.session["user"]
+        )
         session.add(new_collection)
         session.commit()
         session.refresh(new_wardrobe)

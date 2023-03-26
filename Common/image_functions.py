@@ -1,13 +1,14 @@
-import numpy as np
-import cv2
 from io import BytesIO
-from PIL import Image, ImageOps
+
+import cv2
+import numpy as np
 from fastapi import File, UploadFile
+from PIL import Image, ImageOps
 
 
 def resize_img(input_image):
     output_width = 512
-    wpercent = (output_width / float(input_image.size[0]))
+    wpercent = output_width / float(input_image.size[0])
     output_hight = int((float(input_image.size[1]) * float(wpercent)))
     ret = input_image.resize((output_width, output_hight), Image.Resampling.BICUBIC)
     return ret
@@ -20,7 +21,7 @@ def resize_cv(img: np.ndarray):
     :return:
     """
     output_width = 512
-    wpercent = (output_width / float(len(img)))
+    wpercent = output_width / float(len(img))
     output_hight = int((float(len(img[1])) * float(wpercent)))
     return cv2.resize(img, (output_hight, output_width), interpolation=cv2.INTER_AREA)
 
@@ -37,7 +38,7 @@ def pil_to_cv2(pil_image):
 def cv2_to_pil(cv2_image):
     cv2_image = cv2.cvtColor(cv2_image, cv2.COLOR_BGR2RGB)
     pil_img = Image.fromarray(cv2_image)
-    return pil_img.convert('RGB')
+    return pil_img.convert("RGB")
 
 
 def api_to_pil(updated_image: UploadFile = File(...)):
