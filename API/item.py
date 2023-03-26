@@ -12,7 +12,7 @@ from starlette.requests import Request
 
 conn = get_database()
 database = DB(conn)
-router = APIRouter()
+router = APIRouter(prefix="/item")
 
 
 @router.post("/")

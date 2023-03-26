@@ -10,7 +10,7 @@ from Models.set import Set
 
 conn = get_database()
 database = DB(conn)
-router = APIRouter()
+router = APIRouter(prefix="/collection")
 
 
 # TODO Patch for sets and items

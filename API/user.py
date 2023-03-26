@@ -16,7 +16,7 @@ sys.path.append("../")
 
 conn = get_database()
 database = DB(conn)
-router = APIRouter()
+router = APIRouter(prefix="/user")
 
 
 @router.post("/login")

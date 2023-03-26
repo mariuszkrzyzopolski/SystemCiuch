@@ -12,7 +12,7 @@ from Models.wardrobe import Wardrobe
 sys.path.append("../")
 conn = get_database()
 database = DB(conn)
-router = APIRouter()
+router = APIRouter(prefix="/wardrobe")
 
 
 @router.post("/connect")

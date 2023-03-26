@@ -18,11 +18,12 @@ origins = [
     "http://localhost:4200",
 ]
 
-app.include_router(collection.router, prefix="/collection", tags=["collection"])
-app.include_router(item.router, prefix="/item", tags=["item"])
-app.include_router(wardrobe.router, prefix="/wardrobe", tags=["wardrobe"])
-app.include_router(user.router, prefix="/user", tags=["user"])
-app.include_router(ai_model.router, prefix="/ai", tags=["ai"])
+app.include_router(collection.router, tags=["collection"])
+app.include_router(item.router, tags=["item"])
+app.include_router(wardrobe.router, tags=["wardrobe"])
+app.include_router(user.router, tags=["user"])
+app.include_router(ai_model.router, tags=["ai"])
+app.add_middleware(SessionMiddleware, secret_key=random.random())
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -30,7 +31,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.add_middleware(SessionMiddleware, secret_key=random.random())
 
 if __name__ == "__main__":
     conn = get_database()

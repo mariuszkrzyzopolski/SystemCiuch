@@ -1,6 +1,5 @@
 from typing import List, Optional
 
-from collection import Collection
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
