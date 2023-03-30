@@ -16,5 +16,4 @@ export class HomeComponent {
     { name: 'Połącz z szafą', route:'/wardrobe-connection'},
     { name: 'Ustawienia', route: '/settings' }]
     
-
 }

@@ -1,16 +1,19 @@
 from typing import List
 
-from fastapi import Form, APIRouter, File, UploadFile
+from fastapi import APIRouter, File, Form, UploadFile
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-
-from API.database import get_database, DB
-from Models.item import Item
 from starlette.requests import Request
+
+import AI.remove_background as ai
+import Common.image_functions as fimg
+from API.database import DB, get_database
+from Models.item import Item
 
 conn = get_database()
 database = DB(conn)
-router = APIRouter()
+router = APIRouter(prefix="/item")
+
 
 @router.post("/")
 def post_item(
@@ -18,15 +21,31 @@ def post_item(
     type: str = Form(...),
     description: str = Form(None),
     tags: List[str] = Form(...),
-    image: UploadFile = File(...)
+    image: UploadFile = File(...),
 ):
     with Session(database.conn) as session:
-        item = Item(type=type, description=description, tags=','.join(tags), image=image.filename,
-                    collection_id=request.session["collection"])
+        extension = image.filename.split(".")[-1] in ("jpg", "jpeg", "png")
+        if not extension:
+            return "Image must be jpg or png format!"
+        if extension == "png":
+            image = fimg.png_to_jpg(image)
+        cv2_img = fimg.api_to_cv2(image)
+        cv2_img = fimg.resize_cv(cv2_img)
+        cv2_img = ai.cv2_remove_backgound(cv2_img)
+        image = fimg.cv2_to_pil(cv2_img)
+
+        item = Item(
+            type=type,
+            description=description,
+            tags=",".join(tags),
+            image=image.filename,
+            collection_id=request.session["collection"],
+        )
         session.add(item)
         session.commit()
         session.refresh(item)
         return item
+
 
 @router.get("/items")
 def get_items():
@@ -34,6 +53,8 @@ def get_items():
         q = select(Item)
         data = session.execute(q).mappings().all()
         return data
+
+
 @router.get("/{item_id}")
 def get_item(item_id):
     with Session(database.conn) as session:

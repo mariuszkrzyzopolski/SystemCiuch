@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
 
 
 def analyze_image(image: np.ndarray):
@@ -42,7 +41,7 @@ def analyze_layer(layer: np.ndarray):
     sums = np.zeros(len(unique_values))
     value_counts = {i: 0 for i in range(256)}
     for i, value in enumerate(unique_values):
-        mask = (layer == value)
+        mask = layer == value
         sums[i] = np.sum(mask)
         value_counts[value] = int(sums[i])
 
@@ -62,7 +61,9 @@ def find_bg_color(myimage: np.ndarray):
     weigths = 0
     for y in range(len(myimage)):
         for x in range(len(myimage[y])):
-            weigth = euclidean_dist(x, y, int(len(myimage) / 2), int(len(myimage[y]) / 2))
+            weigth = euclidean_dist(
+                x, y, int(len(myimage) / 2), int(len(myimage[y]) / 2)
+            )
             result = result + myimage[y, x] * weigth
             weigths += weigth
     result = result / weigths
@@ -104,7 +105,9 @@ def find_peak(dictionary: dict, peak_center: int):
         stop = peak_center + r
 
         keys.update({r: peak_center})
-        points.update({r: sum(value for k, value in dictionary.items() if start <= k <= stop)})
+        points.update(
+            {r: sum(value for k, value in dictionary.items() if start <= k <= stop)}
+        )
         if points.get(r) / (stop - start) > 3 * (points.get(r) - points.get(r - 1)):
             break
     pixel_counter = max(points.values())
@@ -130,21 +133,38 @@ def find_peaks(dictionary: dict, dimension: str, background: list):
     bg_start, bg_center, bg_stop, bg_pixel_counter = find_peak(dictionary, bg_peak)
 
     # Find foreground peak
-    dictionary_without_background = {key: 0 if bg_start <= key <= bg_stop else dictionary[key] for key in dictionary}
-    second_peak_center = get_key_from_value(dictionary_without_background, max(dictionary_without_background.values()))
-    fg_start, fg_center, fg_stop, fg_pixel_counter = find_peak(dictionary_without_background, second_peak_center)
+    dictionary_without_background = {
+        key: 0 if bg_start <= key <= bg_stop else dictionary[key] for key in dictionary
+    }
+    second_peak_center = get_key_from_value(
+        dictionary_without_background, max(dictionary_without_background.values())
+    )
+    fg_start, fg_center, fg_stop, fg_pixel_counter = find_peak(
+        dictionary_without_background, second_peak_center
+    )
 
     # Predicting layer importance
     if bg_pixel_counter < fg_pixel_counter:
-        power = (bg_pixel_counter * (bg_stop - bg_start + fg_stop - fg_start))
+        power = bg_pixel_counter * (bg_stop - bg_start + fg_stop - fg_start)
     else:
-        power = (fg_pixel_counter * (bg_stop - bg_start + fg_stop - fg_start))
+        power = fg_pixel_counter * (bg_stop - bg_start + fg_stop - fg_start)
 
+    # Finding best cut-off point
     if bg_center < fg_center:
         cut_off_point = int(abs((fg_start + bg_stop) / 2))
-        return cut_off_point, cv2.THRESH_BINARY, power
     else:
         cut_off_point = int(abs((fg_stop + bg_start) / 2))
+
+    # Selecting a true background peak center
+    if abs(bg_peak - bg_center) < abs(bg_peak - fg_center):
+        correct_bg_peak = bg_center
+    else:
+        correct_bg_peak = fg_center
+
+    # Choose direction of the cut
+    if correct_bg_peak < bg_peak:
+        return cut_off_point, cv2.THRESH_BINARY, power
+    else:
         return cut_off_point, cv2.THRESH_BINARY_INV, power
 
 
@@ -159,18 +179,6 @@ def get_key_from_value(d: dict, val: int):
     if keys:
         return keys[0]
     return None
-
-
-def resize_cv(img: np.ndarray):
-    """
-    Simple function to resize image to 512px width using openCV.
-    :param img:
-    :return:
-    """
-    output_width = 512
-    wpercent = (output_width / float(len(img)))
-    output_hight = int((float(len(img[1])) * float(wpercent)))
-    return cv2.resize(img, (output_hight, output_width), interpolation=cv2.INTER_AREA)
 
 
 def cv2_remove_backgound(img: np.ndarray):
@@ -190,13 +198,14 @@ def cv2_remove_backgound(img: np.ndarray):
     return result
 
 
+'''
 if __name__ == '__main__':
     """
     Simple test to check how work remove_backgound()
     """
     # Read & resize image
     img = cv2.imread('Assets/1/20230209_191911.jpg')
-    img = resize_cv(img)
+    img = fimg.resize_cv(img)
     img_without_bg = cv2_remove_backgound(img)
     cv2.imshow("img", img)
     cv2.imshow("img_without_background", img_without_bg)
@@ -206,7 +215,7 @@ if __name__ == '__main__':
         cv2.destroyAllWindows()
 
         img = cv2.imread('Assets/1/20230209_192338.jpg')
-        img = resize_cv(img)
+        img = fimg.resize_cv(img)
         img_without_bg = cv2_remove_backgound(img)
         cv2.imshow("img", img)
         cv2.imshow("img_without_background", img_without_bg)
@@ -214,7 +223,7 @@ if __name__ == '__main__':
     if cv2.waitKey(0) == 27:
         cv2.destroyAllWindows()
         img = cv2.imread('Assets/1/20230209_192954.jpg')
-        img = resize_cv(img)
+        img = fimg.resize_cv(img)
         img_without_bg = cv2_remove_backgound(img)
         cv2.imshow("img", img)
         cv2.imshow("img_without_background", img_without_bg)
@@ -223,10 +232,11 @@ if __name__ == '__main__':
         cv2.destroyAllWindows()
 
         img = cv2.imread('Assets/1/20230209_191819.jpg')
-        img = resize_cv(img)
+        img = fimg.resize_cv(img)
         img_without_bg = cv2_remove_backgound(img)
         cv2.imshow("img", img)
         cv2.imshow("img_without_background", img_without_bg)
 
     if cv2.waitKey(0) == 27:
         cv2.destroyAllWindows()
+'''

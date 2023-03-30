@@ -1,16 +1,17 @@
 from fastapi import APIRouter
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from starlette.requests import Request
 
-from API.database import get_database, DB
+from API.database import DB, get_database
 from Models.collection import Collection
 from Models.item import Item
 from Models.set import Set
-from starlette.requests import Request
 
 conn = get_database()
 database = DB(conn)
-router = APIRouter()
+router = APIRouter(prefix="/collection")
+
 
 # TODO Patch for sets and items
 @router.post("/set")
@@ -36,12 +37,14 @@ def get_set(set_id):
         data = session.execute(q).mappings().first()
         return data
 
+
 @router.get("/sets")
 def get_sets():
     with Session(database.conn) as session:
         q = select(Set)
         data = session.execute(q).mappings().all()
         return data
+
 
 @router.get("/")
 def get_collection(request: Request):

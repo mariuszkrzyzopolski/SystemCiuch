@@ -43,8 +43,9 @@ export class LoginComponent {
   }
 
   onRegister() {
-    
+    this.router.navigate([ '/sign-up' ])
   }
+  
 }
 
 

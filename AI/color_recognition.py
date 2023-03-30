@@ -1,17 +1,5 @@
 import extcolors
 import pandas as pd
-import cv2
-
-from PIL import Image
-
-import AI.remove_background as rmbg
-
-def resize_img(input_image):
-    output_width = 512
-    wpercent = (output_width / float(img.size[0]))
-    output_hight = int((float(img.size[1]) * float(wpercent)))
-    ret = input_image.resize((output_width, output_hight), Image.Resampling.BICUBIC)
-    return ret
 
 
 def color_to_df(image):
@@ -21,7 +9,7 @@ def color_to_df(image):
     for color in colors:
         df_colors.append(list(color[0]))
         df_occurrence.append(color[1])
-    df = pd.DataFrame(zip(df_colors, df_occurrence), columns=['rgb', 'occurrence'])
+    df = pd.DataFrame(zip(df_colors, df_occurrence), columns=["rgb", "occurrence"])
     return df
 
 
@@ -43,14 +31,18 @@ def rgb_to_color_name(code):
         (128, 0, 128): "Purpurowy",
         (0, 128, 128): "Błękitny",
         (245, 245, 220): "Ecru",
-        (115, 59, 36): "Brązowy"
+        (115, 59, 36): "Brązowy",
     }
 
     r, g, b = code
     min_distance = float("inf")
     closest_color = None
     for color_value, color_name in color_map.items():
-        distance = (color_value[0] - r) ** 2 + (color_value[1] - g) ** 2 + (color_value[2] - b) ** 2
+        distance = (
+            (color_value[0] - r) ** 2
+            + (color_value[1] - g) ** 2
+            + (color_value[2] - b) ** 2
+        )
         if distance < min_distance:
             min_distance = distance
             closest_color = color_name
@@ -58,16 +50,15 @@ def rgb_to_color_name(code):
     return closest_color
 
 
+"""
 if __name__ == '__main__':
     input_name = 'example.jpg'
     input_name = "Assets/1/20230209_183057.jpg"
 
     img = cv2.imread(input_name)
-    img = rmbg.resize_cv(img)
+    img = fimg.resize_cv(img)
     img = rmbg.cv2_remove_backgound(img)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    pil_img = Image.fromarray(img)
-    pil_img = pil_img.convert('RGB')
+    pil_img = fimg.cv2_to_pil(img)
     df_color = color_to_df(pil_img)
 
     if tuple(df_color['rgb'].iloc[0]) != (255, 255, 255):
@@ -76,3 +67,4 @@ if __name__ == '__main__':
         top_color_rgb = df_color.iloc[1]['rgb']
 
     print(top_color_rgb, rgb_to_color_name(top_color_rgb))
+"""
