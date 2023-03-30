@@ -6,3 +6,8 @@ class User(BaseModel):
     city: str
     password: str
     repeated_password: str
+
+
+class UserLogin(BaseModel):
+    mail: str
+    password: str
