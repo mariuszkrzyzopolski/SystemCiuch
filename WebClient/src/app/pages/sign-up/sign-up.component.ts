@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { SignUp } from '../../model/SignUp';
 
 @Component({
@@ -13,7 +14,9 @@ import { SignUp } from '../../model/SignUp';
 export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
   loginForm: FormGroup;
-  constructor(private http: HttpClient) { }
+  signupSuccess = false;
+  signupFail = false;
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
     this.signUpForm = new FormGroup({
@@ -29,10 +32,25 @@ export class SignUpComponent implements OnInit {
     this.submitForm(this.signUpForm.value);
   }
 
+  login(){
+    this.router.navigate(['/login']);
+  }
+
+  close(){
+    this.signupSuccess = false;
+    this.signupFail = false;
+  } 
+
   submitForm(signUp: SignUp) {
     this.http.post('http://127.0.0.1:8000/user/register', signUp).subscribe(
-      (response: any) => console.log(response.token),
-      (error) => console.log(error.error.detail)
+      (response: any) => {
+        if(response.token) {
+          this.signupSuccess = true;
+        }
+      },
+      (error) => {
+        this.signupFail = true;
+      }
     )
   }
 }

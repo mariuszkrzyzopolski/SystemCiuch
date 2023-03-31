@@ -1,6 +1,12 @@
-<div class="grid-template-rows: repeat(2, minmax(0, 1fr))">
+
+<section class="container max-w-screen-lg mx-auto pb-10 flex">
+      <img class="mx-auto object-cover h-48 w-96 items-center" src="/assets/images/logo.jpg" alt="">
+</section>
+
+<div class="mx-auto grid-template-rows: repeat(2, minmax(0, 1fr))">
       <div>
-            <div class="mt-6 space-y-12 lg:grid lg:grid-cols-2 lg:gap-x-6 lg:space-y-0 py-25">
+            <div class="mx-auto mt-6 space-y-12 lg:grid lg:grid-cols-2 lg:gap-x-6 lg:space-y-0 py-25 align-middle">
+                  
                   <app-menu-choice *ngFor="let item of MenuItems;" [name]="item.name"
                         [route]="item.route"></app-menu-choice>
             </div>
