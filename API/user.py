@@ -32,7 +32,7 @@ def user_login(request: Request, user: UserLogin):
         elif data.password == user.password:
             request.session["user"] = data.id
             exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(
-                minutes=15
+                days=1
             )
             jwt_payload = jwt.encode({"exp": exp, "sub": data.id}, "secret")
             return {"token": jwt_payload, "expiresIn": exp}
@@ -54,7 +54,7 @@ def user_register(request: Request, user: User):
         session.refresh(new_user)
         request.session["user"] = new_user.id
         exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(
-            minutes=15
+            days=1
         )
         jwt_payload = jwt.encode({"exp": exp, "sub": new_user.id}, "secret")
         return {"token": jwt_payload, "expiresIn": exp}
@@ -64,7 +64,7 @@ def user_register(request: Request, user: User):
 def refresh_token(request: Request):
     try:
         exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(
-            minutes=15
+            days=1
         )
         jwt_payload = jwt.encode({"exp": exp, "sub": request.session["user"]}, "secret")
         return {"token": jwt_payload, "expiresIn": exp}
