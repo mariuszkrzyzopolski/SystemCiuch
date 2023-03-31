@@ -76,4 +76,3 @@ def refresh_token(request: Request):
 def logout(request: Request):
     del request.session["user"]
     return {"success": True}
-
