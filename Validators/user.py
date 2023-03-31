@@ -8,6 +8,6 @@ class User(BaseModel):
     repeated_password: str
 
 
-class LoginUser(BaseModel):
+class UserLogin(BaseModel):
     mail: str
     password: str

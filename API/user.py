@@ -10,7 +10,7 @@ from starlette.requests import Request
 
 from API.database import DB, get_database
 from Models.user import User as Model_User
-from Validators.user import User
+from Validators.user import User, UserLogin
 
 sys.path.append("../")
 
@@ -20,16 +20,16 @@ router = APIRouter(prefix="/user")
 
 
 @router.post("/login")
-def user_login(request: Request, mail: str, password: str):
+def user_login(request: Request, user: UserLogin):
     with Session(database.conn) as session:
         data = (
             session.query(Model_User)
-            .filter(Model_User.mail == mail, Model_User.password == password)
+            .filter(Model_User.mail == user.mail, Model_User.password == user.password)
             .first()
         )
         if data is None:
             raise HTTPException(status_code=404, detail="User not found")
-        elif data.password == password:
+        elif data.password == user.password:
             request.session["user"] = data.id
             exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(
                 minutes=15
