@@ -17,7 +17,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { LoginComponent } from './pages/login/login.component';
-import { AuthService} from './authService/auth-service.component';
 import { AuthInterceptor } from './auth-interceptor/auth-interceptor';
 import { AuthGuard } from './authService/auth-guard';
 

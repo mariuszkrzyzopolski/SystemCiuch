@@ -19,7 +19,7 @@ const routes: Routes = [
   { path: 'add-clothes', component: AddClothesComponent, canActivate: [AuthGuard] },
   { path: 'clothes-preview', component: ClothesPreviewComponent, canActivate: [AuthGuard] },
   { path: 'create-set', component: CreateSetComponent, canActivate: [AuthGuard] },
-  { path: 'preview-sets', component: PreviewSetsComponent, canActivate: [AuthGuard] },
+  { path: 'preview-sets', component:PreviewSetsComponent, canActivate: [AuthGuard] },
   { path: 'wardrobe-connection', component: WardrobeConnectionComponent, canActivate: [AuthGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
 

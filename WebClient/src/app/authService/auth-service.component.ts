@@ -27,7 +27,7 @@ export class AuthService {
   }
 
   public isLoggedIn() {
-    return moment().isBefore(this.getExpiration());
+    return localStorage.getItem('id_token');
   }
 
   isLoggedOut() {
