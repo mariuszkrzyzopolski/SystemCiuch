@@ -12,9 +12,8 @@ export class HomeComponent {
     { name: 'Dodaj ubranie', route: '/add-clothes' },
     { name: 'Podgląd ubrań', route: '/clothes-preview' },
     { name: 'Tworzenie zestawu', route: '/create-set' },
-    { name: 'Podgląd zestawów', route: '/prewiew-sets' },
+    { name: 'Podgląd zestawów', route: '/preview-sets' },
     { name: 'Połącz z szafą', route:'/wardrobe-connection'},
     { name: 'Ustawienia', route: '/settings' }]
     
-
 }

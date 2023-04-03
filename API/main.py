@@ -1,10 +1,13 @@
+import random
+
+import ai_model
 import uvicorn as uvicorn
 from fastapi import FastAPI
-import collection
 from fastapi.middleware.cors import CORSMiddleware
-import ai_model
-from API import user
-from API.database import get_database, DB
+from starlette.middleware.sessions import SessionMiddleware
+
+from API import collection, item, user, wardrobe
+from API.database import DB, get_database
 
 app = FastAPI()
 
@@ -15,9 +18,12 @@ origins = [
     "http://localhost:4200",
 ]
 
-app.include_router(collection.router, prefix="/collection", tags=["collection"])
-app.include_router(user.router, prefix="/user", tags=["user"])
-app.include_router(ai_model.router, prefix="/ai", tags=["ai"])
+app.include_router(collection.router, tags=["collection"])
+app.include_router(item.router, tags=["item"])
+app.include_router(wardrobe.router, tags=["wardrobe"])
+app.include_router(user.router, tags=["user"])
+app.include_router(ai_model.router, tags=["ai"])
+app.add_middleware(SessionMiddleware, secret_key=random.random())
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -26,7 +32,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     conn = get_database()
     database = DB(conn)
     database.initialize_db()
