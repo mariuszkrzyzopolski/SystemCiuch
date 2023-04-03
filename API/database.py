@@ -17,5 +17,5 @@ class DB:
         self.conn.close()
 
     def initialize_db(self):
-        Base.metadata.drop_all(self.conn)
+        # Base.metadata.drop_all(self.conn)
         Base.metadata.create_all(self.conn)
