@@ -1,3 +1,4 @@
+import datetime
 from typing import List
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
@@ -60,16 +61,15 @@ def get_collection(request: Request):
 
 @router.post("/item")
 def post_item(
-    request: Request,
-    type: str = Form(...),
-    description: str = Form(None),
-    tags: List[str] = Form(...),
-    image: UploadFile = File(...),
+        request: Request,
+        type: str = Form(...),
+        description: str = Form(None),
+        tags: List[str] = Form(...),
+        image: UploadFile = File(...),
 ):
     with Session(database.conn) as session:
-        extension = image.filename.split(".")[-1] in ("jpg", "jpeg", "png")
-        filename = image.filename
-        if not extension:
+        extension = image.filename.split(".")[-1]
+        if extension not in ("jpg", "jpeg", "png"):
             return HTTPException(
                 status_code=400, detail="Image must be jpg or png format!"
             )
@@ -79,13 +79,15 @@ def post_item(
         cv2_img = fimg.resize_cv(cv2_img)
         cv2_img = ai.cv2_remove_backgound(cv2_img)
         image = fimg.cv2_to_pil(cv2_img)
-        fimg.save_image(image, f"images/{filename}")
+        new_filename = f"images/{request.session['collection']}/" \
+                       f"{datetime.datetime.timestamp(datetime.datetime.now())}.{extension}"
+        fimg.save_image(image, new_filename)
 
         item = Item(
             type=type,
             description=description,
             tags=",".join(tags),
-            image=filename,
+            image=new_filename,
             collection_id=request.session["collection"],
         )
         session.add(item)
