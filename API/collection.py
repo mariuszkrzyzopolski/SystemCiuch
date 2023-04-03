@@ -81,7 +81,7 @@ def post_item(
         image = fimg.cv2_to_pil(cv2_img)
         new_filename = (
             f"images/{request.session['collection']}/"
-            f"{datetime.datetime.timestamp(datetime.datetime.now())}.{extension}"
+            f"{datetime.datetime.timestamp(datetime.datetime.now())}.jpg"
         )
         fimg.save_image(image, new_filename)
 
