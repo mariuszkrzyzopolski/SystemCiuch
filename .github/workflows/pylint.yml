@@ -31,6 +31,12 @@ jobs:
           path: "Models"
           max-line-length: "120"
           plugins: "flake8-black flake8-simplify flake8-isort"
+      - name: Common style
+        uses: py-actions/flake8@v2
+        with:
+          path: "Common"
+          max-line-length: "120"
+          plugins: "flake8-black flake8-simplify flake8-isort"
       - name: Validator style
         uses: py-actions/flake8@v2
         with:

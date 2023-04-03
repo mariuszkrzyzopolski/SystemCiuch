@@ -1,3 +1,4 @@
+import os
 import sys
 
 from fastapi import APIRouter
@@ -47,5 +48,7 @@ def register_wardrobe(request: Request):
         user.id_collection = new_collection.id
         session.commit()
         request.session["collection"] = new_collection.id
+        if not os.path.exists(f"images/{new_collection.id}"):
+            os.makedirs(f"images/{new_collection.id}")
         request.session["wardrobe"] = new_wardrobe.id
         return new_wardrobe
