@@ -61,11 +61,11 @@ def get_collection(request: Request):
 
 @router.post("/item")
 def post_item(
-        request: Request,
-        type: str = Form(...),
-        description: str = Form(None),
-        tags: List[str] = Form(...),
-        image: UploadFile = File(...),
+    request: Request,
+    type: str = Form(...),
+    description: str = Form(None),
+    tags: List[str] = Form(...),
+    image: UploadFile = File(...),
 ):
     with Session(database.conn) as session:
         extension = image.filename.split(".")[-1]
@@ -79,8 +79,10 @@ def post_item(
         cv2_img = fimg.resize_cv(cv2_img)
         cv2_img = ai.cv2_remove_backgound(cv2_img)
         image = fimg.cv2_to_pil(cv2_img)
-        new_filename = f"images/{request.session['collection']}/" \
-                       f"{datetime.datetime.timestamp(datetime.datetime.now())}.{extension}"
+        new_filename = (
+            f"images/{request.session['collection']}/"
+            f"{datetime.datetime.timestamp(datetime.datetime.now())}.{extension}"
+        )
         fimg.save_image(image, new_filename)
 
         item = Item(
