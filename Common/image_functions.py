@@ -52,3 +52,7 @@ def api_to_cv2(updated_image: UploadFile = File(...)):
     cv2_img = ImageOps.exif_transpose(cv2_img)
     cv2_img = cv2.cvtColor(np.array(cv2_img), cv2.COLOR_RGB2BGR)
     return cv2_img
+
+
+def save_image(img: Image, path: str):
+    img.save(path)

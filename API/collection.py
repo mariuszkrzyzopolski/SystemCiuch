@@ -1,8 +1,13 @@
-from fastapi import APIRouter
+import datetime
+from typing import List
+
+from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from starlette.requests import Request
 
+import AI.remove_background as ai
+import Common.image_functions as fimg
 from API.database import DB, get_database
 from Models.collection import Collection
 from Models.item import Item
@@ -50,5 +55,60 @@ def get_sets():
 def get_collection(request: Request):
     with Session(database.conn) as session:
         q = select(Collection).filter(Collection.id == request.session["collection"])
+        data = session.execute(q).mappings().first()
+        return data
+
+
+@router.post("/item")
+def post_item(
+    request: Request,
+    type: str = Form(...),
+    description: str = Form(None),
+    tags: List[str] = Form(...),
+    image: UploadFile = File(...),
+):
+    with Session(database.conn) as session:
+        extension = image.filename.split(".")[-1]
+        if extension not in ("jpg", "jpeg", "png"):
+            return HTTPException(
+                status_code=400, detail="Image must be jpg or png format!"
+            )
+        if extension == "png":
+            image = fimg.png_to_jpg(image)
+        cv2_img = fimg.api_to_cv2(image)
+        cv2_img = fimg.resize_cv(cv2_img)
+        cv2_img = ai.cv2_remove_backgound(cv2_img)
+        image = fimg.cv2_to_pil(cv2_img)
+        new_filename = (
+            f"images/{request.session['collection']}/"
+            f"{datetime.datetime.timestamp(datetime.datetime.now())}.jpg"
+        )
+        fimg.save_image(image, new_filename)
+
+        item = Item(
+            type=type,
+            description=description,
+            tags=",".join(tags),
+            image=new_filename,
+            collection_id=request.session["collection"],
+        )
+        session.add(item)
+        session.commit()
+        session.refresh(item)
+        return item
+
+
+@router.get("/items")
+def get_items():
+    with Session(database.conn) as session:
+        q = select(Item)
+        data = session.execute(q).mappings().all()
+        return data
+
+
+@router.get("/{item_id}")
+def get_item(item_id):
+    with Session(database.conn) as session:
+        q = select(Item).filter(Item.id == item_id)
         data = session.execute(q).mappings().first()
         return data
