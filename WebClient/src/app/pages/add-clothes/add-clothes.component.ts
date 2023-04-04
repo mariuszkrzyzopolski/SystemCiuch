@@ -47,7 +47,7 @@ export class AddClothesComponent implements OnInit {
     formData.append("type", addClothes.type);
     formData.append("image", addClothes.image);
 
-    this.http.post('http://127.0.0.1:8000/collection/items', formData).subscribe(
+    this.http.post('http://127.0.0.1:8000/collection/item', formData).subscribe(
       (response) => console.log(response),
       (error) => console.log(error)
     )
