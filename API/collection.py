@@ -83,7 +83,8 @@ def post_item(
         cv2_img = fimg.api_to_cv2(image)
         cv2_img = fimg.resize_cv(cv2_img)
         cv2_img = ai.cv2_remove_backgound(cv2_img)
-        image = fimg.cv2_to_pil(cv2_img)
+        fimg.cv2_to_pil(cv2_img)
+
         new_filename = (
             f"images/{request.session['collection']}/"
             f"{datetime.datetime.timestamp(datetime.datetime.now())}.jpg"
