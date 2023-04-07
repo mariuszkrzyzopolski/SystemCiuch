@@ -50,16 +50,14 @@ def get_set(set_id):
 def get_sets():
     with Session(database.conn) as session:
         q = select(Set).options(joinedload(Set.items))
-        # TODO add unique
-        data = session.execute(q).mappings().all()
+        data = session.execute(q).mappings().unique().all()
         return data
 
 
 @router.get("/")
 def get_collection(request: Request):
     with Session(database.conn) as session:
-        # TODO add relationship mapping for collection model
-        q = select(Collection).filter(Collection.id == request.session["collection"])#.options(joinedload(Collection.items))
+        q = select(Collection).filter(Collection.id == request.session["collection"]).options(joinedload(Collection.items))
         data = session.execute(q).mappings().first()
         return data
 
@@ -89,7 +87,7 @@ def post_item(
             f"images/{request.session['collection']}/"
             f"{datetime.datetime.timestamp(datetime.datetime.now())}.jpg"
         )
-        fimg.save_image(image, new_filename)
+        # fimg.save_image(image, new_filename) Temporary - problem with saving
 
         item = Item(
             type=type,
