@@ -16,7 +16,7 @@ class Item(Base):
     tags: Mapped[str] = mapped_column()
     image: Mapped[str] = mapped_column()
     collection_id: Mapped[int] = mapped_column(ForeignKey("Collection.id"))
-    # set_id: Mapped[Optional[List[int]]] = mapped_column(ForeignKey("Set.id"))
+    set_id: Mapped[Optional[List[int]]] = mapped_column(ForeignKey("Set.id"))
 
     sets: Mapped[List["Set"]] = relationship(secondary=association_sets,back_populates="items")
     collection: Mapped["Collection"] = relationship(  # noqa: F821
