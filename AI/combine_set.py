@@ -1,7 +1,7 @@
 import csv
 import random
 
-with open('testdata/test.csv', 'r') as file:
+with open("testdata/test.csv", "r") as file:
     reader = csv.reader(file)
     data = list(reader)
 
@@ -20,8 +20,9 @@ def findClothes(occasion, category):
     # jeśli wybrano zestaw monochromatyczny
     if category == "one_color":
         # znajdź rzeczy, które mają tą samą okazję, ten sam kolor i nie są górą
-        color_item = set([row for row in occasion_items if row[3] == color and row[1] != "top"])
-
+        color_item = set(
+            [row for row in occasion_items if row[3] == color and row[1] != "top"]
+        )
     # jeśli wybrano zestaw z dwoma kolorami
     if category == "two_colors":
         # znajdź inne kolory w danej okazji
@@ -29,11 +30,15 @@ def findClothes(occasion, category):
         # wylosuj drugi kolor
         second_color = random.sample(other_colors, 1)[0]
         # znajdź rzeczy w tych dwóch kolorach, które nie są górą
-        color_item = set([row for row in occasion_items if row[3] == (color or second_color) and row[1] != "top"])
-
+        color_item = set(
+            [
+                row
+                for row in occasion_items
+                if row[3] == (color or second_color) and row[1] != "top"
+            ]
+        )
     # jeśli wybrano random rzeczy
     if category == "random":
         # znajdź rzeczy, które nie są górą
         color_item = set([row for row in occasion_items if row[1] != "top"])
-
     return color_item
