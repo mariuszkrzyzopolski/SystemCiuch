@@ -57,7 +57,11 @@ def get_sets():
 @router.get("/")
 def get_collection(request: Request):
     with Session(database.conn) as session:
-        q = select(Collection).filter(Collection.id == request.session["collection"]).options(joinedload(Collection.items))
+        q = (
+            select(Collection)
+            .filter(Collection.id == request.session["collection"])
+            .options(joinedload(Collection.items))
+        )
         data = session.execute(q).mappings().first()
         return data
 

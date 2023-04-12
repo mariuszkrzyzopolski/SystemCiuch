@@ -52,9 +52,7 @@ def user_register(request: Request, user: User):
             raise HTTPException(status_code=400, detail="mail already registered")
         new_user = Model_User(mail=user.mail, password=user.password, city=user.city)
         request.session["user"] = new_user.id
-        new_collection = Collection(
-            user=new_user
-        )
+        new_collection = Collection(user=new_user)
         new_user.collection = new_collection
         session.add(new_collection)
         session.commit()
