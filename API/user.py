@@ -32,6 +32,7 @@ def user_login(request: Request, user: UserLogin):
             raise HTTPException(status_code=404, detail="User not found")
         elif data.password == user.password:
             request.session["user"] = data.id
+            request.session["collection"] = data.collection.id
             exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(
                 days=1
             )
