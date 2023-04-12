@@ -1,5 +1,3 @@
-from typing import Optional
-
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -15,4 +13,6 @@ class User(Base):
     id_collection: Mapped[int] = mapped_column(ForeignKey("Collection.id"))
     city: Mapped[str] = mapped_column()
 
-    collection: Mapped["Collection"] = relationship(back_populates="user")
+    collection: Mapped["Collection"] = relationship(  # noqa: F821f
+        back_populates="user"
+    )

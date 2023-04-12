@@ -18,9 +18,9 @@ class Item(Base):
     collection_id: Mapped[int] = mapped_column(ForeignKey("Collection.id"))
     set_id: Mapped[Optional[List[int]]] = mapped_column(ForeignKey("Set.id"))
 
-    sets: Mapped[List["Set"]] = relationship(secondary=association_sets,back_populates="items")
+    sets: Mapped[List["Set"]] = relationship(  # noqa: F821f
+        secondary=association_sets, back_populates="items"
+    )
     collection: Mapped["Collection"] = relationship(  # noqa: F821
         back_populates="items"
     )
-
-

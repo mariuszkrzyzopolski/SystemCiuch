@@ -1,6 +1,5 @@
-from typing import List, Optional
+from typing import List
 
-from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from API.database import Base
@@ -11,7 +10,6 @@ class Set(Base):
     __tablename__ = "Set"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    # top: Mapped[int] = ForeignKey("Item.id")
-    # pants: Mapped[int] = ForeignKey("Item.id")
-    # shoes: Mapped[int] = ForeignKey("Item.id")
-    items: Mapped[List["Item"]] = relationship(secondary=association_sets,back_populates="sets")
+    items: Mapped[List["Item"]] = relationship(  # noqa: F821f
+        secondary=association_sets, back_populates="sets"
+    )

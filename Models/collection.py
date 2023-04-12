@@ -11,4 +11,4 @@ class Collection(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     items: Mapped[List[Item]] = relationship(back_populates="collection")
-    user: Mapped["User"] = relationship(back_populates="collection")
+    user: Mapped["User"] = relationship(back_populates="collection")  # noqa: F821f
