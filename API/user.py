@@ -1,4 +1,5 @@
 import datetime
+import os
 import sys
 
 import jwt
@@ -56,6 +57,7 @@ def user_register(request: Request, user: User):
         new_user.collection = new_collection
         session.add(new_collection)
         session.commit()
+        os.makedirs(f"images/{new_collection.id}")
         request.session["collection"] = new_collection.id
         exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(
             days=1
