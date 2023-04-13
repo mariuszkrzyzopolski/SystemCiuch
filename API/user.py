@@ -9,6 +9,7 @@ from starlette.authentication import AuthenticationError
 from starlette.requests import Request
 
 from API.database import DB, get_database
+from Models.collection import Collection
 from Models.user import User as Model_User
 from Validators.user import User, UserLogin
 
@@ -31,6 +32,7 @@ def user_login(request: Request, user: UserLogin):
             raise HTTPException(status_code=404, detail="User not found")
         elif data.password == user.password:
             request.session["user"] = data.id
+            request.session["collection"] = data.collection.id
             exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(
                 days=1
             )
@@ -49,10 +51,12 @@ def user_register(request: Request, user: User):
         if session.execute(q).first() is not None:
             raise HTTPException(status_code=400, detail="mail already registered")
         new_user = Model_User(mail=user.mail, password=user.password, city=user.city)
-        session.add(new_user)
-        session.commit()
-        session.refresh(new_user)
         request.session["user"] = new_user.id
+        new_collection = Collection(user=new_user)
+        new_user.collection = new_collection
+        session.add(new_collection)
+        session.commit()
+        request.session["collection"] = new_collection.id
         exp = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(
             days=1
         )
