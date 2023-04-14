@@ -22,4 +22,3 @@ class DB:
 
     def drop_db(self):
         Base.metadata.drop_all(self.conn)
-
