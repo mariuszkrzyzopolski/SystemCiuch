@@ -6,17 +6,16 @@ from API.database import DB, get_database
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
+conn = get_database()
+database = DB(conn)
 
 
 class TestUser(TestCase):
     def setUp(self):
-        conn = get_database()
-        database = DB(conn)
-        Base.metadata.drop_all(conn)
+        database.drop_db()
         database.initialize_db()
 
     def test_user_register(self):
-        self.setUp()
         url = "http://localhost:8000/user/register"
         user_data = {
             "mail": "test@test.com",
@@ -29,7 +28,6 @@ class TestUser(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_register_second_user(self):
-        self.setUp()
         url = "http://localhost:8000/user/register"
         user_data = {
             "mail": "test@test.com",

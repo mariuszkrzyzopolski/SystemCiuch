@@ -1,12 +1,15 @@
 import random
-
+import time
+import unittest
 import uvicorn as uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
+from multiprocessing import Process
 
 from API import ai_model, collection, user, wardrobe
 from API.database import DB, get_database
+from Tests.test_user import TestUser
 
 app = FastAPI()
 
@@ -30,8 +33,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-if __name__ == "__main__":
+
+def run_server():
     conn = get_database()
     database = DB(conn)
+    database.drop_db()
     database.initialize_db()
-    uvicorn.run("main:app", port=8000, log_level="info")
+    uvicorn.run("testApp:app", port=8000, log_level="info")
+
+
+if __name__ == "__main__":
+    server = Process(target=run_server)
+    server.start()
+    time.sleep(1)
+
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestUser)
+    unittest.TextTestRunner(verbosity=0).run(suite)
+
+    server.kill()
