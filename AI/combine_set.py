@@ -56,23 +56,45 @@ def findClothes(occasion, category):
 
 def chooseClothes(bottom_items, shoes_items):
     # Kodowanie kategoryczne dla kolumn 'category', 'type', 'color', 'occasion'
-    le_category = LabelEncoder().fit(list(set([row[1] for row in bottom_items] + [row[1] for row in shoes_items])))
-    le_type = LabelEncoder().fit(list(set([row[2] for row in bottom_items] + [row[2] for row in shoes_items])))
-    le_color = LabelEncoder().fit(list(set([row[3] for row in bottom_items] + [row[3] for row in shoes_items])))
-    le_occasion = LabelEncoder().fit(list(set([row[4] for row in bottom_items] + [row[4] for row in shoes_items])))
+    le_category = LabelEncoder().fit(
+        list(set([row[1] for row in bottom_items] + [row[1] for row in shoes_items]))
+    )
+    le_type = LabelEncoder().fit(
+        list(set([row[2] for row in bottom_items] + [row[2] for row in shoes_items]))
+    )
+    le_color = LabelEncoder().fit(
+        list(set([row[3] for row in bottom_items] + [row[3] for row in shoes_items]))
+    )
+    le_occasion = LabelEncoder().fit(
+        list(set([row[4] for row in bottom_items] + [row[4] for row in shoes_items]))
+    )
 
     # Konwersja wartości na typ float
-    bottom_tensors = [torch.tensor([le_category.transform([row[1]])[0],
-                                    le_type.transform([row[2]])[0],
-                                    le_color.transform([row[3]])[0],
-                                    le_occasion.transform([row[4]])[0]
-                                    ], dtype=torch.float) for row in bottom_items]
+    bottom_tensors = [
+        torch.tensor(
+            [
+                le_category.transform([row[1]])[0],
+                le_type.transform([row[2]])[0],
+                le_color.transform([row[3]])[0],
+                le_occasion.transform([row[4]])[0],
+            ],
+            dtype=torch.float,
+        )
+        for row in bottom_items
+    ]
 
-    shoes_tensors = [torch.tensor([le_category.transform([row[1]])[0],
-                                   le_type.transform([row[2]])[0],
-                                   le_color.transform([row[3]])[0],
-                                   le_occasion.transform([row[4]])[0]
-                                   ], dtype=torch.float) for row in shoes_items]
+    shoes_tensors = [
+        torch.tensor(
+            [
+                le_category.transform([row[1]])[0],
+                le_type.transform([row[2]])[0],
+                le_color.transform([row[3]])[0],
+                le_occasion.transform([row[4]])[0],
+            ],
+            dtype=torch.float,
+        )
+        for row in shoes_items
+    ]
 
     # Sieć neuronowa
     model = torch.nn.Sequential(
@@ -81,7 +103,7 @@ def chooseClothes(bottom_items, shoes_items):
         torch.nn.Linear(8, 4),
         torch.nn.ReLU(),
         torch.nn.Linear(4, 1),
-        torch.nn.Sigmoid()
+        torch.nn.Sigmoid(),
     )
 
     # Uczenie modelu
@@ -95,20 +117,17 @@ def chooseClothes(bottom_items, shoes_items):
             loss = criterion(bottom_output, shoes_output)
             loss.backward()
             optimizer.step()
-
     # Wybór elementów z bottom_items i shoes_items
     with torch.no_grad():
         bottom_choice = bottom_items[model(torch.stack(bottom_tensors)).argmax().item()]
         shoes_choice = shoes_items[model(torch.stack(shoes_tensors)).argmax().item()]
-
     return bottom_choice, shoes_choice
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     with open("testdata/test.csv", "r") as file:
         reader = csv.reader(file)
         data = list(reader)
-
     bottom_items, shoes_items = findClothes("casual", "two_colors")
     print(bottom_items, shoes_items)
     bottom_choice, shoes_choice = chooseClothes(bottom_items, shoes_items)
