@@ -32,7 +32,7 @@ def rgb_to_color_name(code):
         (0, 128, 128): "Błękitny",
         (245, 245, 220): "Ecru",
         (115, 59, 36): "Brązowy",
-        (255, 215, 0): "Złoty"
+        (255, 215, 0): "Złoty",
     }
 
     r, g, b = code

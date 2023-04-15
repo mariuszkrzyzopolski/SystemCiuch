@@ -22,12 +22,10 @@ def findClothes(occasion, category):
     match category:
         case "one_color":
             bottom_items = [
-                row for row in occasion_items
-                if row[3] == color and row[1] == "bottom"
+                row for row in occasion_items if row[3] == color and row[1] == "bottom"
             ]
             shoes_items = [
-                row for row in occasion_items
-                if row[3] == color and row[1] == "shoes"
+                row for row in occasion_items if row[3] == color and row[1] == "shoes"
             ]
         case "two_colors":
             # znajdź inne kolory w danej okazji
@@ -40,11 +38,13 @@ def findClothes(occasion, category):
                 second_color = color
             # znajdź rzeczy w tych dwóch kolorach, które nie są górą
             bottom_items = [
-                row for row in occasion_items
+                row
+                for row in occasion_items
                 if row[3] in (color, second_color) and row[1] == "bottom"
             ]
             shoes_items = [
-                row for row in occasion_items
+                row
+                for row in occasion_items
                 if row[3] in (color, second_color) and row[1] == "shoes"
             ]
         case "random":
