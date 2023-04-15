@@ -19,3 +19,6 @@ class DB:
     def initialize_db(self):
         # Base.metadata.drop_all(self.conn) enable persistence for DB - maybe need to disable later
         Base.metadata.create_all(self.conn)
+
+    def drop_db(self):
+        Base.metadata.drop_all(self.conn)
