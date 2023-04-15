@@ -3,6 +3,7 @@ import random
 import torch
 from sklearn.preprocessing import LabelEncoder
 
+
 def findClothes(occasion, category):
     bottom_items = set()
     shoes_items = set()
@@ -35,7 +36,7 @@ def findClothes(occasion, category):
                 # wylosuj drugi kolor
                 second_color = random.sample(list(other_colors), 1)[0]
             else:
-                #jeśli nie ma inncyh kolorów w tej okazji, to użyj tylko tego pierwszego
+                # jeśli nie ma inncyh kolorów w tej okazji, to użyj tylko tego pierwszego
                 second_color = color
             # znajdź rzeczy w tych dwóch kolorach, które nie są górą
             bottom_items = [
@@ -112,5 +113,3 @@ if __name__ == '__main__':
     print(bottom_items, shoes_items)
     bottom_choice, shoes_choice = chooseClothes(bottom_items, shoes_items)
     print(bottom_choice, shoes_choice)
-
-
