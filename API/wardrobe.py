@@ -1,9 +1,10 @@
 import sys
 
-from fastapi import APIRouter
-from starlette.requests import Request
+from fastapi import APIRouter, Depends
 
 from API.database import DB, get_database
+from Common.user_functions import get_current_user
+from Models.user import User
 
 sys.path.append("../")
 conn = get_database()
@@ -12,10 +13,10 @@ router = APIRouter(prefix="/wardrobe")
 
 
 @router.post("/connect")
-def user_connect(request: Request, wadrobe_code: int):
+def user_connect(wadrobe_code: int, user: User = Depends(get_current_user)):
     return {}
 
 
 @router.post("/disconnect")
-def user_disconnect(request: Request):
+def user_disconnect(user: User = Depends(get_current_user)):
     return {"success": True}
