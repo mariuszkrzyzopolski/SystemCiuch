@@ -5,54 +5,63 @@ import torch
 from sklearn.preprocessing import LabelEncoder
 
 
-def findClothes(occasion, category):
+def findClothes(category):
     bottom_items = set()
     shoes_items = set()
 
-    # znajdż wszystkie rzeczy do danej okazji
-    occasion_items = set([tuple(row) for row in data[1:] if row[4] == occasion])
-
-    # znajdź góry w danej okazji
-    top_items = set([row for row in occasion_items if row[1] == "top"])
+    # znajdź góry
+    top_items = set([tuple(row) for row in data[1:] if row[1] == "top"])
     # wylosuj jedną
-    random_item = random.sample(list(top_items), 1)[0]
+    top_choice = random.sample(list(top_items), 1)[0]
     # zapisz jej kolor
-    color = random_item[3]
+    color = top_choice[3]
 
     # jeśli wybrano zestaw monochromatyczny
     match category:
         case "one_color":
             bottom_items = [
-                row for row in occasion_items if row[3] == color and row[1] == "bottom"
+                row for row in data[1:] if row[3] == color and row[1] == "bottom"
             ]
             shoes_items = [
-                row for row in occasion_items if row[3] == color and row[1] == "shoes"
+                row for row in data[1:] if row[3] == color and row[1] == "shoes"
             ]
         case "two_colors":
             # znajdź inne kolory w danej okazji
-            other_colors = set([row[3] for row in occasion_items if row[3] != color])
-            if len(other_colors) > 0:
+            other_colors = set([row[3] for row in data[1:] if row[3] != color])
+            if len(other_colors) == 0:
                 # wylosuj drugi kolor
                 second_color = random.sample(list(other_colors), 1)[0]
             else:
-                # jeśli nie ma inncyh kolorów w tej okazji, to użyj tylko tego pierwszego
-                second_color = color
+                raise ValueError(
+                    "Mam problem z odnalezieniem drugiego koloru, "
+                    "dodaj więcej rzeczy w innnych kolorach lub spróbuj ponownie"
+                )
+
             # znajdź rzeczy w tych dwóch kolorach, które nie są górą
             bottom_items = [
                 row
-                for row in occasion_items
+                for row in data[1:]
                 if row[3] in (color, second_color) and row[1] == "bottom"
             ]
             shoes_items = [
                 row
-                for row in occasion_items
+                for row in data[1:]
                 if row[3] in (color, second_color) and row[1] == "shoes"
             ]
         case "random":
-            bottom_items = [row for row in occasion_items if row[1] == "bottom"]
-            shoes_items = [row for row in occasion_items if row[1] == "shoes"]
+            bottom_items = [row for row in data[1:] if row[1] == "bottom"]
+            shoes_items = [row for row in data[1:] if row[1] == "shoes"]
 
-    return bottom_items, shoes_items
+    if len(bottom_items) == 0:
+        raise ValueError(
+            "Brak dołów, z których można wybierać. Dodaj więcej i spróbuj ponownie."
+        )
+    if len(shoes_items) == 0:
+        raise ValueError(
+            "Brak butów, z których można wybierać. Dodaj więcej i spróbuj ponownie."
+        )
+
+    return bottom_items, shoes_items, top_choice
 
 
 def chooseClothes(bottom_items, shoes_items):
@@ -66,9 +75,6 @@ def chooseClothes(bottom_items, shoes_items):
     le_color = LabelEncoder().fit(
         list(set([row[3] for row in bottom_items] + [row[3] for row in shoes_items]))
     )
-    le_occasion = LabelEncoder().fit(
-        list(set([row[4] for row in bottom_items] + [row[4] for row in shoes_items]))
-    )
 
     # Konwersja wartości na typ float
     bottom_tensors = [
@@ -77,7 +83,6 @@ def chooseClothes(bottom_items, shoes_items):
                 le_category.transform([row[1]])[0],
                 le_type.transform([row[2]])[0],
                 le_color.transform([row[3]])[0],
-                le_occasion.transform([row[4]])[0],
             ],
             dtype=torch.float,
         )
@@ -90,7 +95,6 @@ def chooseClothes(bottom_items, shoes_items):
                 le_category.transform([row[1]])[0],
                 le_type.transform([row[2]])[0],
                 le_color.transform([row[3]])[0],
-                le_occasion.transform([row[4]])[0],
             ],
             dtype=torch.float,
         )
@@ -99,11 +103,11 @@ def chooseClothes(bottom_items, shoes_items):
 
     # Sieć neuronowa
     model = torch.nn.Sequential(
-        torch.nn.Linear(4, 8),
+        torch.nn.Linear(3, 8),
         torch.nn.ReLU(),
-        torch.nn.Linear(8, 4),
+        torch.nn.Linear(8, 3),
         torch.nn.ReLU(),
-        torch.nn.Linear(4, 1),
+        torch.nn.Linear(3, 1),
         torch.nn.Sigmoid(),
     )
 
@@ -129,7 +133,8 @@ if __name__ == "__main__":
     with open("testdata/test.csv", "r") as file:
         reader = csv.reader(file)
         data = list(reader)
-    bottom_items, shoes_items = findClothes("casual", "two_colors")
+    bottom_items, shoes_items, top_choice = findClothes("one_color")
     print(bottom_items, shoes_items)
+    print(top_choice)
     bottom_choice, shoes_choice = chooseClothes(bottom_items, shoes_items)
     print(bottom_choice, shoes_choice)
