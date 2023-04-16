@@ -32,8 +32,10 @@ def findClothes(category):
                 # wylosuj drugi kolor
                 second_color = random.sample(list(other_colors), 1)[0]
             else:
-                raise ValueError("Mam problem z odnalezieniem drugiego koloru, "
-                                 "dodaj więcej rzeczy w innnych kolorach lub spróbuj ponownie")
+                raise ValueError(
+                    "Mam problem z odnalezieniem drugiego koloru, "
+                    "dodaj więcej rzeczy w innnych kolorach lub spróbuj ponownie"
+                )
 
             # znajdź rzeczy w tych dwóch kolorach, które nie są górą
             bottom_items = [
@@ -51,9 +53,13 @@ def findClothes(category):
             shoes_items = [row for row in data[1:] if row[1] == "shoes"]
 
     if len(bottom_items) == 0:
-        raise ValueError("Brak dołów, z których można wybierać. Dodaj więcej i spróbuj ponownie.")
+        raise ValueError(
+            "Brak dołów, z których można wybierać. Dodaj więcej i spróbuj ponownie."
+        )
     if len(shoes_items) == 0:
-        raise ValueError("Brak butów, z których można wybierać. Dodaj więcej i spróbuj ponownie.")
+        raise ValueError(
+            "Brak butów, z których można wybierać. Dodaj więcej i spróbuj ponownie."
+        )
 
     return bottom_items, shoes_items, top_choice
 
@@ -76,7 +82,7 @@ def chooseClothes(bottom_items, shoes_items):
             [
                 le_category.transform([row[1]])[0],
                 le_type.transform([row[2]])[0],
-                le_color.transform([row[3]])[0]
+                le_color.transform([row[3]])[0],
             ],
             dtype=torch.float,
         )
@@ -88,7 +94,7 @@ def chooseClothes(bottom_items, shoes_items):
             [
                 le_category.transform([row[1]])[0],
                 le_type.transform([row[2]])[0],
-                le_color.transform([row[3]])[0]
+                le_color.transform([row[3]])[0],
             ],
             dtype=torch.float,
         )
