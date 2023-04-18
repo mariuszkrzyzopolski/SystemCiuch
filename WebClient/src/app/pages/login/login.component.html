@@ -24,3 +24,8 @@
         </div>
     </div>
 </form>
+
+<app-error-modal *ngIf="loginFail"
+  [message]="'Błąd podczas logowania'"
+  (cancelEvent)="close()">
+</app-error-modal>

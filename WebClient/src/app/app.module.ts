@@ -19,7 +19,9 @@ import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthInterceptor } from './auth-interceptor/auth-interceptor';
 import { AuthGuard } from './authService/auth-guard';
-import { SliderComponent } from './slider/slider.component';
+import { SliderComponent } from './shared/slider/slider.component';
+import { SuccessModalComponent } from './shared/modal/success-modal/success-modal.component';
+import { ErrorModalComponent } from './shared/modal/error-modal/error-modal.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import { SliderComponent } from './slider/slider.component';
     SignUpComponent,
     LoginComponent,
     SliderComponent,
+    SuccessModalComponent,
+    ErrorModalComponent,
   ],
   imports: [
     BrowserModule,
