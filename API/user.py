@@ -7,7 +7,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from API.database import DB, get_database
-from Common.user_functions import create_access_token, expires_in, get_current_user
+from Common.user_functions import (create_access_token, expires_in, get_current_user)
 from Models.collection import Collection
 from Models.user import User as Model_User
 from Validators.user import User, UserLogin
@@ -56,7 +56,7 @@ def user_register(user: User):
         access_token = create_access_token(
             data={"sub": new_user.id}, expires_delta=datetime.timedelta(days=1)
         )
-        return {"token": access_token, "expiresIn": expires_in(1)}
+        return {"token": access_token, "expiresIn": expires_in(days=1)}
 
 
 @router.get("/current_user")
