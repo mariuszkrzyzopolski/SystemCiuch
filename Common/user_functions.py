@@ -37,7 +37,9 @@ class Token(BaseModel):
 
 
 def expires_in(days: int):
-    return datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(days=days)
+    return datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(
+        days=days
+    )
 
 
 def get_user(user_id: int) -> Type[User]:
