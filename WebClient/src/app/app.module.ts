@@ -19,6 +19,7 @@ import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthInterceptor } from './auth-interceptor/auth-interceptor';
 import { AuthGuard } from './authService/auth-guard';
+import { SliderComponent } from './slider/slider.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { AuthGuard } from './authService/auth-guard';
     PreviewSetsComponent,
     SignUpComponent,
     LoginComponent,
+    SliderComponent,
   ],
   imports: [
     BrowserModule,

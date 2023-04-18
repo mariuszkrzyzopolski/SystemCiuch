@@ -1,6 +1,5 @@
-import { ChangeDetectorRef, Component, NgZone, ViewChild } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { SwiperOptions } from 'swiper';
+import { Component} from '@angular/core';
+;
 import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
 
@@ -10,19 +9,7 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
   styleUrls: ['./clothes-preview.component.css'],
 })
 export class ClothesPreviewComponent {
-  config: SwiperOptions = {
-    slidesPerView: 3,
-    spaceBetween: 50,
-    navigation: true,
-    pagination: { clickable: true },
-    scrollbar: { draggable: true },
-  };
-  onSwiper([swiper]: any) {
-    console.log(swiper);
-  }
-  onSlideChange() {
-    console.log('slide change');
-  }
+
 }
 
 

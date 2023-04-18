@@ -11,7 +11,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700">Wybierz zdjęcie</label>
             <div class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
-              <div class="space-y-1 text-center">
+              <div class="space-y-1 text-center" *ngIf="fielesToUpload.length==0">
                 <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48"
                   aria-hidden="true">
                   <path
@@ -28,6 +28,9 @@
                 </div>
                 <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
               </div>
+              <div *ngIf="fielesToUpload.length == 1">
+              Zdjęcie zostało dodane.
+               </div>
             </div>
             <div *ngIf="fielesToUpload.length == 0">
              Wymagane jest zdjęcie!
