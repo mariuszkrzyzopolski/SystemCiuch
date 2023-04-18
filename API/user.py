@@ -1,3 +1,4 @@
+# isort: skip_file
 import datetime
 import os
 import sys
@@ -8,9 +9,10 @@ from sqlalchemy.orm import Session
 
 from API.database import DB, get_database
 from Common.user_functions import create_access_token, expires_in, get_current_user
-from Models.collection import Collection
 from Models.user import User as Model_User
 from Validators.user import User, UserLogin
+
+from Models.collection import Collection
 
 sys.path.append("../")
 
