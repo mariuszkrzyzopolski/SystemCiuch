@@ -1,14 +1,15 @@
 import json
 import os
 import random
-import requests
 import shutil
 import time
+from multiprocessing import Process
+
+import requests
 import uvicorn as uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
-from multiprocessing import Process
 
 from API import ai_model, collection, user, wardrobe
 from API.database import DB, get_database
@@ -50,51 +51,49 @@ def register_mock_user():
         "mail": "test@test.com",
         "city": "Gdansk",
         "password": "password",
-        "repeated_password": "password"
+        "repeated_password": "password",
     }
-    response = requests.post(url, data=json.dumps(user_data), headers={"Content-Type": "application/json"})
+    response = requests.post(
+        url, data=json.dumps(user_data), headers={"Content-Type": "application/json"}
+    )
     return response.status_code
 
 
-"""
-This is draft, we can eneble this when post_item switch to tokens
 def add_some_photos():
     directory = os.getcwd()
     filename = "19861371.jpg"
     file_path = directory + "/../Images/Assets/dress/" + filename
 
     url = "http://localhost:8000/user/login"
-    user_data = {
-        "mail": "test@test.com",
-        "password": "password"
-    }
-    response = requests.post(url, data=json.dumps(user_data), headers={"Content-Type": "application/json"})
-    token = response.json()['token']
+    user_data = {"mail": "test@test.com", "password": "password"}
+    response = requests.post(
+        url, data=json.dumps(user_data), headers={"Content-Type": "application/json"}
+    )
+    token = response.json()["token"]
 
     url = "http://localhost:8000/collection/item"
-    import base64
+
     with open(file_path, "rb") as image_file:
         image_bytes = image_file.read()
-        im_b64 = base64.b64encode(image_bytes).decode("utf8")
 
     headers = {
         "Authorization": "Bearer " + token,
-        #"Content-Type": "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+        # "Content-Type": "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
     }
 
     data = {
         "type": "item_type",
         "description": "item_description",
         "tags": ["tag1", "tag2"],
-        #"image": im_b64
+        # "image": im_b64
     }
 
-    files = {"image": ("image.jpg", im_b64, "image/jpeg")}
+    files = {"image": ("image.jpg", image_bytes, "image/jpeg")}
 
     response = requests.post(url, data=data, files=files, headers=headers)
     print(response.text)
     return response.status_code
-"""
+
 
 if __name__ == "__main__":
     server = Process(target=run_server)
@@ -104,12 +103,11 @@ if __name__ == "__main__":
     status = register_mock_user()
     if status == 200:
         print("User has been created")
-    """
     status = add_some_photos()
     if status == 200:
         print("Photos added")
     print(status)
-    """
+
     src_file = "sql.db"
     dst_file = "../API/sql.db"
 
