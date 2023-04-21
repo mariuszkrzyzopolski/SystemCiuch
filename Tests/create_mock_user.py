@@ -45,54 +45,56 @@ def run_server():
     uvicorn.run("create_mock_user:app", port=8000, log_level="info")
 
 
-def register_mock_user():
+def register_mock_user(mail, passwd):
     url = "http://localhost:8000/user/register"
     user_data = {
-        "mail": "test@test.com",
+        "mail": mail,
         "city": "Gdansk",
-        "password": "password",
-        "repeated_password": "password",
+        "password": passwd,
+        "repeated_password": passwd,
     }
     response = requests.post(
         url, data=json.dumps(user_data), headers={"Content-Type": "application/json"}
     )
-    return response.status_code
+    return response
 
 
-def add_some_photos():
-    directory = os.getcwd()
-    filename = "19861371.jpg"
-    file_path = directory + "/../Images/Assets/dress/" + filename
-
+def login_mock_user(mail, passwd):
     url = "http://localhost:8000/user/login"
-    user_data = {"mail": "test@test.com", "password": "password"}
+    user_data = {"mail": mail, "password": passwd}
     response = requests.post(
         url, data=json.dumps(user_data), headers={"Content-Type": "application/json"}
     )
-    token = response.json()["token"]
+    return response
 
+
+def add_some_photos(token):
+    directory = os.getcwd() + "/../Images/Assets/"
+    folders = ["dress", "jumpsuit", "outwear", "pants", "shoes", "skirt", "top"]
     url = "http://localhost:8000/collection/item"
 
-    with open(file_path, "rb") as image_file:
-        image_bytes = image_file.read()
+    for folder in folders:
+        files = os.listdir(os.path.join(directory, folder))
+        for i in range(5):
+            filename = random.choice(files)
+            file_path = os.path.join(directory, folder, filename)
 
-    headers = {
-        "Authorization": "Bearer " + token,
-        # "Content-Type": "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-    }
+            with open(file_path, "rb") as image_file:
+                image_bytes = image_file.read()
 
-    data = {
-        "type": "item_type",
-        "description": "item_description",
-        "tags": ["tag1", "tag2"],
-        # "image": im_b64
-    }
+            headers = {
+                "Authorization": "Bearer " + token,
+            }
 
-    files = {"image": ("image.jpg", image_bytes, "image/jpeg")}
+            data = {
+                "type": "item_type",
+                "description": "item_description",
+                "tags": ["tag1", "tag2"],
+            }
 
-    response = requests.post(url, data=data, files=files, headers=headers)
-    print(response.text)
-    return response.status_code
+            file = {"image": (filename, image_bytes, "image/jpeg")}
+            response = requests.post(url, data=data, files=file, headers=headers)
+    return response
 
 
 if __name__ == "__main__":
@@ -100,13 +102,21 @@ if __name__ == "__main__":
     server.start()
     time.sleep(1)
 
-    status = register_mock_user()
-    if status == 200:
-        print("User has been created")
-    status = add_some_photos()
-    if status == 200:
-        print("Photos added")
-    print(status)
+    for i in range(1,6):
+        user = str(i) + "test@test.com"
+        passwd = "password"
+        response = register_mock_user(user, passwd)
+        if response.status_code != 200:
+            print(response.status_code, str(user) + " has not been registered")
+
+        response = login_mock_user(user, passwd)
+        token = response.json()["token"]
+        if token is None:
+            print(response.status_code, str(user) + " has not been logged in")
+
+        response = add_some_photos(token)
+        if response.status_code != 200:
+            print(response.status_code, "Photos has not been added")
 
     src_file = "sql.db"
     dst_file = "../API/sql.db"
