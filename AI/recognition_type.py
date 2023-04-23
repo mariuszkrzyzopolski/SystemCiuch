@@ -44,8 +44,12 @@ def train_and_save_model():
     transform = transforms.Compose(
         [transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))]
     )
-    train_set = datasets.FashionMNIST("./Assets/FashionMNIST", train=True, download=True, transform=transform)
-    test_set = datasets.FashionMNIST("./Assets/FashionMNIST", train=False, download=True, transform=transform)
+    train_set = datasets.FashionMNIST(
+        "./Assets/FashionMNIST", train=True, download=True, transform=transform
+    )
+    test_set = datasets.FashionMNIST(
+        "./Assets/FashionMNIST", train=False, download=True, transform=transform
+    )
     train_loader = torch.utils.data.DataLoader(train_set, batch_size=32, shuffle=True)
     test_loader = torch.utils.data.DataLoader(test_set, batch_size=32, shuffle=False)
 
