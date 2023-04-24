@@ -9,4 +9,7 @@ __pycache__
 .idea_modules/
 .vs/
 .vscode/
+
+# User data
+Images/Users/
 *.db

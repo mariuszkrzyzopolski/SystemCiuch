@@ -16,3 +16,4 @@ itsdangerous~=2.1.2
 wheel~=0.37.1
 greenlet~=2.0.2
 PyJWT~=2.6.0
+python-jose~=3.3.0
