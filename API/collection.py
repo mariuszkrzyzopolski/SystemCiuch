@@ -94,10 +94,10 @@ def post_item(
         image = fimg.cv2_to_pil(cv2_img)
 
         new_filename = (
-            f"../Images/Users/{user.id_collection}/"
+            f"Users/{user.id_collection}/"
             f"{datetime.datetime.timestamp(datetime.datetime.now())}.jpg"
         )
-        fimg.save_image(image, new_filename)
+        fimg.save_image(image, f"../Images/{new_filename}")
 
         item = Item(
             type=type,
