@@ -108,21 +108,20 @@ if __name__ == "__main__":
     server.start()
     time.sleep(1)
 
-    for i in range(1, 2):
-        user = "test@test.com"
-        passwd = "password"
-        response = register_mock_user(user, passwd)
-        if response.status_code != 200:
-            print(response.status_code, str(user) + " has not been registered")
+    user = "test@test.com"
+    passwd = "password"
+    response = register_mock_user(user, passwd)
+    if response.status_code != 200:
+        print(response.status_code, str(user) + " has not been registered")
 
-        response = login_mock_user(user, passwd)
-        token = response.json()["token"]
-        if token is None:
-            print(response.status_code, str(user) + " has not been logged in")
+    response = login_mock_user(user, passwd)
+    token = response.json()["token"]
+    if token is None:
+        print(response.status_code, str(user) + " has not been logged in")
 
-        response = add_some_photos(token)
-        if response.status_code != 200:
-            print(response.status_code, "Photos has not been added")
+    response = add_some_photos(token)
+    if response.status_code != 200:
+        print(response.status_code, "Photos has not been added")
 
     src_file = "sql.db"
     dst_file = "../API/sql.db"
