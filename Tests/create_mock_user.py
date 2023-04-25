@@ -75,6 +75,12 @@ def add_some_photos(token):
 
     for folder in folders:
         files = os.listdir(os.path.join(directory, folder))
+        if folder in ["dress", "jumpsuit", "outwear", "top"]:
+            type = "Upper garment"
+        elif folder in ["pants", "skirt"]:
+            type = "Lower garment"
+        elif folder in ["shoes"]:
+            type = "Footwear"
         for i in range(5):
             filename = random.choice(files)
             file_path = os.path.join(directory, folder, filename)
@@ -86,10 +92,8 @@ def add_some_photos(token):
                 "Authorization": "Bearer " + token,
             }
 
-            types = ["Upper garment", "Lower garment", "Footwear"]
-
             data = {
-                "type": random.choice(types),
+                "type": type,
                 "description": "item_description",
                 "tags": ["tag1", "tag2"],
             }
