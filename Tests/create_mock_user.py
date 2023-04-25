@@ -86,8 +86,10 @@ def add_some_photos(token):
                 "Authorization": "Bearer " + token,
             }
 
+            types = ["Upper garment", "Lower garment", "Footwear"]
+
             data = {
-                "type": "item_type",
+                "type": random.choice(types),
                 "description": "item_description",
                 "tags": ["tag1", "tag2"],
             }
@@ -102,8 +104,8 @@ if __name__ == "__main__":
     server.start()
     time.sleep(1)
 
-    for i in range(1,6):
-        user = str(i) + "test@test.com"
+    for i in range(1, 2):
+        user = "test@test.com"
         passwd = "password"
         response = register_mock_user(user, passwd)
         if response.status_code != 200:

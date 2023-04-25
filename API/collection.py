@@ -22,10 +22,10 @@ router = APIRouter(prefix="/collection")
 # TODO Patch for sets and items
 @router.post("/set")
 def post_set(
-    first_item_id: int,
-    second_item_id: int,
-    third_item_id: int,
-    user: User = Depends(get_current_user),
+        first_item_id: int,
+        second_item_id: int,
+        third_item_id: int,
+        user: User = Depends(get_current_user),
 ):
     with Session(database.conn) as session:
         first_item = session.query(Item).get(first_item_id)
@@ -55,7 +55,7 @@ def get_set(set_id, user: User = Depends(get_current_user)):
 @router.get("/sets")
 def get_sets(user: User = Depends(get_current_user)):
     with Session(database.conn) as session:
-        q = select(Set).options(joinedload(Set.items))
+        q = select(Set).join(Set.items).where(Item.collection_id == user.id_collection).options(joinedload(Set.items))
         data = session.execute(q).mappings().unique().all()
         return data
 
@@ -74,11 +74,11 @@ def get_collection(user: User = Depends(get_current_user)):
 
 @router.post("/item")
 def post_item(
-    type: str = Form(...),
-    description: str = Form(None),
-    tags: List[str] = Form(...),
-    image: UploadFile = File(...),
-    user: User = Depends(get_current_user),
+        type: str = Form(...),
+        description: str = Form(None),
+        tags: List[str] = Form(...),
+        image: UploadFile = File(...),
+        user: User = Depends(get_current_user),
 ):
     with Session(database.conn) as session:
         extension = image.filename.split(".")[-1]
@@ -115,7 +115,7 @@ def post_item(
 @router.get("/items")
 def get_items(user: User = Depends(get_current_user)):
     with Session(database.conn) as session:
-        q = select(Item)
+        q = select(Item).where(Item.collection_id == user.id_collection)
         data = session.execute(q).mappings().all()
         return data
 
