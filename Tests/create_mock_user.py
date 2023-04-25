@@ -75,6 +75,12 @@ def add_some_photos(token):
 
     for folder in folders:
         files = os.listdir(os.path.join(directory, folder))
+        if folder in ["dress", "jumpsuit", "outwear", "top"]:
+            type = "Upper garment"
+        elif folder in ["pants", "skirt"]:
+            type = "Lower garment"
+        elif folder in ["shoes"]:
+            type = "Footwear"
         for i in range(5):
             filename = random.choice(files)
             file_path = os.path.join(directory, folder, filename)
@@ -87,7 +93,7 @@ def add_some_photos(token):
             }
 
             data = {
-                "type": "item_type",
+                "type": type,
                 "description": "item_description",
                 "tags": ["tag1", "tag2"],
             }
@@ -102,21 +108,20 @@ if __name__ == "__main__":
     server.start()
     time.sleep(1)
 
-    for i in range(1,6):
-        user = str(i) + "test@test.com"
-        passwd = "password"
-        response = register_mock_user(user, passwd)
-        if response.status_code != 200:
-            print(response.status_code, str(user) + " has not been registered")
+    user = "test@test.com"
+    passwd = "password"
+    response = register_mock_user(user, passwd)
+    if response.status_code != 200:
+        print(response.status_code, str(user) + " has not been registered")
 
-        response = login_mock_user(user, passwd)
-        token = response.json()["token"]
-        if token is None:
-            print(response.status_code, str(user) + " has not been logged in")
+    response = login_mock_user(user, passwd)
+    token = response.json()["token"]
+    if token is None:
+        print(response.status_code, str(user) + " has not been logged in")
 
-        response = add_some_photos(token)
-        if response.status_code != 200:
-            print(response.status_code, "Photos has not been added")
+    response = add_some_photos(token)
+    if response.status_code != 200:
+        print(response.status_code, "Photos has not been added")
 
     src_file = "sql.db"
     dst_file = "../API/sql.db"

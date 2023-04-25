@@ -55,7 +55,12 @@ def get_set(set_id, user: User = Depends(get_current_user)):
 @router.get("/sets")
 def get_sets(user: User = Depends(get_current_user)):
     with Session(database.conn) as session:
-        q = select(Set).options(joinedload(Set.items))
+        q = (
+            select(Set)
+            .join(Set.items)
+            .where(Item.collection_id == user.id_collection)
+            .options(joinedload(Set.items))
+        )
         data = session.execute(q).mappings().unique().all()
         return data
 
@@ -94,10 +99,10 @@ def post_item(
         image = fimg.cv2_to_pil(cv2_img)
 
         new_filename = (
-            f"../Images/Users/{user.id_collection}/"
+            f"Users/{user.id_collection}/"
             f"{datetime.datetime.timestamp(datetime.datetime.now())}.jpg"
         )
-        fimg.save_image(image, new_filename)
+        fimg.save_image(image, f"../Images/{new_filename}")
 
         item = Item(
             type=type,
@@ -115,7 +120,7 @@ def post_item(
 @router.get("/items")
 def get_items(user: User = Depends(get_current_user)):
     with Session(database.conn) as session:
-        q = select(Item)
+        q = select(Item).where(Item.collection_id == user.id_collection)
         data = session.execute(q).mappings().all()
         return data
 
