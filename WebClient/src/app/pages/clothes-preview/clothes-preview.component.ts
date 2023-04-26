@@ -1,6 +1,8 @@
-import { Component} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
+import { DTOCollectionItem, DTOCollectionItemDetails } from '../../../app/model/CollectionDTO';
 ;
 import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+import { CollectionService } from '../../../app/services/CollectionService';
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
 
 @Component({
@@ -8,8 +10,22 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
   templateUrl: './clothes-preview.component.html',
   styleUrls: ['./clothes-preview.component.css'],
 })
-export class ClothesPreviewComponent {
+export class ClothesPreviewComponent implements OnInit {
+  items: DTOCollectionItemDetails[];
+  upperGarments: DTOCollectionItemDetails[];
+  lowerGarments: DTOCollectionItemDetails[];
+  footwear: DTOCollectionItemDetails[];
 
+  constructor(private collectionService: CollectionService) { }
+
+  ngOnInit(): void {
+    this.collectionService.getCollection().subscribe(data => {
+      this.items = data.Collection.items;
+      this.upperGarments = this.items.filter(item => item.type === 'Upper garment');
+      this.lowerGarments = this.items.filter(item => item.type === 'Lower garment');
+      this.footwear = this.items.filter(item => item.type === 'Footwear');
+    });
+  }
 }
 
 
