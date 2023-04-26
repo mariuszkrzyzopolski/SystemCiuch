@@ -22,6 +22,7 @@ import { AuthGuard } from './authService/auth-guard';
 import { SliderComponent } from './shared/slider/slider.component';
 import { SuccessModalComponent } from './shared/modal/success-modal/success-modal.component';
 import { ErrorModalComponent } from './shared/modal/error-modal/error-modal.component';
+import { DetailsModalComponent } from './pages/clothes-preview/details/details-modal.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { ErrorModalComponent } from './shared/modal/error-modal/error-modal.comp
     SliderComponent,
     SuccessModalComponent,
     ErrorModalComponent,
+    DetailsModalComponent
   ],
   imports: [
     BrowserModule,

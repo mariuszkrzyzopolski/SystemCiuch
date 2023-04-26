@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { DTOCollectionItem, DTOCollectionItemDetails } from '../../../app/model/CollectionDTO';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { DTOCollectionItemDetails } from '../../../app/model/CollectionDTO';
 import { SwiperOptions } from 'swiper';
 
 @Component({
@@ -10,6 +10,7 @@ import { SwiperOptions } from 'swiper';
 export class SliderComponent {
   @Input() clothType: string;
   @Input() items: DTOCollectionItemDetails[];
+  @Output() showDetailsEvent = new EventEmitter<DTOCollectionItemDetails>();
   
   config: SwiperOptions = {
     slidesPerView: 3,
@@ -23,5 +24,9 @@ export class SliderComponent {
   }
   onSlideChange() {
     console.log('slide change');
+  }
+
+  showDetails(item: DTOCollectionItemDetails) {
+    this.showDetailsEvent.emit(item);
   }
 }

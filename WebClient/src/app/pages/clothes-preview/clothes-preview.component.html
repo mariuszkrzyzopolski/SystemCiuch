@@ -4,6 +4,9 @@
     Powrót
   </button>
 </a>
-<app-slider [items]="upperGarments" [clothType]="'Góra'"></app-slider>
-<app-slider [items]="lowerGarments" [clothType]="'Dół'"></app-slider>
-<app-slider [items]="footwear" [clothType]="'Obuwie'"></app-slider>
+<app-slider [items]="upperGarments" [clothType]="'Góra'" (showDetailsEvent)="showDetails($event)"></app-slider>
+<app-slider [items]="lowerGarments" [clothType]="'Dół'" (showDetailsEvent)="showDetails($event)"></app-slider>
+<app-slider [items]="footwear" [clothType]="'Obuwie'" (showDetailsEvent)="showDetails($event)"></app-slider>
+
+<app-details-modal [item]="detailsItem"></app-details-modal>
+

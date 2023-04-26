@@ -15,9 +15,10 @@ export class ClothesPreviewComponent implements OnInit {
   upperGarments: DTOCollectionItemDetails[];
   lowerGarments: DTOCollectionItemDetails[];
   footwear: DTOCollectionItemDetails[];
+  detailsItem: DTOCollectionItemDetails | null = null;
 
   constructor(private collectionService: CollectionService) { }
-
+  
   ngOnInit(): void {
     this.collectionService.getCollection().subscribe(data => {
       this.items = data.Collection.items;
@@ -25,6 +26,10 @@ export class ClothesPreviewComponent implements OnInit {
       this.lowerGarments = this.items.filter(item => item.type === 'Lower garment');
       this.footwear = this.items.filter(item => item.type === 'Footwear');
     });
+  }
+
+  showDetails(item: DTOCollectionItemDetails){
+     this.detailsItem = item;
   }
 }
 

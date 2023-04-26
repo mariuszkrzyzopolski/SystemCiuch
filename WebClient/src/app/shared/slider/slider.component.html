@@ -11,10 +11,10 @@
       <ng-template swiperSlide>
         <img [src]="item.image" alt="{{ item.description }}" />
         <div class="absolute bottom-0 left-0 w-full p-4 bg-white bg-opacity-90 pb-5">
-          <div class="flex justify-between mt-4">
-            <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-sm text-sm">Szczegóły</button>
-            <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-sm text-sm">Ustawienia</button>
-            <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-sm text-sm">Usuń</button>
+         <div class="flex justify-between mt-4">
+            <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md text-sm" (click)="showDetails(item)">Szczegóły</button>
+            <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-md text-sm">Ustawienia</button>
+            <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md text-sm">Usuń</button>
           </div>
         </div>
       </ng-template>
