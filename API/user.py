@@ -66,6 +66,14 @@ def authorized_user(user: User = Depends(get_current_user)):
     return user
 
 
+@router.delete("/")
+def delete_user(user: User = Depends(get_current_user)):
+    with Session(database.conn) as session:
+        session.delete(user)
+        session.commit()
+        return {}
+
+
 @router.post("/logout")
 def logout(user: User = Depends(get_current_user)):
     return {"success": True}
