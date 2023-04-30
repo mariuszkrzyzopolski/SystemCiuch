@@ -7,13 +7,17 @@ import { DTOCollection } from '../model/CollectionDTO';
   providedIn: 'root'
 })
 export class CollectionService {
-  private apiUrl = 'http://localhost:8000/collection/';
+  private apiUrl = 'http://localhost:8000/collection';
   private collectionUrl = 'assets/sample/collection.json';
 
 
   constructor(private http: HttpClient) { }
 
   getCollection(): Observable<DTOCollection> {
-    return this.http.get<DTOCollection>(this.collectionUrl);
+    return this.http.get<DTOCollection>(this.apiUrl);
+  }
+
+  deleteCollectionItem(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/item/${id}`);
   }
 }

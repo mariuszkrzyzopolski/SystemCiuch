@@ -4,9 +4,13 @@
     Powrót
   </button>
 </a>
-<app-slider [items]="upperGarments" [clothType]="'Góra'" (showDetailsEvent)="showDetails($event)"></app-slider>
-<app-slider [items]="lowerGarments" [clothType]="'Dół'" (showDetailsEvent)="showDetails($event)"></app-slider>
-<app-slider [items]="footwear" [clothType]="'Obuwie'" (showDetailsEvent)="showDetails($event)"></app-slider>
+<app-slider [items]="upperGarments" [clothType]="'Góra'" (showDetailsEvent)="showDetails($event)" (deleteEvent)="delete($event)"></app-slider>
+<app-slider [items]="lowerGarments" [clothType]="'Dół'" (showDetailsEvent)="showDetails($event)" (deleteEvent)="delete($event)"></app-slider>
+<app-slider [items]="footwear" [clothType]="'Obuwie'" (showDetailsEvent)="showDetails($event)" (deleteEvent)="delete($event)"></app-slider>
 
 <app-details-modal [item]="detailsItem"></app-details-modal>
 
+<!-- Remove modal component -->
+<app-modal [visible]="showModal" (okEvent)="removeItem()" (cancelEvent)="cancelRemove()">
+  Czy na pewno chcesz usunąć przedmiot z kolekcji?
+</app-modal>

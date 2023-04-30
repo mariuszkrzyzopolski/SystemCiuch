@@ -16,10 +16,16 @@ export class ClothesPreviewComponent implements OnInit {
   lowerGarments: DTOCollectionItemDetails[];
   footwear: DTOCollectionItemDetails[];
   detailsItem: DTOCollectionItemDetails | null = null;
+  itemToRemove: DTOCollectionItemDetails | null = null;
+  showModal = false;
 
   constructor(private collectionService: CollectionService) { }
   
   ngOnInit(): void {
+    this.loadItems();
+  }
+
+  loadItems() {
     this.collectionService.getCollection().subscribe(data => {
       this.items = data.Collection.items;
       this.upperGarments = this.items.filter(item => item.type === 'Upper garment');
@@ -27,9 +33,24 @@ export class ClothesPreviewComponent implements OnInit {
       this.footwear = this.items.filter(item => item.type === 'Footwear');
     });
   }
-
   showDetails(item: DTOCollectionItemDetails){
      this.detailsItem = item;
+  }
+
+  delete(item: DTOCollectionItemDetails) {
+    this.itemToRemove = item;
+    this.showModal = true;
+  }
+
+  cancelRemove() {
+    this.showModal = false;
+  }
+
+  removeItem(){
+    this.collectionService.deleteCollectionItem(this.itemToRemove!.id).subscribe(data =>  {
+      this.showModal = false;
+      this.loadItems();
+    });
   }
 }
 

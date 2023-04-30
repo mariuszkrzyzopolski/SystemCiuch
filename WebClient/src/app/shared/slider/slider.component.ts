@@ -11,7 +11,8 @@ export class SliderComponent {
   @Input() clothType: string;
   @Input() items: DTOCollectionItemDetails[];
   @Output() showDetailsEvent = new EventEmitter<DTOCollectionItemDetails>();
-  
+  @Output() deleteEvent = new EventEmitter<DTOCollectionItemDetails>();
+
   config: SwiperOptions = {
     slidesPerView: 3,
     spaceBetween: 50,
@@ -28,5 +29,9 @@ export class SliderComponent {
 
   showDetails(item: DTOCollectionItemDetails) {
     this.showDetailsEvent.emit(item);
+  }
+
+  deleteItem(item: DTOCollectionItemDetails) {
+    this.deleteEvent.emit(item);
   }
 }

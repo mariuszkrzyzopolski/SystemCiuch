@@ -23,6 +23,7 @@ import { SliderComponent } from './shared/slider/slider.component';
 import { SuccessModalComponent } from './shared/modal/success-modal/success-modal.component';
 import { ErrorModalComponent } from './shared/modal/error-modal/error-modal.component';
 import { DetailsModalComponent } from './pages/clothes-preview/details/details-modal.component';
+import { GenericModalComponent } from './shared/modal/generic-modal/generic-modal';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { DetailsModalComponent } from './pages/clothes-preview/details/details-m
     SliderComponent,
     SuccessModalComponent,
     ErrorModalComponent,
-    DetailsModalComponent
+    DetailsModalComponent,
+    GenericModalComponent
   ],
   imports: [
     BrowserModule,
