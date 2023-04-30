@@ -19,7 +19,6 @@ database = DB(conn)
 router = APIRouter(prefix="/collection")
 
 
-# TODO Patch for sets and items
 @router.post("/set")
 def post_set(
     first_item_id: int,
@@ -50,6 +49,15 @@ def get_set(set_id, user: User = Depends(get_current_user)):
         q = select(Set).filter(Set.id == set_id).options(joinedload(Set.items))
         data = session.execute(q).mappings().first()
         return data
+
+
+@router.delete("/sets/{set_id}")
+def delete_set(set_id, user: User = Depends(get_current_user)):
+    with Session(database.conn) as session:
+        set = session.get(Set, set_id)
+        session.delete(set)
+        session.commit()
+        return {}
 
 
 @router.get("/sets")
@@ -115,6 +123,26 @@ def post_item(
         session.commit()
         session.refresh(item)
         return item
+
+
+@router.patch("/item/{item_id}")
+def update_tags_in_item(
+    item_id, tags: List[str] = Form(...), user: User = Depends(get_current_user)
+):
+    with Session(database.conn) as session:
+        item = session.get(Item, item_id)
+        item.tags = ",".join(tags)
+        session.commit()
+        return item
+
+
+@router.delete("/item/{item_id}")
+def delete_item(item_id, user: User = Depends(get_current_user)):
+    with Session(database.conn) as session:
+        item = session.get(Item, item_id)
+        session.delete(item)
+        session.commit()
+        return {}
 
 
 @router.get("/items")
