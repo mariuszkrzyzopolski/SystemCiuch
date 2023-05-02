@@ -10,6 +10,8 @@ from multiprocessing import Process
 from API import ai_model, collection, user, wardrobe
 from API.database import DB, get_database
 from Tests.test_user import TestUser
+from Tests.test_item import TestItem
+from Tests.test_collection import TestCollection
 
 app = FastAPI()
 
@@ -47,7 +49,7 @@ if __name__ == "__main__":
     server.start()
     time.sleep(1)
 
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestUser)
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestCollection)
     unittest.TextTestRunner(verbosity=0).run(suite)
 
     server.kill()
