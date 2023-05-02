@@ -1,8 +1,9 @@
 import { Component, OnInit} from '@angular/core';
-import { DTOCollectionItem, DTOCollectionItemDetails } from '../../../app/model/CollectionDTO';
+import { DTOCollectionItem, DTOCollectionItemDetails } from '../../model/DTOCollection';
 ;
 import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import { CollectionService } from '../../../app/services/CollectionService';
+import { ItemTags } from 'src/app/model/ItemTags';
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
 
 @Component({
@@ -18,6 +19,8 @@ export class ClothesPreviewComponent implements OnInit {
   detailsItem: DTOCollectionItemDetails | null = null;
   itemToRemove: DTOCollectionItemDetails | null = null;
   showModal = false;
+  showDetailsModal = false;
+  editDetails = false;
 
   constructor(private collectionService: CollectionService) { }
   
@@ -33,7 +36,19 @@ export class ClothesPreviewComponent implements OnInit {
       this.footwear = this.items.filter(item => item.type === 'Footwear');
     });
   }
-  showDetails(item: DTOCollectionItemDetails){
+  showSettings(item: DTOCollectionItemDetails) {
+    this.showDetailsModal = true;
+    this.editDetails = true;
+    this.detailsItem = item;
+  }
+
+  cancelDetails(){
+    this.showDetailsModal = false;
+  }
+
+  showDetails(item: DTOCollectionItemDetails) {
+     this.showDetailsModal = true;
+     this.editDetails = false;
      this.detailsItem = item;
   }
 
@@ -44,6 +59,13 @@ export class ClothesPreviewComponent implements OnInit {
 
   cancelRemove() {
     this.showModal = false;
+  }
+  
+  save(tags: ItemTags) {
+    this.collectionService.save(tags.id, tags.tags).subscribe(data =>  {
+      this.showDetailsModal = false;
+      this.loadItems();
+    });
   }
 
   removeItem(){

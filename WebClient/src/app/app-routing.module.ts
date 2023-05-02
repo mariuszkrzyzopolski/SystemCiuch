@@ -10,6 +10,7 @@ import { PreviewSetsComponent } from './pages/preview-sets/preview-sets.componen
 import { SettingsComponent } from './pages/settings/settings.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { WardrobeConnectionComponent } from './pages/wardrobe-connection/wardrobe-connection.component';
+import { ManualCreateSetComponent } from './pages/manual-create-set/manual-create-set.component';
 
 
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'preview-sets', component:PreviewSetsComponent, canActivate: [AuthGuard] },
   { path: 'wardrobe-connection', component: WardrobeConnectionComponent, canActivate: [AuthGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
+  { path: 'manual-create-set', component: ManualCreateSetComponent, canActivate: [AuthGuard] },
 
 ];
 

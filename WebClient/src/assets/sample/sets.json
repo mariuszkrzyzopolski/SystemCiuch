@@ -1,0 +1,36 @@
+[
+    {
+      "Set": {
+        "id": 1,
+        "items": [
+          {
+            "description": "item_description",
+            "type": "Upper garment",
+            "image": "Users/1/1682522918.789475.jpg",
+            "set_id": null,
+            "id": 4,
+            "tags": "tag1,tag2",
+            "collection_id": 1
+          },
+          {
+            "description": "item_description",
+            "type": "Lower garment",
+            "image": "Users/1/1682522964.277089.jpg",
+            "set_id": null,
+            "id": 16,
+            "tags": "tag1,tag2",
+            "collection_id": 1
+          },
+          {
+            "description": "item_description",
+            "type": "Footwear",
+            "image": "Users/1/1682522987.152335.jpg",
+            "set_id": null,
+            "id": 22,
+            "tags": "tag1,tag2",
+            "collection_id": 1
+          }
+        ]
+      }
+    }
+  ]

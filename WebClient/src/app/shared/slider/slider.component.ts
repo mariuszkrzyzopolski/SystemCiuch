@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { DTOCollectionItemDetails } from '../../../app/model/CollectionDTO';
+import { DTOCollectionItemDetails } from '../../model/DTOCollection';
 import { SwiperOptions } from 'swiper';
 
 @Component({
@@ -10,7 +10,9 @@ import { SwiperOptions } from 'swiper';
 export class SliderComponent {
   @Input() clothType: string;
   @Input() items: DTOCollectionItemDetails[];
+  @Input() showButtons: boolean = true;
   @Output() showDetailsEvent = new EventEmitter<DTOCollectionItemDetails>();
+  @Output() showSettingsEvent = new EventEmitter<DTOCollectionItemDetails>();
   @Output() deleteEvent = new EventEmitter<DTOCollectionItemDetails>();
 
   config: SwiperOptions = {
@@ -20,11 +22,13 @@ export class SliderComponent {
     pagination: { clickable: true },
     scrollbar: { draggable: true },
   };
-  onSwiper([swiper]: any) {
-    console.log(swiper);
-  }
+  
   onSlideChange() {
     console.log('slide change');
+  }
+
+  showSettings(item: DTOCollectionItemDetails) {
+    this.showSettingsEvent.emit(item);
   }
 
   showDetails(item: DTOCollectionItemDetails) {

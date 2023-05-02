@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { DTOCollection } from '../model/CollectionDTO';
+import { DTOCollection } from '../model/DTOCollection';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CollectionService {
+
   private apiUrl = 'http://localhost:8000/collection';
   private collectionUrl = 'assets/sample/collection.json';
 
@@ -19,5 +20,9 @@ export class CollectionService {
 
   deleteCollectionItem(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/item/${id}`);
+  }
+
+  save(id: number, tags: string[]) {
+    return this.http.patch<any>(`${this.apiUrl}/item/${id}`, {tags: tags} );
   }
 }
