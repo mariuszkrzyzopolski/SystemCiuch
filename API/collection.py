@@ -51,6 +51,15 @@ def get_set(set_id, user: User = Depends(get_current_user)):
         return data
 
 
+@router.delete("/sets/{set_id}")
+def delete_set(set_id, user: User = Depends(get_current_user)):
+    with Session(database.conn) as session:
+        set = session.get(Set, set_id)
+        session.delete(set)
+        session.commit()
+        return {}
+
+
 @router.get("/sets")
 def get_sets(user: User = Depends(get_current_user)):
     with Session(database.conn) as session:
