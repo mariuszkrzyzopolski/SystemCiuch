@@ -21,10 +21,14 @@ class TestUser(TestCase):
             "mail": "test@test.com",
             "city": "Gdansk",
             "password": "password",
-            "repeated_password": "password"
+            "repeated_password": "password",
         }
 
-        response = requests.post(url, data=json.dumps(user_data), headers={"Content-Type": "application/json"})
+        response = requests.post(
+            url,
+            data=json.dumps(user_data),
+            headers={"Content-Type": "application/json"},
+        )
         self.assertEqual(response.status_code, 200)
 
     def test_register_second_user(self):
@@ -33,8 +37,17 @@ class TestUser(TestCase):
             "mail": "test@test.com",
             "city": "Gdansk",
             "password": "password",
-            "repeated_password": "password"
+            "repeated_password": "password",
         }
-        requests.post(url, data=json.dumps(user_data), headers={"Content-Type": "application/json"})
-        response = requests.post(url, data=json.dumps(user_data), headers={"Content-Type": "application/json"})
+        response = requests.post(
+            url,
+            data=json.dumps(user_data),
+            headers={"Content-Type": "application/json"},
+        )
+        self.assertEqual(response.status_code, 200)
+        response = requests.post(
+            url,
+            data=json.dumps(user_data),
+            headers={"Content-Type": "application/json"},
+        )
         self.assertNotEqual(response.status_code, 200)

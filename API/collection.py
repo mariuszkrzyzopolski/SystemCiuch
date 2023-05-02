@@ -127,7 +127,7 @@ def post_item(
 
 @router.patch("/item/{item_id}")
 def update_tags_in_item(
-    item_id, tags: List[str] = Form(...), user: User = Depends(get_current_user)
+    item_id, tags: List[str], user: User = Depends(get_current_user)
 ):
     with Session(database.conn) as session:
         item = session.get(Item, item_id)
