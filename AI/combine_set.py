@@ -28,7 +28,7 @@ def findClothes(category):
         case "two_colors":
             # znajdź inne kolory w danej okazji
             other_colors = set([row[3] for row in data[1:] if row[3] != color])
-            if len(other_colors) == 0:
+            if len(other_colors) > 0:
                 # wylosuj drugi kolor
                 second_color = random.sample(list(other_colors), 1)[0]
             else:
