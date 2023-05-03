@@ -3,7 +3,8 @@
   <swiper
     [slidesPerView]="3"
     [spaceBetween]="50"
-    (slideChange)="onSlideChange()"
+    (slideNextTransitionEnd)="onSlideNextTransitionEnd()"
+    (slidePrevTransitionEnd)="onSlidePrevTransitionEnd()"
     [navigation]="true"
     >
     <ng-container *ngFor="let item of items">

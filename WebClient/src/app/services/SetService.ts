@@ -13,6 +13,15 @@ export class SetService {
   private setsSampleUrl = 'assets/sample/sets.json';
   constructor(private http: HttpClient) { }
 
+  addSet(firstItemId: number, secondItemId: number, thirdItemId: number) {
+    const params = {
+      first_item_id: firstItemId,
+      second_item_id: secondItemId,
+      third_item_id: thirdItemId
+    };
+    return this.http.post(this.SETS_API_URL, {}, { params });
+  }
+
   getSets() {
     return this.http.get<DTOSet[]>(this.setsSampleUrl);
   }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { DTOCollectionItemDetails } from 'src/app/model/DTOCollection';
 import { CollectionService } from 'src/app/services/CollectionService';
+import { SetService } from 'src/app/services/SetService';
 
 @Component({
   selector: 'app-manual-create-set',
@@ -17,8 +18,11 @@ export class ManualCreateSetComponent {
   showModal = false;
   showDetailsModal = false;
   editDetails = false;
-
-  constructor(private collectionService: CollectionService) { }
+  first_item_id: number | null = null;
+  second_item_id: number | null = null;
+  third_item_id: number | null = null;
+  
+  constructor(private collectionService: CollectionService, private setService: SetService) { }
   
   ngOnInit(): void {
     this.loadItems();
@@ -30,6 +34,19 @@ export class ManualCreateSetComponent {
       this.upperGarments = this.items.filter(item => item.type === 'Upper garment');
       this.lowerGarments = this.items.filter(item => item.type === 'Lower garment');
       this.footwear = this.items.filter(item => item.type === 'Footwear');
+
+      if(this.upperGarments.length > 2 && this.lowerGarments.length > 2 && this.footwear.length > 2) {
+        this.first_item_id = this.upperGarments[1].id;
+        this.second_item_id = this.lowerGarments[1].id;
+        this.third_item_id = this.footwear[1].id;
+      }
+      
     });
+  }
+
+  saveSet(){
+    this.setService.addSet(this.first_item_id!, this.second_item_id!, this.third_item_id!).subscribe(data => {
+      this.showModal = true;
+    })
   }
 }
