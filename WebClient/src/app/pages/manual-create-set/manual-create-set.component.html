@@ -4,9 +4,9 @@
     Powrót
   </button>
   </a>
-  <app-slider [items]="upperGarments" [clothType]="'Góra'" [showButtons]="false"></app-slider>
-  <app-slider [items]="lowerGarments" [clothType]="'Dół'" [showButtons]="false"></app-slider>
-  <app-slider [items]="footwear" [clothType]="'Obuwie'" [showButtons]="false"></app-slider>
+  <app-slider [items]="upperGarments" [clothType]="'Góra'" [showButtons]="false" (changeSlide)="changeSlide($event)"></app-slider>
+  <app-slider [items]="lowerGarments" [clothType]="'Dół'" [showButtons]="false" (changeSlide)="changeSlide($event)"></app-slider>
+  <app-slider [items]="footwear" [clothType]="'Obuwie'" [showButtons]="false" (changeSlide)="changeSlide($event)"></app-slider>
   
   <div class="bg-white px-4 py-5 text-center sm:px-6">
     <button type="submit"

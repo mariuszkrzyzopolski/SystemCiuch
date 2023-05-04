@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DTOCollectionItemDetails } from '../../model/DTOCollection';
 import { SwiperOptions } from 'swiper';
+import { SliderChange } from 'src/app/model/SliderChange';
 
 @Component({
   selector: 'app-slider',
@@ -21,7 +22,7 @@ export class SliderComponent {
   @Output() showDetailsEvent = new EventEmitter<DTOCollectionItemDetails>();
   @Output() showSettingsEvent = new EventEmitter<DTOCollectionItemDetails>();
   @Output() deleteEvent = new EventEmitter<DTOCollectionItemDetails>();
-  //@Output() deleteEvent = new EventEmitter<DTOCollectionItemDetails>();
+  @Output() changeSlide = new EventEmitter<SliderChange>();
 
   get items(): DTOCollectionItemDetails[] {
     return this._items;
@@ -38,13 +39,13 @@ export class SliderComponent {
   };
   
   onSlideNextTransitionEnd() {
-    debugger;
     this.currentId = this._items[++this.currentIndex].id;
+    this.changeSlide.emit({ type: this.clothType, currentId: this.currentId });
   }
 
   onSlidePrevTransitionEnd() {
-    debugger;
    this.currentId = this._items[--this.currentIndex].id;
+   this.changeSlide.emit({ type: this.clothType, currentId: this.currentId });
   }
 
   showSettings(item: DTOCollectionItemDetails) {

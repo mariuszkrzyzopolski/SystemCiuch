@@ -31,7 +31,7 @@ export class AddClothesComponent implements OnInit {
     var formGroupData = this.addclothesForm.value.formGroupData;
 
     var addclothesFormData = {
-      tags: formGroupData.tags,
+      tags: formGroupData.tags.split(','),
       description: formGroupData.description,
       type: this.addclothesForm.value.type,
       image: this.fielesToUpload[0]
@@ -41,6 +41,7 @@ export class AddClothesComponent implements OnInit {
   }
 
   submitForm(addClothes: AddClothes){
+    debugger;
     var formData: any = new FormData();
     formData.append("tags", addClothes.tags);
     formData.append("description", addClothes.description);

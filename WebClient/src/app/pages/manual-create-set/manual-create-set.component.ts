@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DTOCollectionItemDetails } from 'src/app/model/DTOCollection';
+import { SliderChange } from 'src/app/model/SliderChange';
 import { CollectionService } from 'src/app/services/CollectionService';
 import { SetService } from 'src/app/services/SetService';
 
@@ -48,5 +49,16 @@ export class ManualCreateSetComponent {
     this.setService.addSet(this.first_item_id!, this.second_item_id!, this.third_item_id!).subscribe(data => {
       this.showModal = true;
     })
+  }
+
+  changeSlide(change: SliderChange) {
+    if(change.type == 'Góra') {
+      this.first_item_id = change.currentId;
+    } else if (change.type == 'Dół') {
+      this.second_item_id = change.currentId;
+    }
+    else if (change.type == 'Obuwie') {
+      this.third_item_id = change.currentId;
+    }
   }
 }
