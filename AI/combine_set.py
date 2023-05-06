@@ -5,7 +5,7 @@ import torch
 from sklearn.preprocessing import LabelEncoder
 
 
-def findClothes(category):
+def findClothes(category, data):
     bottom_items = set()
     shoes_items = set()
 
@@ -133,8 +133,9 @@ if __name__ == "__main__":
     with open("testdata/test.csv", "r") as file:
         reader = csv.reader(file)
         data = list(reader)
-    bottom_items, shoes_items, top_choice = findClothes("one_color")
-    print(bottom_items, shoes_items)
+    bottom_items, shoes_items, top_choice = findClothes("one_color", data)
+    print(bottom_items)
+    print(shoes_items)
     print(top_choice)
     bottom_choice, shoes_choice = chooseClothes(bottom_items, shoes_items)
     print(bottom_choice, shoes_choice)

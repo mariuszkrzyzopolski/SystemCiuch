@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session, joinedload
 
 import AI.remove_background as ai
 import Common.image_functions as fimg
+from AI.combine_set import findClothes
 from API.database import DB, get_database
 from Common.user_functions import get_current_user
 from Models.collection import Collection
@@ -21,15 +22,35 @@ router = APIRouter(prefix="/collection")
 
 @router.post("/set")
 def post_set(
-    first_item_id: int,
-    second_item_id: int,
-    third_item_id: int,
-    user: User = Depends(get_current_user),
+        first_item_id: int,
+        second_item_id: int,
+        third_item_id: int,
+        user: User = Depends(get_current_user),
 ):
     with Session(database.conn) as session:
         first_item = session.query(Item).get(first_item_id)
         second_item = session.query(Item).get(second_item_id)
         third_item = session.query(Item).get(third_item_id)
+        new_set = Set()
+        new_set.items.append(first_item)
+        new_set.items.append(second_item)
+        new_set.items.append(third_item)
+        session.add(new_set)
+        first_item.sets.append(new_set)
+        second_item.sets.append(new_set)
+        third_item.sets.append(new_set)
+        session.commit()
+        session.refresh(new_set)
+        return new_set
+
+
+@router.post("/ai_set/{category}")
+def post_ai_set(category: str, user: User = Depends(get_current_user)):
+    with Session(database.conn) as session:
+        q = select(Item).where(Item.collection_id == user.id_collection)
+        items = session.execute(q).mappings().all()
+        print(items[0]["Item"])
+        bottom_items, shoes_items, top_choice = findClothes(category, items)
         new_set = Set()
         new_set.items.append(first_item)
         new_set.items.append(second_item)
@@ -87,11 +108,11 @@ def get_collection(user: User = Depends(get_current_user)):
 
 @router.post("/item")
 def post_item(
-    type: str = Form(...),
-    description: str = Form(None),
-    tags: List[str] = Form(...),
-    image: UploadFile = File(...),
-    user: User = Depends(get_current_user),
+        type: str = Form(...),
+        description: str = Form(None),
+        tags: List[str] = Form(...),
+        image: UploadFile = File(...),
+        user: User = Depends(get_current_user),
 ):
     with Session(database.conn) as session:
         extension = image.filename.split(".")[-1]
@@ -127,7 +148,7 @@ def post_item(
 
 @router.patch("/item/{item_id}")
 def update_tags_in_item(
-    item_id, tags: List[str], user: User = Depends(get_current_user)
+        item_id, tags: List[str], user: User = Depends(get_current_user)
 ):
     with Session(database.conn) as session:
         item = session.get(Item, item_id)
