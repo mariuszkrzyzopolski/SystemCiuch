@@ -1,5 +1,5 @@
 import datetime
-from typing import List
+from typing import Dict, List
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from sqlalchemy import select
@@ -55,6 +55,7 @@ def get_set(set_id, user: User = Depends(get_current_user)):
 def delete_set(set_id, user: User = Depends(get_current_user)):
     with Session(database.conn) as session:
         set = session.get(Set, set_id)
+
         session.delete(set)
         session.commit()
         return {}
@@ -126,12 +127,10 @@ def post_item(
 
 
 @router.patch("/item/{item_id}")
-def update_tags_in_item(
-    item_id, tags: List[str], user: User = Depends(get_current_user)
-):
+def update_tags_in_item(item_id, tags: Dict, user: User = Depends(get_current_user)):
     with Session(database.conn) as session:
         item = session.get(Item, item_id)
-        item.tags = ",".join(tags)
+        item.tags = ",".join(*tags.values())
         session.commit()
         return item
 

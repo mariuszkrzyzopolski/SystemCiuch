@@ -10,7 +10,7 @@ export class SetService {
 
    
   private readonly SETS_API_URL = 'http://localhost:8000/collection/sets';
-  private setsSampleUrl = 'assets/sample/sets.json';
+  private readonly SET_SINGLE_API_UR = 'http://localhost:8000/collection/set';
   constructor(private http: HttpClient) { }
 
   addSet(firstItemId: number, secondItemId: number, thirdItemId: number) {
@@ -19,7 +19,7 @@ export class SetService {
       second_item_id: secondItemId,
       third_item_id: thirdItemId
     };
-    return this.http.post(this.SETS_API_URL, {}, { params });
+    return this.http.post(this.SET_SINGLE_API_UR, {}, { params });
   }
 
   getSets() {
