@@ -41,7 +41,6 @@ export class AddClothesComponent implements OnInit {
   }
 
   submitForm(addClothes: AddClothes){
-    debugger;
     var formData: any = new FormData();
     formData.append("tags", addClothes.tags);
     formData.append("description", addClothes.description);

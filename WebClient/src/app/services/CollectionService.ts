@@ -9,7 +9,7 @@ import { DTOCollection } from '../model/DTOCollection';
 export class CollectionService {
 
   private apiUrl = 'http://localhost:8000/collection';
-  private collectionUrl = 'assets/sample/collection.json';
+  private collectionUrl = 'http://localhost:8000/collection/';
 
 
   constructor(private http: HttpClient) { }
