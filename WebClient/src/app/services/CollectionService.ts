@@ -15,7 +15,7 @@ export class CollectionService {
   constructor(private http: HttpClient) { }
 
   getCollection(): Observable<DTOCollection> {
-    return this.http.get<DTOCollection>(this.collectionUrl);
+    return this.http.get<DTOCollection>(this.apiUrl);
   }
 
   deleteCollectionItem(id: number): Observable<any> {

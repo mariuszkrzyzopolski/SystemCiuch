@@ -41,17 +41,28 @@ export class AddClothesComponent implements OnInit {
   }
 
   submitForm(addClothes: AddClothes){
-    debugger;
     var formData: any = new FormData();
     formData.append("tags", addClothes.tags);
     formData.append("description", addClothes.description);
-    formData.append("type", addClothes.type);
+    formData.append("type", this.mapTypeToDto(addClothes.type));
     formData.append("image", addClothes.image);
 
     this.http.post('http://127.0.0.1:8000/collection/item', formData).subscribe(
       (response) => console.log(response),
       (error) => console.log(error)
     )
+  }
+  mapTypeToDto(type: string): any {
+    switch (type) {
+      case 'Góra':
+        return 'Upper garment';
+      case 'Dół':
+        return 'Lower garment';
+      case 'Buty':
+        return 'Footwear'
+      default:
+        console.log(`Niepoprawny typ ubrania ${type}.`);
+    }
   }
 
   onDragOver(event: any) {

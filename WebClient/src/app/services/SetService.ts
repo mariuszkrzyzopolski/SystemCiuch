@@ -23,7 +23,7 @@ export class SetService {
   }
 
   getSets() {
-    return this.http.get<DTOSet[]>(this.setsSampleUrl);
+    return this.http.get<DTOSet[]>(this.SETS_API_URL);
   }
 
   deleteSet(id: number): Observable<any> {
