@@ -18,7 +18,7 @@
    </a>
   </div>
 
-  <app-modal [visible]="showModal" [cancelButton]="false">
+  <app-modal (okEvent)="redirectToSets()" [visible]="showModal" [cancelButton]="false">
     Poprawnie dodano zestaw
   </app-modal>
   

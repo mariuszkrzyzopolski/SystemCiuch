@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { DTOCollectionItemDetails } from 'src/app/model/DTOCollection';
 import { SliderChange } from 'src/app/model/SliderChange';
 import { CollectionService } from 'src/app/services/CollectionService';
@@ -23,7 +24,7 @@ export class ManualCreateSetComponent {
   second_item_id: number | null = null;
   third_item_id: number | null = null;
   
-  constructor(private collectionService: CollectionService, private setService: SetService) { }
+  constructor(private collectionService: CollectionService, private setService: SetService, private router: Router) { }
   
   ngOnInit(): void {
     this.loadItems();
@@ -49,6 +50,10 @@ export class ManualCreateSetComponent {
     this.setService.addSet(this.first_item_id!, this.second_item_id!, this.third_item_id!).subscribe(data => {
       this.showModal = true;
     })
+  }
+
+  redirectToSets() {
+    this.router.navigate([ '/preview-sets' ]);
   }
 
   changeSlide(change: SliderChange) {
