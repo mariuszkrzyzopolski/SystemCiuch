@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 from API.database import DB, get_database
 from Common.user_functions import create_access_token, expires_in, get_current_user
 from Models.user import User as Model_User
-from Validators.user import User, UserLogin
+from Validators.user import User, UserLogin, EditUser
 
 from Models.collection import Collection
 
@@ -70,6 +70,16 @@ def authorized_user(user: User = Depends(get_current_user)):
 def delete_user(user: User = Depends(get_current_user)):
     with Session(database.conn) as session:
         session.delete(user)
+        session.commit()
+        return {}
+
+
+@router.patch("/")
+def edit_user(user_data: EditUser, user: User = Depends(get_current_user)):
+    with Session(database.conn) as session:
+        session.query(Model_User).filter(Model_User.mail == user.mail).update(
+            user_data.dict(exclude_unset=True)
+        )
         session.commit()
         return {}
 
