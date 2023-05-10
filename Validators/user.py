@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from pydantic.fields import Optional
 
 
 class User(BaseModel):
@@ -11,3 +12,9 @@ class User(BaseModel):
 class UserLogin(BaseModel):
     mail: str
     password: str
+
+
+class EditUser(BaseModel):
+    mail: Optional[str]
+    city: Optional[str]
+    password: Optional[str]
