@@ -9,6 +9,8 @@ source .venv/bin/activate  # Linux
 
 pip install -r requirements.txt
 
+pip install -r AI/requirements.txt
+
 ### RUN
 python3 main.py
 
