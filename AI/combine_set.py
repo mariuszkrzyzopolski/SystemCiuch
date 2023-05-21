@@ -10,24 +10,24 @@ def findClothes(category, data):
     shoes_items = set()
 
     # znajdź góry
-    top_items = set([tuple(row) for row in data[1:] if row[1] == "top"])
+    top_items = set([tuple(row) for row in data[1:] if "Upper garment" in row])
     # wylosuj jedną
     top_choice = random.sample(list(top_items), 1)[0]
     # zapisz jej kolor
-    color = top_choice[3]
+    color = top_choice[8]
 
     # jeśli wybrano zestaw monochromatyczny
     match category:
         case "one_color":
             bottom_items = [
-                row for row in data[1:] if row[3] == color and row[1] == "bottom"
+                row for row in data[1:] if row[8] == color and "Lower garment" in row
             ]
             shoes_items = [
-                row for row in data[1:] if row[3] == color and row[1] == "shoes"
+                row for row in data[1:] if row[8] == color and "Footwear" in row
             ]
         case "two_colors":
             # znajdź inne kolory w danej okazji
-            other_colors = set([row[3] for row in data[1:] if row[3] != color])
+            other_colors = set([row[3] for row in data[1:] if row[8] != color])
             if len(other_colors) > 0:
                 # wylosuj drugi kolor
                 second_color = random.sample(list(other_colors), 1)[0]
@@ -41,16 +41,16 @@ def findClothes(category, data):
             bottom_items = [
                 row
                 for row in data[1:]
-                if row[3] in (color, second_color) and row[1] == "bottom"
+                if row[8] in (color, second_color) and row[1] == "Lower garment"
             ]
             shoes_items = [
                 row
                 for row in data[1:]
-                if row[3] in (color, second_color) and row[1] == "shoes"
+                if row[8] in (color, second_color) and row[1] == "Footwear"
             ]
         case "random":
-            bottom_items = [row for row in data[1:] if row[1] == "bottom"]
-            shoes_items = [row for row in data[1:] if row[1] == "shoes"]
+            bottom_items = [row for row in data[1:] if "Lower garment" in row]
+            shoes_items = [row for row in data[1:] if "Footwear" in row]
 
     if len(bottom_items) == 0:
         raise ValueError(
@@ -64,25 +64,35 @@ def findClothes(category, data):
     return bottom_items, shoes_items, top_choice
 
 
-def chooseClothes(bottom_items, shoes_items):
+def chooseClothes(bottom_items, shoes_items, type_index, category_index):
     # Kodowanie kategoryczne dla kolumn 'category', 'type', 'color', 'occasion'
     le_category = LabelEncoder().fit(
-        list(set([row[1] for row in bottom_items] + [row[1] for row in shoes_items]))
+        list(
+            set(
+                [row[category_index] for row in bottom_items]
+                + [row[category_index] for row in shoes_items]
+            )
+        )
     )
     le_type = LabelEncoder().fit(
-        list(set([row[2] for row in bottom_items] + [row[2] for row in shoes_items]))
+        list(
+            set(
+                [row[type_index] for row in bottom_items]
+                + [row[type_index] for row in shoes_items]
+            )
+        )
     )
     le_color = LabelEncoder().fit(
-        list(set([row[3] for row in bottom_items] + [row[3] for row in shoes_items]))
+        list(set([row[8] for row in bottom_items] + [row[8] for row in shoes_items]))
     )
 
     # Konwersja wartości na typ float
     bottom_tensors = [
         torch.tensor(
             [
-                le_category.transform([row[1]])[0],
-                le_type.transform([row[2]])[0],
-                le_color.transform([row[3]])[0],
+                le_category.transform([row[category_index]])[0],
+                le_type.transform([row[type_index]])[0],
+                le_color.transform([row[8]])[0],
             ],
             dtype=torch.float,
         )
@@ -92,9 +102,9 @@ def chooseClothes(bottom_items, shoes_items):
     shoes_tensors = [
         torch.tensor(
             [
-                le_category.transform([row[1]])[0],
-                le_type.transform([row[2]])[0],
-                le_color.transform([row[3]])[0],
+                le_category.transform([row[category_index]])[0],
+                le_type.transform([row[type_index]])[0],
+                le_color.transform([row[8]])[0],
             ],
             dtype=torch.float,
         )
@@ -129,13 +139,13 @@ def chooseClothes(bottom_items, shoes_items):
     return bottom_choice, shoes_choice
 
 
-if __name__ == "__main__":
-    with open("testdata/test.csv", "r") as file:
-        reader = csv.reader(file)
-        data = list(reader)
-    bottom_items, shoes_items, top_choice = findClothes("one_color", data)
-    print(bottom_items)
-    print(shoes_items)
-    print(top_choice)
-    bottom_choice, shoes_choice = chooseClothes(bottom_items, shoes_items)
-    print(bottom_choice, shoes_choice)
+# if __name__ == "__main__":
+#     with open("testdata/test.csv", "r") as file:
+#         reader = csv.reader(file)
+#         data = list(reader)
+#     bottom_items, shoes_items, top_choice = findClothes("one_color", data)
+#     print(bottom_items)
+#     print(shoes_items)
+#     print(top_choice)
+#     bottom_choice, shoes_choice = chooseClothes(bottom_items, shoes_items)
+#     print(bottom_choice, shoes_choice)
