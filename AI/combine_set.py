@@ -125,7 +125,12 @@ def chooseClothes(bottom_items, shoes_items, type_index, category_index):
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
     criterion = torch.nn.MSELoss()
     for epoch in range(1000):
-        for i in range(len(bottom_tensors)):
+        tensor_len = (
+            len(shoes_tensors)
+            if len(shoes_tensors) < len(bottom_tensors)
+            else len(bottom_tensors)
+        )
+        for i in range(tensor_len):
             optimizer.zero_grad()
             bottom_output = model(bottom_tensors[i])
             shoes_output = model(shoes_tensors[i])
