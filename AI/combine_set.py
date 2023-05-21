@@ -68,14 +68,16 @@ def chooseClothes(bottom_items, shoes_items, type_index, category_index):
     le_category = LabelEncoder().fit(
         list(
             set(
-                [row[category_index] for row in bottom_items] + [row[category_index] for row in shoes_items]
+                [row[category_index] for row in bottom_items]
+                + [row[category_index] for row in shoes_items]
             )
         )
     )
     le_type = LabelEncoder().fit(
         list(
             set(
-                [row[type_index] for row in bottom_items] + [row[type_index] for row in shoes_items]
+                [row[type_index] for row in bottom_items]
+                + [row[type_index] for row in shoes_items]
             )
         )
     )
