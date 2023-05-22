@@ -1,19 +1,17 @@
-
 <a routerLink='../'><button
     class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mb-10 ">
     Powrót
   </button>
 </a>
-<app-slider [items]="upperGarments" [clothType]="'Góra'" (showSettingsEvent)="showSettings($event)" (showDetailsEvent)="showDetails($event)" (deleteEvent)="delete($event)"></app-slider>
-<app-slider [items]="lowerGarments" [clothType]="'Dół'" (showSettingsEvent)="showSettings($event)" (showDetailsEvent)="showDetails($event)" (deleteEvent)="delete($event)"></app-slider>
-<app-slider [items]="footwear" [clothType]="'Obuwie'" (showSettingsEvent)="showSettings($event)" (showDetailsEvent)="showDetails($event)" (deleteEvent)="delete($event)"></app-slider>
+<app-slider [items]="upperGarments" [clothType]="'Góra'" (showSettingsEvent)="showSettings($event)"
+  (showDetailsEvent)="showDetails($event)" (deleteEvent)="delete($event)"></app-slider>
+<app-slider [items]="lowerGarments" [clothType]="'Dół'" (showSettingsEvent)="showSettings($event)"
+  (showDetailsEvent)="showDetails($event)" (deleteEvent)="delete($event)"></app-slider>
+<app-slider [items]="footwear" [clothType]="'Obuwie'" (showSettingsEvent)="showSettings($event)"
+  (showDetailsEvent)="showDetails($event)" (deleteEvent)="delete($event)"></app-slider>
 
-<app-details-modal 
-[visible] = "showDetailsModal" 
-[item]="detailsItem" 
-[edit]="editDetails" 
-(cancelEvent)="cancelDetails()"
-(saveEvent)="save($event)"></app-details-modal>
+<app-details-modal [visible]="showDetailsModal" [item]="detailsItem" [edit]="editDetails"
+  (cancelEvent)="cancelDetails()" (saveEvent)="save($event)"></app-details-modal>
 
 <app-modal [visible]="showModal" (okEvent)="removeItem()" (cancelEvent)="cancelRemove()">
   Czy na pewno chcesz usunąć przedmiot z kolekcji?

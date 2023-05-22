@@ -69,15 +69,13 @@ export class AddClothesComponent implements OnInit {
     event.preventDefault();
   }
 
-  // From drag and drop
   onDropSuccess(event: any) {
       event.preventDefault();
-      this.onFileChange(event.dataTransfer.files);    // notice the "dataTransfer" used instead of "target"
+      this.onFileChange(event.dataTransfer.files);    
   }
 
-  // From attachment link
   onChange(event: any) {
-    this.onFileChange(event.target.files);    // "target" is correct here
+    this.onFileChange(event.target.files);   
   }
 
   private onFileChange(files: File[]) {
