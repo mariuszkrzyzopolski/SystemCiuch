@@ -7,6 +7,8 @@ from sqlalchemy.orm import Session, joinedload
 
 import AI.remove_background as ai
 import Common.image_functions as fimg
+from AI.color_recognition import color_to_df, rgb_to_color_name
+from AI.combine_set import chooseClothes, findClothes
 from API.database import DB, get_database
 from Common.user_functions import get_current_user
 from Models.collection import Collection
@@ -19,13 +21,7 @@ database = DB(conn)
 router = APIRouter(prefix="/collection")
 
 
-@router.post("/set")
-def post_set(
-    first_item_id: int,
-    second_item_id: int,
-    third_item_id: int,
-    user: User = Depends(get_current_user),
-):
+def create_set(first_item_id: int, second_item_id: int, third_item_id: int):
     with Session(database.conn) as session:
         first_item = session.query(Item).get(first_item_id)
         second_item = session.query(Item).get(second_item_id)
@@ -40,6 +36,50 @@ def post_set(
         third_item.sets.append(new_set)
         session.commit()
         session.refresh(new_set)
+        return new_set
+
+
+@router.post("/set")
+def post_set(
+    first_item_id: int,
+    second_item_id: int,
+    third_item_id: int,
+    user: User = Depends(get_current_user),
+):
+    new_set = create_set(first_item_id, second_item_id, third_item_id)
+    return new_set
+
+
+@router.post("/ai_set/{category}")
+def post_ai_set(category: str, user: User = Depends(get_current_user)):
+    with Session(database.conn) as session:
+        q = select(Item).where(Item.collection_id == user.id_collection)
+        items = session.execute(q).mappings().all()
+        dict_collection = [list(items[0]["Item"].__dict__.keys())]
+        for item in items:
+            dict_collection.append(list(item["Item"].__dict__.values()))
+        try:
+            for attempt in range(10):
+                try:
+                    bottom_items, shoes_items, top_choice = findClothes(
+                        category, dict_collection
+                    )
+                except ValueError:
+                    continue
+                else:
+                    break
+        except ValueError:
+            raise HTTPException(
+                status_code=500,
+                detail="Insufficient clothes to choose from, please try again",
+            )
+        bottom_choice, shoes_choice = chooseClothes(
+            bottom_items=bottom_items,
+            shoes_items=shoes_items,
+            category_index=dict_collection[0].index("tags"),
+            type_index=dict_collection[0].index("type"),
+        )
+        new_set = create_set(top_choice[5], bottom_choice[5], shoes_choice[5])
         return new_set
 
 
@@ -107,6 +147,13 @@ def post_item(
         cv2_img = ai.cv2_remove_backgound(cv2_img)
         image = fimg.cv2_to_pil(cv2_img)
 
+        df_color = color_to_df(image)
+        if tuple(df_color["rgb"].iloc[0]) != (255, 255, 255):
+            top_color_rgb = df_color.iloc[0]["rgb"]
+        else:
+            top_color_rgb = df_color.iloc[1]["rgb"]
+        color = top_color_rgb, rgb_to_color_name(top_color_rgb)
+
         new_filename = (
             f"Users/{user.id_collection}/"
             f"{datetime.datetime.timestamp(datetime.datetime.now())}.jpg"
@@ -119,6 +166,7 @@ def post_item(
             tags=",".join(tags),
             image=new_filename,
             collection_id=user.id_collection,
+            color=color[1],
         )
         session.add(item)
         session.commit()

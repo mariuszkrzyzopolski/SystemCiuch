@@ -17,6 +17,7 @@ class Item(Base):
     image: Mapped[str] = mapped_column()
     collection_id: Mapped[int] = mapped_column(ForeignKey("Collection.id"))
     set_id: Mapped[Optional[List[int]]] = mapped_column(ForeignKey("Set.id"))
+    color: Mapped[str] = mapped_column()
 
     sets: Mapped[List["Set"]] = relationship(  # noqa: F821f
         secondary=association_sets, back_populates="items"
