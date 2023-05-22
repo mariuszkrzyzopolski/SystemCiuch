@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
-from API import ai_model, collection, user, wardrobe
+from API import collection, user, wardrobe
 from API.database import DB, get_database
 
 app = FastAPI()
@@ -20,7 +20,6 @@ origins = [
 app.include_router(collection.router, tags=["collection"])
 app.include_router(wardrobe.router, tags=["wardrobe"])
 app.include_router(user.router, tags=["user"])
-app.include_router(ai_model.router, tags=["ai"])
 app.add_middleware(SessionMiddleware, secret_key=random.random())
 app.add_middleware(
     CORSMiddleware,
