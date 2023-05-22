@@ -3,54 +3,16 @@
     Powrót
   </button>
 </a>
-<h1>Góra </h1>
-<div class="slider">
-  <swiper
-    [slidesPerView]="3"
-    [spaceBetween]="50"
-    (swiper)="onSwiper($event)"
-    (slideChange)="onSlideChange()"
-    [navigation]="true"
-    >
-      <ng-template swiperSlide>Slide 1</ng-template>
-      <ng-template swiperSlide>Slide 2</ng-template>
-      <ng-template swiperSlide>Slide 3</ng-template>
-      <ng-template swiperSlide>Slide 4</ng-template>
-      <ng-template swiperSlide>Slide 5</ng-template>
-      <ng-template swiperSlide>Slide 6</ng-template>
-    </swiper>
-</div>
-<h1>Dół </h1>
-<div class="slider">
-  <swiper
-    [slidesPerView]="3"
-    [spaceBetween]="50"
-    (swiper)="onSwiper($event)"
-    (slideChange)="onSlideChange()"
-    [navigation]="true"
-    >
-      <ng-template swiperSlide>Slide 1</ng-template>
-      <ng-template swiperSlide>Slide 2</ng-template>
-      <ng-template swiperSlide>Slide 3</ng-template>
-      <ng-template swiperSlide>Slide 4</ng-template>
-      <ng-template swiperSlide>Slide 5</ng-template>
-      <ng-template swiperSlide>Slide 6</ng-template>
-    </swiper>
-</div>
-<h1>Obuwie </h1>
-<div class="slider">
-  <swiper
-    [slidesPerView]="3"
-    [spaceBetween]="50"
-    (swiper)="onSwiper($event)"
-    (slideChange)="onSlideChange()"
-    [navigation]="true"
-    >
-      <ng-template swiperSlide>Slide 1</ng-template>
-      <ng-template swiperSlide>Slide 2</ng-template>
-      <ng-template swiperSlide>Slide 3</ng-template>
-      <ng-template swiperSlide>Slide 4</ng-template>
-      <ng-template swiperSlide>Slide 5</ng-template>
-      <ng-template swiperSlide>Slide 6</ng-template>
-    </swiper>
-</div>
+<app-slider [items]="upperGarments" [clothType]="'Góra'" (showSettingsEvent)="showSettings($event)"
+  (showDetailsEvent)="showDetails($event)" (deleteEvent)="delete($event)"></app-slider>
+<app-slider [items]="lowerGarments" [clothType]="'Dół'" (showSettingsEvent)="showSettings($event)"
+  (showDetailsEvent)="showDetails($event)" (deleteEvent)="delete($event)"></app-slider>
+<app-slider [items]="footwear" [clothType]="'Obuwie'" (showSettingsEvent)="showSettings($event)"
+  (showDetailsEvent)="showDetails($event)" (deleteEvent)="delete($event)"></app-slider>
+
+<app-details-modal [visible]="showDetailsModal" [item]="detailsItem" [edit]="editDetails"
+  (cancelEvent)="cancelDetails()" (saveEvent)="save($event)"></app-details-modal>
+
+<app-modal [visible]="showModal" (okEvent)="removeItem()" (cancelEvent)="cancelRemove()">
+  Czy na pewno chcesz usunąć przedmiot z kolekcji?
+</app-modal>

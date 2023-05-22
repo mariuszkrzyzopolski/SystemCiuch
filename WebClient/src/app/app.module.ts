@@ -13,12 +13,19 @@ import { WardrobeConnectionComponent } from './pages/wardrobe-connection/wardrob
 import { CreateSetComponent } from './pages/create-set/create-set.component';
 import { PreviewSetsComponent } from './pages/preview-sets/preview-sets.component';
 import { SwiperModule } from "swiper/angular";
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthInterceptor } from './auth-interceptor/auth-interceptor';
 import { AuthGuard } from './authService/auth-guard';
+import { SliderComponent } from './shared/slider/slider.component';
+import { SuccessModalComponent } from './shared/modal/success-modal/success-modal.component';
+import { ErrorModalComponent } from './shared/modal/error-modal/error-modal.component';
+import { DetailsModalComponent } from './pages/clothes-preview/details/details-modal.component';
+import { GenericModalComponent } from './shared/modal/generic-modal/generic-modal.component';
+import { ManualCreateSetComponent } from './pages/manual-create-set/manual-create-set.component';
+import { SetService } from './services/SetService';
 
 @NgModule({
   declarations: [
@@ -35,12 +42,19 @@ import { AuthGuard } from './authService/auth-guard';
     PreviewSetsComponent,
     SignUpComponent,
     LoginComponent,
+    SliderComponent,
+    SuccessModalComponent,
+    ErrorModalComponent,
+    DetailsModalComponent,
+    GenericModalComponent,
+    ManualCreateSetComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     SwiperModule,
     ReactiveFormsModule,
+    FormsModule,
     HttpClientModule,
   ],
   providers: [{

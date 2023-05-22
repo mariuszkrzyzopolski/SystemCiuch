@@ -11,7 +11,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700">Wybierz zdjęcie</label>
             <div class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
-              <div class="space-y-1 text-center">
+              <div class="space-y-1 text-center" *ngIf="fielesToUpload.length==0">
                 <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48"
                   aria-hidden="true">
                   <path
@@ -28,6 +28,9 @@
                 </div>
                 <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
               </div>
+              <div *ngIf="fielesToUpload.length == 1">
+              Zdjęcie zostało dodane.
+               </div>
             </div>
             <div *ngIf="fielesToUpload.length == 0">
              Wymagane jest zdjęcie!
@@ -52,7 +55,7 @@
             <div formGroupName="formGroupData">
               <div class="md:w-64 py-1">
                 <label>
-                  Tag:
+                  Tagi:
                 </label>
                 <input
                   class="form-control w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
@@ -76,10 +79,10 @@
         </div>
         <div class="bg-white px-4 py-1 text-center sm:px-6">
           <button type="submit"
-            class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-8 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-80" 
+            class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-md text-sm px-8 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-80" 
             [disabled]="!addclothesForm.valid">Zapisz</button>
          <a routerLink='../'>
-          <button class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-8 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Anuluj</button>
+          <button class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-md text-sm px-8 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Anuluj</button>
          </a>
         </div>
       </div>

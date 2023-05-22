@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/authService/auth-service.component';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  loginFail: boolean;
 
   constructor(
     private authService: AuthService,
@@ -37,9 +38,17 @@ export class LoginComponent {
           (result) => {
             this.authService.setSession(result);
             this.router.navigateByUrl('/');
+            this.loginFail = false;
+          },
+          (error) => {
+            this.loginFail = true;
           }
         );
     }
+  }
+
+  close() {
+    this.loginFail = false;
   }
 
   onRegister() {
