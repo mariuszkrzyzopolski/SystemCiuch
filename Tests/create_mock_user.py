@@ -80,22 +80,10 @@ def add_some_photos(token):
             type = "Lower garment"
         elif folder in ["shoes"]:
             type = "Footwear"
+        tags = folder
         for i in range(5):
             filename = random.choice(files)
             file_path = os.path.join(directory, folder, filename)
-
-            if type == "Upper garment":
-                upper = ["short", "longsleeve", "shirt"]
-                tags = random.choice(upper)
-            elif type == "Lower garment":
-                lower = [
-                    "short",
-                    "long",
-                ]
-                tags = random.choice(lower)
-            elif type == "Footwear":
-                foot = ["sneakers", "moccasins"]
-                tags = random.choice(foot)
 
             with open(file_path, "rb") as image_file:
                 image_bytes = image_file.read()
