@@ -13,7 +13,6 @@ from starlette.middleware.sessions import SessionMiddleware
 
 from API import collection, user, wardrobe
 from API.database import DB, get_database
-
 app = FastAPI()
 
 origins = [
@@ -37,12 +36,13 @@ app.add_middleware(
 
 
 def run_server():
+    print("Start")
     conn = get_database()
     database = DB(conn)
     database.drop_db()
     database.initialize_db()
     uvicorn.run("create_mock_user:app", port=8000, log_level="info")
-
+    print("Stop")
 
 def register_mock_user(mail, passwd):
     url = "http://localhost:8000/user/register"
@@ -106,7 +106,7 @@ def add_some_photos(token):
 if __name__ == "__main__":
     server = Process(target=run_server)
     server.start()
-    time.sleep(1)
+    time.sleep(10)
 
     user = "test@test.com"
     passwd = "password"

@@ -37,7 +37,7 @@ updateUser(): void {
 remove(): void {
   this.userService.removeUser().subscribe(
     (response) => {
-      // Handle success response
+      this.showRemoveModal = false;
       this.router.navigate(['/login']);
     }
   );

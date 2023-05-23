@@ -25,7 +25,7 @@ import { ErrorModalComponent } from './shared/modal/error-modal/error-modal.comp
 import { DetailsModalComponent } from './pages/clothes-preview/details/details-modal.component';
 import { GenericModalComponent } from './shared/modal/generic-modal/generic-modal.component';
 import { ManualCreateSetComponent } from './pages/manual-create-set/manual-create-set.component';
-import { SetService } from './services/SetService';
+import { AutomaticCreateSetComponent } from './automatic-create-set/automatic-create-set.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +47,8 @@ import { SetService } from './services/SetService';
     ErrorModalComponent,
     DetailsModalComponent,
     GenericModalComponent,
-    ManualCreateSetComponent
+    ManualCreateSetComponent,
+    AutomaticCreateSetComponent,
   ],
   imports: [
     BrowserModule,

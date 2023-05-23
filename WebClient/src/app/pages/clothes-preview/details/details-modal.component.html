@@ -28,6 +28,12 @@
                   </label>
                     {{itemDetails.description}}
                 </div>
+                <div class="mb-4" *ngIf="!edit">
+                  <label class="block text-gray-700 text-sm font-bold mb-2" for="field2">
+                    Kolor
+                  </label>
+                    {{itemDetails.color}}
+                </div>
               </form>
             </div>
           </div>

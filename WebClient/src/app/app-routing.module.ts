@@ -11,6 +11,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { WardrobeConnectionComponent } from './pages/wardrobe-connection/wardrobe-connection.component';
 import { ManualCreateSetComponent } from './pages/manual-create-set/manual-create-set.component';
+import { AutomaticCreateSetComponent } from './automatic-create-set/automatic-create-set.component';
 
 
 const routes: Routes = [
@@ -24,7 +25,7 @@ const routes: Routes = [
   { path: 'wardrobe-connection', component: WardrobeConnectionComponent, canActivate: [AuthGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: 'manual-create-set', component: ManualCreateSetComponent, canActivate: [AuthGuard] },
-
+  { path: 'automatic-create-set', component: AutomaticCreateSetComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

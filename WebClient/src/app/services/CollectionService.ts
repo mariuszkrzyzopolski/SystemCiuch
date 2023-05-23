@@ -25,4 +25,9 @@ export class CollectionService {
   save(id: number, tags: string[]) {
     return this.http.patch<any>(`${this.apiUrl}/item/${id}`, {tags: tags} );
   }
+
+  saveAutomaticSet(category: string) {
+    const url = `${this.apiUrl}/ai_set/${category}`;
+    return this.http.post(url, null);
+  }
 }
