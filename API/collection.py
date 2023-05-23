@@ -76,6 +76,7 @@ def post_ai_set(category: str, user: User = Depends(get_current_user)):
         bottom_choice, shoes_choice = chooseClothes(
             bottom_items=bottom_items,
             shoes_items=shoes_items,
+            color_index=dict_collection[0].index("color"),
             category_index=dict_collection[0].index("tags"),
             type_index=dict_collection[0].index("type"),
         )
