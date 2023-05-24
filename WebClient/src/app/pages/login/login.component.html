@@ -12,8 +12,8 @@
                     placeholder="Hasło" formControlName="password" />
                 <button type="submit" [disabled]="!loginForm.valid"
                     [ngClass]="{'bg-green-300': !loginForm.valid, 'bg-green-500' : loginForm.valid}"
-                    class="w-full text-center py-3 rounded text-white hover:bg-green-dark focus:outline-none my-1">Zaloguj
-                    się</button>
+                    class="w-full text-center py-3 rounded text-white hover:bg-green-dark focus:outline-none my-1">Zaloguj się
+                </button>
             </div>
             <div class="text-grey-dark mt-6">
                 Nie masz konta?
@@ -24,3 +24,8 @@
         </div>
     </div>
 </form>
+
+<app-error-modal *ngIf="loginFail"
+  [message]="'Błąd podczas logowania'"
+  (cancelEvent)="close()">
+</app-error-modal>

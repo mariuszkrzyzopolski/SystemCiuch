@@ -31,7 +31,7 @@ export class AddClothesComponent implements OnInit {
     var formGroupData = this.addclothesForm.value.formGroupData;
 
     var addclothesFormData = {
-      tags: formGroupData.tags,
+      tags: formGroupData.tags.split(','),
       description: formGroupData.description,
       type: this.addclothesForm.value.type,
       image: this.fielesToUpload[0]
@@ -44,7 +44,7 @@ export class AddClothesComponent implements OnInit {
     var formData: any = new FormData();
     formData.append("tags", addClothes.tags);
     formData.append("description", addClothes.description);
-    formData.append("type", addClothes.type);
+    formData.append("type", this.mapTypeToDto(addClothes.type));
     formData.append("image", addClothes.image);
 
     this.http.post('http://127.0.0.1:8000/collection/item', formData).subscribe(
@@ -52,20 +52,30 @@ export class AddClothesComponent implements OnInit {
       (error) => console.log(error)
     )
   }
+  mapTypeToDto(type: string): any {
+    switch (type) {
+      case 'Góra':
+        return 'Upper garment';
+      case 'Dół':
+        return 'Lower garment';
+      case 'Buty':
+        return 'Footwear'
+      default:
+        console.log(`Niepoprawny typ ubrania ${type}.`);
+    }
+  }
 
   onDragOver(event: any) {
     event.preventDefault();
   }
 
-  // From drag and drop
   onDropSuccess(event: any) {
       event.preventDefault();
-      this.onFileChange(event.dataTransfer.files);    // notice the "dataTransfer" used instead of "target"
+      this.onFileChange(event.dataTransfer.files);    
   }
 
-  // From attachment link
   onChange(event: any) {
-    this.onFileChange(event.target.files);    // "target" is correct here
+    this.onFileChange(event.target.files);   
   }
 
   private onFileChange(files: File[]) {

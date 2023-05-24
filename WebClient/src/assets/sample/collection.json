@@ -1,0 +1,322 @@
+{
+    "Collection": {
+      "id": 1,
+      "items": [
+        {
+          "type": "Upper garment",
+          "description": "item_description",
+          "image": "Users/1/1682522907.237873.jpg",
+          "set_id": null,
+          "id": 1,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Upper garment",
+          "description": "item_description",
+          "image": "Users/1/1682522911.173276.jpg",
+          "set_id": null,
+          "id": 2,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Upper garment",
+          "description": "item_description",
+          "image": "Users/1/1682522915.017925.jpg",
+          "set_id": null,
+          "id": 3,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Upper garment",
+          "description": "item_description",
+          "image": "Users/1/1682522918.789475.jpg",
+          "set_id": null,
+          "id": 4,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Upper garment",
+          "description": "item_description",
+          "image": "Users/1/1682522922.597451.jpg",
+          "set_id": null,
+          "id": 5,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Upper garment",
+          "description": "item_description",
+          "image": "Users/1/1682522926.444856.jpg",
+          "set_id": null,
+          "id": 6,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Upper garment",
+          "description": "item_description",
+          "image": "Users/1/1682522930.254698.jpg",
+          "set_id": null,
+          "id": 7,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Upper garment",
+          "description": "item_description",
+          "image": "Users/1/1682522934.069317.jpg",
+          "set_id": null,
+          "id": 8,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Upper garment",
+          "description": "item_description",
+          "image": "Users/1/1682522937.933287.jpg",
+          "set_id": null,
+          "id": 9,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Upper garment",
+          "description": "item_description",
+          "image": "Users/1/1682522941.951291.jpg",
+          "set_id": null,
+          "id": 10,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Upper garment",
+          "description": "item_description",
+          "image": "Users/1/1682522945.702494.jpg",
+          "set_id": null,
+          "id": 11,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Upper garment",
+          "description": "item_description",
+          "image": "Users/1/1682522949.408302.jpg",
+          "set_id": null,
+          "id": 12,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Upper garment",
+          "description": "item_description",
+          "image": "Users/1/1682522953.064557.jpg",
+          "set_id": null,
+          "id": 13,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Upper garment",
+          "description": "item_description",
+          "image": "Users/1/1682522956.754619.jpg",
+          "set_id": null,
+          "id": 14,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Upper garment",
+          "description": "item_description",
+          "image": "Users/1/1682522960.523617.jpg",
+          "set_id": null,
+          "id": 15,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Lower garment",
+          "description": "item_description",
+          "image": "Users/1/1682522964.277089.jpg",
+          "set_id": null,
+          "id": 16,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Lower garment",
+          "description": "item_description",
+          "image": "Users/1/1682522967.949845.jpg",
+          "set_id": null,
+          "id": 17,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Lower garment",
+          "description": "item_description",
+          "image": "Users/1/1682522971.718769.jpg",
+          "set_id": null,
+          "id": 18,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Lower garment",
+          "description": "item_description",
+          "image": "Users/1/1682522975.40583.jpg",
+          "set_id": null,
+          "id": 19,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Lower garment",
+          "description": "item_description",
+          "image": "Users/1/1682522979.219568.jpg",
+          "set_id": null,
+          "id": 20,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Footwear",
+          "description": "item_description",
+          "image": "Users/1/1682522983.143606.jpg",
+          "set_id": null,
+          "id": 21,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Footwear",
+          "description": "item_description",
+          "image": "Users/1/1682522987.152335.jpg",
+          "set_id": null,
+          "id": 22,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Footwear",
+          "description": "item_description",
+          "image": "Users/1/1682522991.064179.jpg",
+          "set_id": null,
+          "id": 23,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Footwear",
+          "description": "item_description",
+          "image": "Users/1/1682522994.891635.jpg",
+          "set_id": null,
+          "id": 24,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Footwear",
+          "description": "item_description",
+          "image": "Users/1/1682522998.611549.jpg",
+          "set_id": null,
+          "id": 25,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Lower garment",
+          "description": "item_description",
+          "image": "Users/1/1682523002.329037.jpg",
+          "set_id": null,
+          "id": 26,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Lower garment",
+          "description": "item_description",
+          "image": "Users/1/1682523006.051791.jpg",
+          "set_id": null,
+          "id": 27,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Lower garment",
+          "description": "item_description",
+          "image": "Users/1/1682523009.84839.jpg",
+          "set_id": null,
+          "id": 28,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Lower garment",
+          "description": "item_description",
+          "image": "Users/1/1682523013.64827.jpg",
+          "set_id": null,
+          "id": 29,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Lower garment",
+          "description": "item_description",
+          "image": "Users/1/1682523017.478464.jpg",
+          "set_id": null,
+          "id": 30,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Upper garment",
+          "description": "item_description",
+          "image": "Users/1/1682523021.454761.jpg",
+          "set_id": null,
+          "id": 31,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Upper garment",
+          "description": "item_description",
+          "image": "Users/1/1682523025.04592.jpg",
+          "set_id": null,
+          "id": 32,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Upper garment",
+          "description": "item_description",
+          "image": "Users/1/1682523029.112586.jpg",
+          "set_id": null,
+          "id": 33,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Upper garment",
+          "description": "item_description",
+          "image": "Users/1/1682523033.004451.jpg",
+          "set_id": null,
+          "id": 34,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        },
+        {
+          "type": "Upper garment",
+          "description": "item_description",
+          "image": "Users/1/1682523036.770799.jpg",
+          "set_id": null,
+          "id": 35,
+          "tags": "tag1,tag2",
+          "collection_id": 1
+        }
+      ]
+    }
+  }
