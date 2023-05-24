@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from multiprocessing import Process
 
-from API import ai_model, collection, user, wardrobe
+from API import collection, user, wardrobe
 from API.database import DB, get_database
 from Tests.test_user import TestUser
 from Tests.test_item import TestItem
@@ -25,7 +25,7 @@ origins = [
 app.include_router(collection.router, tags=["collection"])
 app.include_router(wardrobe.router, tags=["wardrobe"])
 app.include_router(user.router, tags=["user"])
-app.include_router(ai_model.router, tags=["ai"])
+#app.include_router(ai_model.router, tags=["ai"])
 app.add_middleware(SessionMiddleware, secret_key=random.random())
 app.add_middleware(
     CORSMiddleware,
@@ -49,7 +49,7 @@ if __name__ == "__main__":
     server.start()
     time.sleep(1)
 
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestCollection)
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestItem)
     unittest.TextTestRunner(verbosity=0).run(suite)
 
     server.kill()

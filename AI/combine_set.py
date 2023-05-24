@@ -64,7 +64,7 @@ def findClothes(category, data):
 
 
 def chooseClothes(bottom_items, shoes_items, type_index, category_index):
-    # Kodowanie kategoryczne dla kolumn 'category', 'type', 'color', 'occasion'
+    # Kodowanie kategoryczne dla kolumn 'category', 'type', 'color'
     le_category = LabelEncoder().fit(
         list(
             set(
