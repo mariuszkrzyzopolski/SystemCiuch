@@ -49,7 +49,7 @@ if __name__ == "__main__":
     server.start()
     time.sleep(1)
 
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestItem)
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestCollection)
     unittest.TextTestRunner(verbosity=0).run(suite)
 
     server.kill()

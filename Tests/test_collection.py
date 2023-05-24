@@ -23,7 +23,7 @@ class TestCollection(TestCase):
         response = helper_test.login_mock_user("test@test", "test")
         self.token = response["token"]
 
-    def test_collection_post(self):
+    def test_collection_post_get_delete(self):
         directory = os.getcwd() + "/../Images/Assets/"
         folders = ["dress", "jumpsuit", "outwear", "pants", "shoes", "skirt", "top"]
         url = "http://localhost:8000/collection/item"
@@ -62,7 +62,19 @@ class TestCollection(TestCase):
             "Authorization": "Bearer " + self.token,
         }
 
+        # post
         params = {"first_item_id": 1, "second_item_id": 2, "third_item_id": 3}
 
         response = requests.post(url, params=params, headers=headers)
+        self.assertEqual(response.status_code, 200)
+
+        # get
+        set_id = response.json()["id"]
+        url = f"http://localhost:8000/collection/sets/{set_id}"
+
+        response = requests.get(url, headers=headers)
+        self.assertEqual(response.status_code, 200)
+
+        # delete
+        response = requests.delete(url, headers=headers)
         self.assertEqual(response.status_code, 200)
