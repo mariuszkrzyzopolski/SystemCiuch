@@ -1,6 +1,6 @@
 from unittest import TestCase
 import requests
-import helper_test
+from Tests import helper_test
 import random
 import os
 

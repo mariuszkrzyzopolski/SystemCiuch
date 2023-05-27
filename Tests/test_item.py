@@ -1,7 +1,7 @@
 import os
 from unittest import TestCase
 import requests
-import helper_test
+from Tests import helper_test
 import random
 
 from API.database import DB, get_database
