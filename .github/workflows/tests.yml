@@ -21,7 +21,7 @@ jobs:
           echo "PYTHONPATH=." >> $GITHUB_ENV
           echo "::set-env name=PYTHONPATH::home/runner/work/mariuszkrzyzopolski/SystemCiuch"
           python -c "import sys; print('\n'.join(sys.path))"
-#          pip install pytest pytest-cov requests torch
+          pip install pytest pytest-cov requests torch
           python API/main.py && sleep 3
 #          pytest Tests --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
 #          kill -9 `lsof -i:8000 -t`
