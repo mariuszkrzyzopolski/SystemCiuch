@@ -5,6 +5,7 @@ import shutil
 import time
 from multiprocessing import Process
 
+import pytest
 import requests
 import uvicorn as uvicorn
 from fastapi import FastAPI
@@ -13,6 +14,8 @@ from starlette.middleware.sessions import SessionMiddleware
 
 from API import collection, user, wardrobe
 from API.database import DB, get_database
+
+pytestmark = pytest.mark.skip(reason="helper script")
 app = FastAPI()
 
 origins = [
