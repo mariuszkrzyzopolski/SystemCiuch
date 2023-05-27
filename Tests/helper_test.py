@@ -1,9 +1,5 @@
 import json
-
-import pytest
 import requests
-
-pytestmark = pytest.mark.skip(reason="helper script")
 
 
 def register_mock_user(mail, passwd):

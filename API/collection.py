@@ -26,6 +26,18 @@ def create_set(first_item_id: int, second_item_id: int, third_item_id: int):
         first_item = session.query(Item).get(first_item_id)
         second_item = session.query(Item).get(second_item_id)
         third_item = session.query(Item).get(third_item_id)
+        q = (
+            select(Set)
+            .where(Set.items.contains(first_item))
+            .where(Set.items.contains(second_item))
+            .where(Set.items.contains(third_item))
+        )
+        set_search = session.execute(q).mappings().all()
+        if set_search:
+            raise HTTPException(
+                status_code=500,
+                detail="Set already exists",
+            )
         new_set = Set()
         new_set.items.append(first_item)
         new_set.items.append(second_item)
