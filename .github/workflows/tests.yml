@@ -16,7 +16,6 @@ jobs:
           cache: 'pip'
       - run: pip install -r API/requirements.txt
       - run: pip install -r AI/requirements.txt
-
       - name: Test with pytest
         run: |
           echo "PYTHONPATH=." >> $GITHUB_ENV
