@@ -25,7 +25,6 @@ origins = [
 app.include_router(collection.router, tags=["collection"])
 app.include_router(wardrobe.router, tags=["wardrobe"])
 app.include_router(user.router, tags=["user"])
-#app.include_router(ai_model.router, tags=["ai"])
 app.add_middleware(SessionMiddleware, secret_key=random.random())
 app.add_middleware(
     CORSMiddleware,
