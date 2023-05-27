@@ -16,7 +16,6 @@ export class PreviewSetsComponent {
   }
 
   removeSet(setId: number) {
-    // Remove the set with the given ID from the list
     this.setService.deleteSet(setId).subscribe(
       response => {
         this.loadData();

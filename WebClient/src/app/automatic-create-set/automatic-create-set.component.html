@@ -5,15 +5,15 @@
   <div class="bg-white px-6 py-25 rounded shadow-md text-black w-full">
     <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
       <div class="flex flex-col">
-        <a (click)="createSet('one_color')"
+        <a (click)="createSet('one_color')" (click)=" createSet"
           class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-3 px-4 border border-gray-300 rounded shadow text-center">
          Zestawy jednokolorowe
         </a>
-        <a (click)="createSet('two_color')"
+        <a (click)="createSet('two_color')" (click)=" createSet"
           class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-3 px-4 border border-gray-300 rounded shadow mt-10 text-center">
           Zestawy dwukolorowe
         </a>
-        <a (click)="createSet('random')"
+        <a (click)="createSet('random')" (click)=" createSet"
         class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-3 px-4 border border-gray-300 rounded shadow mt-10 text-center">
         Zestawy różnokolorowe
       </a>

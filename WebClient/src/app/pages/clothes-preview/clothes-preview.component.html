@@ -3,12 +3,16 @@
     Powrót
   </button>
 </a>
-<app-slider [items]="upperGarments" [clothType]="'Góra'" (showSettingsEvent)="showSettings($event)"
+<div *ngIf="!this.items || this.items?.length == 0">Nie posiadasz żadnych zdjęć w kolekcji, w celu ich dodania przejdź do strony "Dodaj ubranie".</div>
+<div *ngIf="this.items && this.items.length > 0">
+  <app-slider [items]="upperGarments" [clothType]="'Góra'" (showSettingsEvent)="showSettings($event)"
   (showDetailsEvent)="showDetails($event)" (deleteEvent)="delete($event)"></app-slider>
-<app-slider [items]="lowerGarments" [clothType]="'Dół'" (showSettingsEvent)="showSettings($event)"
-  (showDetailsEvent)="showDetails($event)" (deleteEvent)="delete($event)"></app-slider>
-<app-slider [items]="footwear" [clothType]="'Obuwie'" (showSettingsEvent)="showSettings($event)"
-  (showDetailsEvent)="showDetails($event)" (deleteEvent)="delete($event)"></app-slider>
+  <app-slider [items]="lowerGarments" [clothType]="'Dół'" (showSettingsEvent)="showSettings($event)"
+    (showDetailsEvent)="showDetails($event)" (deleteEvent)="delete($event)"></app-slider>
+  <app-slider [items]="footwear" [clothType]="'Obuwie'" (showSettingsEvent)="showSettings($event)"
+    (showDetailsEvent)="showDetails($event)" (deleteEvent)="delete($event)"></app-slider>
+</div>
+
 
 <app-details-modal [visible]="showDetailsModal" [item]="detailsItem" [edit]="editDetails"
   (cancelEvent)="cancelDetails()" (saveEvent)="save($event)"></app-details-modal>

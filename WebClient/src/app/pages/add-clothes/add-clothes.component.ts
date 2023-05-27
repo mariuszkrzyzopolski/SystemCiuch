@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AddClothes } from '../../model/AddClothes';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-clothes',
@@ -12,7 +13,7 @@ export class AddClothesComponent implements OnInit {
   
   fielesToUpload: File[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   type = ['Góra', 'Dół', 'Buty'];
   addclothesForm: FormGroup;
@@ -48,7 +49,7 @@ export class AddClothesComponent implements OnInit {
     formData.append("image", addClothes.image);
 
     this.http.post('http://127.0.0.1:8000/collection/item', formData).subscribe(
-      (response) => console.log(response),
+      (response) => this.router.navigate([ '/clothes-preview' ]),
       (error) => console.log(error)
     )
   }
