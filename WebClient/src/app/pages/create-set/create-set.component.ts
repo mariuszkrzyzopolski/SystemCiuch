@@ -12,8 +12,11 @@ export class CreateSetComponent {
     private router: Router) {
   }
 
-  goToManualCreateSet() {
+  goToAutomaticCreateSet() {
+    this.router.navigate([ '/automatic-create-set' ])
+  }
 
+  goToManualCreateSet() {
     this.router.navigate([ '/manual-create-set' ])
   }
 }

@@ -15,4 +15,5 @@ export interface DTOCollection {
     set_id: number | null;
     tags: string;
     collection_id: number;
+    color: string;
   }

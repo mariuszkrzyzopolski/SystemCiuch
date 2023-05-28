@@ -1,45 +1,57 @@
 <div class="fixed z-10 inset-0 overflow-y-auto" *ngIf="visible && itemDetails != null">
-    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-      <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-        <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-      </div>
-  
-      <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-          <div class="sm:flex sm:items-start">
-            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
-            </div>
-            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-              <h3 class="text-lg leading-6 font-medium text-gray-900" *ngIf="!edit">Szczegóły</h3>
-              <h3 class="text-lg leading-6 font-medium text-gray-900" *ngIf="edit">Ustawienia</h3>
-              <form class="mt-4">
-                <div class="mb-4">
-                  <label class="block text-gray-700 text-sm font-bold mb-2" for="field1">
-                    Tagi
-                  </label>
-                  <span *ngIf="!edit">{{itemDetails.tags}}</span>
-                  <form [formGroup]="tagsForm" >
-                    <input id="tags" type="text" id="tags" formControlName="tags" class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" *ngIf="edit"/>
-                  </form>
-                </div>
-                <div class="mb-4" *ngIf="!edit">
-                  <label class="block text-gray-700 text-sm font-bold mb-2" for="field2">
-                    Opis
-                  </label>
-                    {{itemDetails.description}}
-                </div>
-              </form>
-            </div>
+  <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+      <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+    </div>
+
+    <div
+      class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+      <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+        <div class="sm:flex sm:items-start">
+          <div
+            class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+          </div>
+          <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+            <h3 class="text-lg leading-6 font-medium text-gray-900" *ngIf="!edit">Szczegóły</h3>
+            <h3 class="text-lg leading-6 font-medium text-gray-900" *ngIf="edit">Ustawienia</h3>
+            <form class="mt-4">
+              <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="field1">
+                  Tagi
+                </label>
+                <span *ngIf="!edit">{{itemDetails.tags}}</span>
+                <form [formGroup]="tagsForm">
+                  <input id="tags" type="text" id="tags" formControlName="tags"
+                    class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                    *ngIf="edit" />
+                </form>
+              </div>
+              <div class="mb-4" *ngIf="!edit">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="field2">
+                  Opis
+                </label>
+                {{itemDetails.description}}
+              </div>
+              <div class="mb-4" *ngIf="!edit">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="field2">
+                  Kolor
+                </label>
+                {{itemDetails.color}}
+              </div>
+            </form>
           </div>
         </div>
-        <div class="mt-4 flex items-center justify-end mb-4 mr-4" >
-          <button type="submit" class="bg-green-500 opacity-50  text-white font-bold py-2 px-4 rounded" [class.cursor-not-allowed]="tagsForm.invalid" [class.opacity-50]="tagsForm.invalid" [disabled]="tagsForm.invalid" (click)="onSubmit()" *ngIf="edit">Zapisz</button>
+      </div>
+      <div class="mt-4 flex items-center justify-end mb-4 mr-4">
+        <button type="submit" class="bg-green-500 opacity-50  text-white font-bold py-2 px-4 rounded"
+          [class.cursor-not-allowed]="tagsForm.invalid" [class.opacity-50]="tagsForm.invalid"
+          [disabled]="tagsForm.invalid" (click)="onSubmit()" *ngIf="edit">Zapisz</button>
 
-          <button type="button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-2" (click)="onCancel()">
-            Zamknij
-          </button>
-        </div>
+        <button type="button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-2"
+          (click)="onCancel()">
+          Zamknij
+        </button>
       </div>
     </div>
   </div>
-  
+</div>

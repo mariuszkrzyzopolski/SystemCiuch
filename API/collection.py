@@ -76,10 +76,15 @@ def post_ai_set(category: str, user: User = Depends(get_current_user)):
         bottom_choice, shoes_choice = chooseClothes(
             bottom_items=bottom_items,
             shoes_items=shoes_items,
+            color_index=dict_collection[0].index("color"),
             category_index=dict_collection[0].index("tags"),
             type_index=dict_collection[0].index("type"),
         )
-        new_set = create_set(top_choice[5], bottom_choice[5], shoes_choice[5])
+        new_set = create_set(
+            top_choice[dict_collection[0].index("id")],
+            bottom_choice[dict_collection[0].index("id")],
+            shoes_choice[dict_collection[0].index("id")],
+        )
         return new_set
 
 

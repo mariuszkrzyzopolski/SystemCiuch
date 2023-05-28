@@ -28,7 +28,6 @@ export class LoginComponent {
 
   }
 
-
   onSubmit() {
     const val = this.loginForm.value;
 
