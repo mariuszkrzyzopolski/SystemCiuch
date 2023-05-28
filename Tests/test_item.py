@@ -20,7 +20,7 @@ class TestItem(TestCase):
         response = helper_test.login_mock_user("test@test", "test")
         self.token = response["token"]
 
-    def test_item_post(self):
+    def test_item_post_get_delete(self):
         url = "http://localhost:8000/collection/item"
 
         directory = os.getcwd() + "/../Images/Assets/"
@@ -45,5 +45,20 @@ class TestItem(TestCase):
         }
 
         file = {"image": (filename, image_bytes, "image/jpeg")}
+
+        # post
         response = requests.post(url, data=data, files=file, headers=headers)
+        self.assertEqual(response.status_code, 200)
+
+        # get
+        item_id = response.json()["id"]
+        url = f"http://localhost:8000/collection/{item_id}"
+
+        response = requests.get(url, headers=headers)
+        self.assertEqual(response.status_code, 200)
+
+        # delete
+        url = f"http://localhost:8000/collection/item/{item_id}"
+
+        response = requests.delete(url, headers=headers)
         self.assertEqual(response.status_code, 200)
