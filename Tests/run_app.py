@@ -36,13 +36,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @pytest.mark.skip(reason="helper")
 def run_server():
     conn = get_database()
     database = DB(conn)
     database.drop_db()
     database.initialize_db()
-    uvicorn.run("test_app:app", port=8000, log_level="info")
+    uvicorn.run("run_app:app", port=8000, log_level="info")
 
 
 if __name__ == "__main__":
