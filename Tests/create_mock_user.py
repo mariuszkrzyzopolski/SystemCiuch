@@ -5,6 +5,7 @@ import shutil
 import time
 from multiprocessing import Process
 
+import pytest
 import requests
 import uvicorn as uvicorn
 from fastapi import FastAPI
@@ -45,6 +46,7 @@ def run_server():
     uvicorn.run("create_mock_user:app", port=8000, log_level="info")
     print("Stop")
 
+@pytest.mark.skip(reason="helper function")
 def register_mock_user(mail, passwd):
     url = "http://localhost:8000/user/register"
     user_data = {
@@ -59,6 +61,7 @@ def register_mock_user(mail, passwd):
     return response
 
 
+@pytest.mark.skip(reason="helper function")
 def login_mock_user(mail, passwd):
     url = "http://localhost:8000/user/login"
     user_data = {"mail": mail, "password": passwd}
@@ -68,6 +71,7 @@ def login_mock_user(mail, passwd):
     return response
 
 
+@pytest.mark.skip(reason="helper function")
 def add_some_photos(token):
     directory = os.getcwd() + "/../Images/Assets/"
     folders = ["dress", "jumpsuit", "outwear", "pants", "shoes", "skirt", "top"]
