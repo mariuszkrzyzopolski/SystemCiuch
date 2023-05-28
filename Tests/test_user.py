@@ -34,7 +34,7 @@ class TestUser(TestCase):
     def test_register_second_user(self):
         url = "http://localhost:8000/user/register"
         user_data = {
-            "mail": "test@test.com",
+            "mail": "test@test2.com",
             "city": "Gdansk",
             "password": "password",
             "repeated_password": "password",

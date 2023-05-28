@@ -8,7 +8,13 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from API.database import DB, get_database
-from Common.user_functions import create_access_token, expires_in, get_current_user
+from Common.user_functions import (
+    create_access_token,
+    expires_in,
+    get_current_user,
+    verify_password,
+    get_password_hash,
+)
 from Models.user import User as Model_User
 from Validators.user import User, UserLogin, EditUser
 
@@ -24,14 +30,10 @@ router = APIRouter(prefix="/user")
 @router.post("/login")
 def user_login(user: UserLogin):
     with Session(database.conn) as session:
-        data = (
-            session.query(Model_User)
-            .filter(Model_User.mail == user.mail, Model_User.password == user.password)
-            .first()
-        )
+        data = session.query(Model_User).filter(Model_User.mail == user.mail).first()
         if data is None:
             raise HTTPException(status_code=404, detail="User not found")
-        elif data.password == user.password:
+        elif verify_password(user.password, data.password):
             access_token = create_access_token(
                 data={"sub": data.id}, expires_delta=datetime.timedelta(days=1)
             )
@@ -48,7 +50,9 @@ def user_register(user: User):
         q = select(Model_User).filter(Model_User.mail == user.mail)
         if session.execute(q).first() is not None:
             raise HTTPException(status_code=400, detail="mail already registered")
-        new_user = Model_User(mail=user.mail, password=user.password, city=user.city)
+        new_user = Model_User(
+            mail=user.mail, password=get_password_hash(user.password), city=user.city
+        )
         new_collection = Collection(user=new_user)
         new_user.collection = new_collection
         session.add(new_collection)
@@ -77,6 +81,8 @@ def delete_user(user: User = Depends(get_current_user)):
 @router.patch("/")
 def edit_user(user_data: EditUser, user: User = Depends(get_current_user)):
     with Session(database.conn) as session:
+        if user_data.password is not None:
+            user_data.password = get_password_hash(user_data.password)
         session.query(Model_User).filter(Model_User.mail == user.mail).update(
             user_data.dict(exclude_unset=True)
         )
