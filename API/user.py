@@ -81,6 +81,8 @@ def delete_user(user: User = Depends(get_current_user)):
 @router.patch("/")
 def edit_user(user_data: EditUser, user: User = Depends(get_current_user)):
     with Session(database.conn) as session:
+        if user_data.password is not None:
+            user_data.password = get_password_hash(user_data.password)
         session.query(Model_User).filter(Model_User.mail == user.mail).update(
             user_data.dict(exclude_unset=True)
         )
