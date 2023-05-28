@@ -18,6 +18,8 @@ jobs:
       - run: pip install -r AI/requirements.txt
       - run: pip install -r Tests/requirements.txt
       - name: Start server
+        env:
+          PYTHONPATH: /home/runner/work/SystemCiuch/SystemCiuch
         run: python3 Tests/run_app.py &
       - name: Wait for server to start
         run: sleep 5
