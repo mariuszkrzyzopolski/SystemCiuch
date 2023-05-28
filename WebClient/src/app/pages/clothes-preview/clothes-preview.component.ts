@@ -1,6 +1,5 @@
 import { Component, OnInit} from '@angular/core';
 import { DTOCollectionItemDetails } from '../../model/DTOCollection';
-;
 import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import { CollectionService } from '../../../app/services/CollectionService';
 import { ItemTags } from 'src/app/model/ItemTags';
