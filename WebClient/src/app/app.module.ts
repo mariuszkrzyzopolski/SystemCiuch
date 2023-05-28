@@ -26,6 +26,7 @@ import { DetailsModalComponent } from './pages/clothes-preview/details/details-m
 import { GenericModalComponent } from './shared/modal/generic-modal/generic-modal.component';
 import { ManualCreateSetComponent } from './pages/manual-create-set/manual-create-set.component';
 import { AutomaticCreateSetComponent } from './automatic-create-set/automatic-create-set.component';
+import { SetService } from './services/SetService';
 
 @NgModule({
   declarations: [

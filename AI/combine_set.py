@@ -72,7 +72,7 @@ def findClothes(category, data):
 
 
 def chooseClothes(bottom_items, shoes_items, color_index, type_index, category_index):
-    # Kodowanie kategoryczne dla kolumn 'category', 'type', 'color', 'occasion'
+    # Kodowanie kategoryczne dla kolumn 'category', 'type', 'color'
     le_category = LabelEncoder().fit(
         list(
             set(
@@ -135,7 +135,7 @@ def chooseClothes(bottom_items, shoes_items, color_index, type_index, category_i
 
     # Uczenie modelu
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
-    criterion = torch.nn.MSELoss()
+    loss_funcion = torch.nn.MSELoss()
     for epoch in range(1000):
         tensor_len = (
             len(shoes_tensors)
@@ -146,7 +146,7 @@ def chooseClothes(bottom_items, shoes_items, color_index, type_index, category_i
             optimizer.zero_grad()
             bottom_output = model(bottom_tensors[i])
             shoes_output = model(shoes_tensors[i])
-            loss = criterion(bottom_output, shoes_output)
+            loss = loss_funcion(bottom_output, shoes_output)
             loss.backward()
             optimizer.step()
     # Wybór elementów z bottom_items i shoes_items
