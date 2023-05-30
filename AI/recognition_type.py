@@ -143,11 +143,17 @@ def train_and_save_model(
     torch.save(model.state_dict(), "recognition_type_torch_model.pth")
 
 
-def recognize_type(img, class_names):
+def recognize_type(
+    img, class_names=["skirt", "outwear", "top", "jumpsuit", "pants", "dress", "shoes"]
+):
     # load model
     device = check_gpu()
     model = Net(len(class_names)).to(device)
-    model.load_state_dict(torch.load("recognition_type_torch_model.pth"))
+    model.load_state_dict(
+        torch.load(
+            "../AI/recognition_type_torch_model.pth", map_location=torch.device("cpu")
+        )
+    )
 
     img = cv2.resize(img, (64, 64), interpolation=cv2.INTER_AREA)
     img = img / 255
