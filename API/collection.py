@@ -9,6 +9,7 @@ import AI.remove_background as ai
 import Common.image_functions as fimg
 from AI.color_recognition import color_to_df, rgb_to_color_name
 from AI.combine_set import chooseClothes, findClothes
+from AI.recognition_type import recognize_type
 from API.database import DB, get_database
 from Common.user_functions import get_current_user
 from Models.collection import Collection
@@ -169,6 +170,7 @@ def post_item(
         else:
             top_color_rgb = df_color.iloc[1]["rgb"]
         color = top_color_rgb, rgb_to_color_name(top_color_rgb)
+        tags = f"{recognize_type(cv2_img)}, " + ",".join(tags)
 
         new_filename = (
             f"Users/{user.id_collection}/"
@@ -179,7 +181,7 @@ def post_item(
         item = Item(
             type=type,
             description=description,
-            tags=",".join(tags),
+            tags=tags,
             image=new_filename,
             collection_id=user.id_collection,
             color=color[1],
