@@ -153,13 +153,15 @@ def post_item(
 ):
     with Session(database.conn) as session:
         extension = image.filename.split(".")[-1]
-        if extension not in ("jpg", "jpeg", "png"):
+        if extension == "png":
+            pil_image = fimg.api_to_pil(image)
+            cv2_img = fimg.pil_to_cv2(pil_image)
+        elif extension in ["jpg", "jpeg"]:
+            cv2_img = fimg.api_to_cv2(image)
+        else:
             return HTTPException(
                 status_code=400, detail="Image must be jpg or png format!"
             )
-        if extension == "png":
-            image = fimg.png_to_jpg(image)
-        cv2_img = fimg.api_to_cv2(image)
         cv2_img = fimg.resize_cv(cv2_img)
         cv2_img = ai.cv2_remove_backgound(cv2_img)
         image = fimg.cv2_to_pil(cv2_img)
