@@ -19,16 +19,42 @@ def analyze_image(image: np.ndarray):
     background = find_bg_color(myimage_hls)
 
     # split point, binary or inv, score
-    h_x, h_method, h_high = find_peaks(value_counts_h, "h", background)
-    l_x, l_method, l_high = find_peaks(value_counts_l, "l", background)
-    s_x, s_method, s_high = find_peaks(value_counts_s, "s", background)
+    h_x, h_points = find_peaks(value_counts_h, "h", background)
+    l_x, l_points = find_peaks(value_counts_l, "l", background)
+    s_x, s_points = find_peaks(value_counts_s, "s", background)
 
-    if h_high > l_high and h_high > s_high:
-        return h, h_x, h_method
-    elif l_high > h_high and l_high > s_high:
-        return l, l_x, l_method
+    if h_points > l_points and h_points > s_points:
+        layer = h
+        cut_off_point = h_x
+        method = find_method(h, h_x)
+    elif l_points > h_points and l_points > s_points:
+        layer = l
+        cut_off_point = l_x
+        method = find_method(l, l_x)
     else:
-        return s, s_x, s_method
+        layer = s
+        cut_off_point = s_x
+        method = find_method(s, s_x)
+
+    return layer, cut_off_point, method
+
+
+def find_method(layer: np.ndarray, cut_off_point: int):
+    rights = []
+    lefts = []
+    height = len(layer)
+    width = len(layer[0])
+    for x in range(width):
+        for y in range(height):
+            distance = modified_euclidean_dist(x, y, width, height)
+            if layer[y, x] > cut_off_point:
+                rights.append(distance)
+            else:
+                lefts.append(distance)
+    if np.average(lefts) > np.average(rights):
+        return cv2.THRESH_BINARY
+    else:
+        return cv2.THRESH_BINARY_INV
 
 
 def analyze_layer(layer: np.ndarray):
@@ -59,28 +85,31 @@ def find_bg_color(myimage: np.ndarray):
     """
     result = [0, 0, 0]
     weigths = 0
-    for y in range(len(myimage)):
-        for x in range(len(myimage[y])):
-            weigth = euclidean_dist(
-                x, y, int(len(myimage) / 2), int(len(myimage[y]) / 2)
-            )
-            result = result + myimage[y, x] * weigth
-            weigths += weigth
+    height = len(myimage)
+    width = len(myimage[0])
+    for x in range(width):
+        for y in range(height):
+            weight = modified_euclidean_dist(x, y, width, height)
+            result = result + myimage[y, x] * weight
+            weigths += weight
     result = result / weigths
     result = [int(result[0]), int(result[1]), int(result[2])]
+
     return result
 
 
-def euclidean_dist(ax: int, ay: int, bx: int, by: int):
+def modified_euclidean_dist(x: int, y: int, width: int, height: int):
     """
     Support function - Euclidean distance.
-    :param ax:
-    :param ay:
-    :param bx:
-    :param by:
+    :param x:
+    :param y:
+    :param width:
+    :param height:
     :return:
     """
-    return np.sqrt(pow((ax - bx), 2) + pow((ay - by), 2))
+    norm_x = abs(x / width - 1 / 2)
+    norm_y = abs(y / height - 1 / 2)
+    return np.sqrt(pow(norm_x, 2) + pow(norm_y, 2))
 
 
 def find_peak(dictionary: dict, peak_center: int):
@@ -155,17 +184,7 @@ def find_peaks(dictionary: dict, dimension: str, background: list):
     else:
         cut_off_point = int(abs((fg_stop + bg_start) / 2))
 
-    # Selecting a true background peak center
-    if abs(bg_peak - bg_center) < abs(bg_peak - fg_center):
-        correct_bg_peak = bg_center
-    else:
-        correct_bg_peak = fg_center
-
-    # Choose direction of the cut
-    if correct_bg_peak < bg_peak:
-        return cut_off_point, cv2.THRESH_BINARY, power
-    else:
-        return cut_off_point, cv2.THRESH_BINARY_INV, power
+    return cut_off_point, power
 
 
 def get_key_from_value(d: dict, val: int):

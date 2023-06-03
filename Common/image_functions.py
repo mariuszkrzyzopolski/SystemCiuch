@@ -7,10 +7,10 @@ from PIL import Image, ImageOps
 
 
 def resize_img(input_image):
-    output_width = 512
-    wpercent = output_width / float(input_image.size[0])
-    output_hight = int((float(input_image.size[1]) * float(wpercent)))
-    ret = input_image.resize((output_width, output_hight), Image.Resampling.BICUBIC)
+    output_height = 512
+    wpercent = output_height / float(input_image.size[0])
+    output_width = int((float(input_image.size[1]) * float(wpercent)))
+    ret = input_image.resize((output_height, output_width), Image.Resampling.BICUBIC)
     return ret
 
 
