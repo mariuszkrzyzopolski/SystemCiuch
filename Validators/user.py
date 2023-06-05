@@ -18,3 +18,8 @@ class EditUser(BaseModel):
     mail: Optional[str]
     city: Optional[str]
     password: Optional[str]
+
+
+class WardrobeLogin(BaseModel):
+    mail: str
+    password: str

@@ -1,11 +1,12 @@
 import os
-from unittest import TestCase
-import requests
-from Tests import helper_test
 import random
+from unittest import TestCase
+
+import requests
+from sqlalchemy.ext.declarative import declarative_base
 
 from API.database import DB, get_database
-from sqlalchemy.ext.declarative import declarative_base
+from Tests import helper_test
 
 Base = declarative_base()
 conn = get_database()

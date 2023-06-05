@@ -25,16 +25,28 @@ jobs:
           path: "API"
           max-line-length: "120"
           plugins: "flake8-black flake8-simplify flake8-fastapi flake8-isort"
+      - name: Common style
+        uses: py-actions/flake8@v2
+        with:
+          path: "Common"
+          max-line-length: "120"
+          plugins: "flake8-black flake8-simplify flake8-isort"
       - name: Model style
         uses: py-actions/flake8@v2
         with:
           path: "Models"
           max-line-length: "120"
           plugins: "flake8-black flake8-simplify flake8-isort"
-      - name: Common style
+      - name: Tests style
         uses: py-actions/flake8@v2
         with:
-          path: "Common"
+          path: "Tests"
+          max-line-length: "120"
+          plugins: "flake8-black flake8-simplify flake8-isort"
+      - name: Wardrobe style
+        uses: py-actions/flake8@v2
+        with:
+          path: "Validators"
           max-line-length: "120"
           plugins: "flake8-black flake8-simplify flake8-isort"
       - name: Validator style
