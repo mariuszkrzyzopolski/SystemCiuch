@@ -14,8 +14,8 @@
           placeholder="Potwierdź hasło" formControlName="repeated_password" />
         <button type="submit" [disabled]="!signUpForm.valid"
           [ngClass]="{'bg-green-300': !signUpForm.valid, 'bg-green-500' : signUpForm.valid}"
-          class="w-full text-center py-3 rounded text-white hover:bg-green-dark focus:outline-none my-1">Zarejestruj
-          się
+          class="w-full text-center py-3 rounded text-white hover:bg-green-dark focus:outline-none my-1">
+          Zarejestruj się
         </button>
         <div class="text-center text-sm text-grey-dark mt-4">
           Rejestrując się,
@@ -31,13 +31,9 @@
   </div>
 </form>
 
-<app-success-modal *ngIf="signupSuccess" 
-  [message]="'Twoje konto zostało poprawnie utworzone'"
-  (cancelEvent)="close()"
+<app-success-modal *ngIf="signupSuccess" [message]="'Twoje konto zostało poprawnie utworzone'" (cancelEvent)="close()"
   (okEvent)="login()">
 </app-success-modal>
 
-<app-error-modal *ngIf="signupFail"
-  [message]="'Błąd podczas tworzenia konta'"
-  (cancelEvent)="close()">
+<app-error-modal *ngIf="signupFail" [message]="'Błąd podczas tworzenia konta'" (cancelEvent)="close()">
 </app-error-modal>
