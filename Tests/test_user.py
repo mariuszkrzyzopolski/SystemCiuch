@@ -1,9 +1,10 @@
-from unittest import TestCase
-import requests
 import json
+from unittest import TestCase
+
+import requests
+from sqlalchemy.ext.declarative import declarative_base
 
 from API.database import DB, get_database
-from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 conn = get_database()
@@ -34,7 +35,7 @@ class TestUser(TestCase):
     def test_register_second_user(self):
         url = "http://localhost:8000/user/register"
         user_data = {
-            "mail": "test@test.com",
+            "mail": "test@test2.com",
             "city": "Gdansk",
             "password": "password",
             "repeated_password": "password",

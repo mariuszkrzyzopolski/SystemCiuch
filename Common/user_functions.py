@@ -4,6 +4,7 @@ from datetime import timedelta
 import jwt
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from passlib.context import CryptContext
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from starlette import status
@@ -16,6 +17,15 @@ conn = get_database()
 database = DB(conn)
 
 jwt_scheme = HTTPBearer()
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
 
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
@@ -56,11 +66,9 @@ async def get_current_user(token: HTTPAuthorizationCredentials = Depends(jwt_sch
     )
     payload = jwt.decode(token.credentials, "secret", algorithms=["HS256"])
     user: int = payload.get("sub")
-    print(user)
     if user is None:
         raise credentials_exception
     auth_user = get_user(user_id=user)
-    print(auth_user)
     if auth_user is None:
         raise credentials_exception
     return auth_user

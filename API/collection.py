@@ -9,6 +9,7 @@ import AI.remove_background as ai
 import Common.image_functions as fimg
 from AI.color_recognition import color_to_df, rgb_to_color_name
 from AI.combine_set import chooseClothes, findClothes
+from AI.recognition_type import recognize_type
 from API.database import DB, get_database
 from Common.user_functions import get_current_user
 from Models.collection import Collection
@@ -26,6 +27,18 @@ def create_set(first_item_id: int, second_item_id: int, third_item_id: int):
         first_item = session.query(Item).get(first_item_id)
         second_item = session.query(Item).get(second_item_id)
         third_item = session.query(Item).get(third_item_id)
+        q = (
+            select(Set)
+            .where(Set.items.contains(first_item))
+            .where(Set.items.contains(second_item))
+            .where(Set.items.contains(third_item))
+        )
+        set_search = session.execute(q).mappings().all()
+        if set_search:
+            raise HTTPException(
+                status_code=500,
+                detail="Set already exists",
+            )
         new_set = Set()
         new_set.items.append(first_item)
         new_set.items.append(second_item)
@@ -140,13 +153,15 @@ def post_item(
 ):
     with Session(database.conn) as session:
         extension = image.filename.split(".")[-1]
-        if extension not in ("jpg", "jpeg", "png"):
+        if extension == "png":
+            pil_image = fimg.api_to_pil(image)
+            cv2_img = fimg.pil_to_cv2(pil_image)
+        elif extension in ["jpg", "jpeg"]:
+            cv2_img = fimg.api_to_cv2(image)
+        else:
             return HTTPException(
                 status_code=400, detail="Image must be jpg or png format!"
             )
-        if extension == "png":
-            image = fimg.png_to_jpg(image)
-        cv2_img = fimg.api_to_cv2(image)
         cv2_img = fimg.resize_cv(cv2_img)
         cv2_img = ai.cv2_remove_backgound(cv2_img)
         image = fimg.cv2_to_pil(cv2_img)
@@ -157,6 +172,7 @@ def post_item(
         else:
             top_color_rgb = df_color.iloc[1]["rgb"]
         color = top_color_rgb, rgb_to_color_name(top_color_rgb)
+        tags = f"{recognize_type(cv2_img)}, " + ",".join(tags)
 
         new_filename = (
             f"Users/{user.id_collection}/"
@@ -167,7 +183,7 @@ def post_item(
         item = Item(
             type=type,
             description=description,
-            tags=",".join(tags),
+            tags=tags,
             image=new_filename,
             collection_id=user.id_collection,
             color=color[1],

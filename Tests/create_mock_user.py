@@ -5,6 +5,7 @@ import shutil
 import time
 from multiprocessing import Process
 
+import pytest
 import requests
 import uvicorn as uvicorn
 from fastapi import FastAPI
@@ -13,6 +14,7 @@ from starlette.middleware.sessions import SessionMiddleware
 
 from API import collection, user, wardrobe
 from API.database import DB, get_database
+
 app = FastAPI()
 
 origins = [
@@ -36,14 +38,14 @@ app.add_middleware(
 
 
 def run_server():
-    print("Start")
     conn = get_database()
     database = DB(conn)
     database.drop_db()
     database.initialize_db()
     uvicorn.run("create_mock_user:app", port=8000, log_level="info")
-    print("Stop")
 
+
+@pytest.mark.skip(reason="helper function")
 def register_mock_user(mail, passwd):
     url = "http://localhost:8000/user/register"
     user_data = {
@@ -58,6 +60,7 @@ def register_mock_user(mail, passwd):
     return response
 
 
+@pytest.mark.skip(reason="helper function")
 def login_mock_user(mail, passwd):
     url = "http://localhost:8000/user/login"
     user_data = {"mail": mail, "password": passwd}
@@ -67,6 +70,20 @@ def login_mock_user(mail, passwd):
     return response
 
 
+@pytest.mark.skip(reason="helper function")
+def register_wardrobe(wardrobe_code, token):
+    url = "http://localhost:8000/wardrobe/connect"
+    data = {
+        "wardrobe_code": wardrobe_code,
+    }
+    headers = {
+        "Authorization": "Bearer " + token,
+    }
+    response = requests.post(url, data=data, headers=headers)
+    return response
+
+
+@pytest.mark.skip(reason="helper function")
 def add_some_photos(token):
     directory = os.getcwd() + "/../Images/Assets/"
     folders = ["dress", "jumpsuit", "outwear", "pants", "shoes", "skirt", "top"]
@@ -118,6 +135,10 @@ if __name__ == "__main__":
     token = response.json()["token"]
     if token is None:
         print(response.status_code, str(user) + " has not been logged in")
+
+    response = register_wardrobe("77e9bb035caf2a1fbcb4992949660063bd430cec", token)
+    if response.status_code != 200:
+        print(response.status_code, "Wardrobe has not been added")
 
     response = add_some_photos(token)
     if response.status_code != 200:

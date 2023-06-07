@@ -31,7 +31,11 @@ def findClothes(category, data):
         case "two_colors":
             # znajdź inne kolory w danej okazji
             other_colors = set(
-                [row[3] for row in data[1:] if row[data[0].index("color")] != color]
+                [
+                    row[data[0].index("color")]
+                    for row in data[1:]
+                    if row[data[0].index("color")] != color
+                ]
             )
             if len(other_colors) > 0:
                 # wylosuj drugi kolor
@@ -47,13 +51,13 @@ def findClothes(category, data):
                 row
                 for row in data[1:]
                 if row[data[0].index("color")] in (color, second_color)
-                and row[1] == "Lower garment"
+                and row[data[0].index("type")] == "Lower garment"
             ]
             shoes_items = [
                 row
                 for row in data[1:]
                 if row[data[0].index("color")] in (color, second_color)
-                and row[1] == "Footwear"
+                and row[data[0].index("type")] == "Footwear"
             ]
         case "random":
             bottom_items = [row for row in data[1:] if "Lower garment" in row]
