@@ -125,7 +125,7 @@ def add_some_photos(token):
 if __name__ == "__main__":
     server = Process(target=run_server)
     server.start()
-    time.sleep(10)
+    time.sleep(20)
 
     user = "test@test.com"
     passwd = "password"
