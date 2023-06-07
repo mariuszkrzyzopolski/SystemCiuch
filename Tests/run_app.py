@@ -1,19 +1,13 @@
 import random
-import time
-import unittest
 
 import pytest
 import uvicorn as uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
-from multiprocessing import Process
 
 from API import collection, user, wardrobe
 from API.database import DB, get_database
-from Tests.test_user import TestUser
-from Tests.test_item import TestItem
-from Tests.test_collection import TestCollection
 
 app = FastAPI()
 

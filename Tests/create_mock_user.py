@@ -46,6 +46,7 @@ def run_server():
     uvicorn.run("create_mock_user:app", port=8000, log_level="info")
     print("Stop")
 
+
 @pytest.mark.skip(reason="helper function")
 def register_mock_user(mail, passwd):
     url = "http://localhost:8000/user/register"
@@ -68,6 +69,19 @@ def login_mock_user(mail, passwd):
     response = requests.post(
         url, data=json.dumps(user_data), headers={"Content-Type": "application/json"}
     )
+    return response
+
+
+@pytest.mark.skip(reason="helper function")
+def register_wardrobe(wardrobe_code, token):
+    url = "http://localhost:8000/wardrobe/connect"
+    data = {
+        "wardrobe_code": wardrobe_code,
+    }
+    headers = {
+        "Authorization": "Bearer " + token,
+    }
+    response = requests.post(url, data=data, headers=headers)
     return response
 
 
@@ -123,6 +137,10 @@ if __name__ == "__main__":
     token = response.json()["token"]
     if token is None:
         print(response.status_code, str(user) + " has not been logged in")
+
+    response = register_wardrobe("77e9bb035caf2a1fbcb4992949660063bd430cec", token)
+    if response.status_code != 200:
+        print(response.status_code, "Wardrobe has not been added")
 
     response = add_some_photos(token)
     if response.status_code != 200:

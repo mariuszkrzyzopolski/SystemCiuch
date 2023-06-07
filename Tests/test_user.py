@@ -1,9 +1,10 @@
-from unittest import TestCase
-import requests
 import json
+from unittest import TestCase
+
+import requests
+from sqlalchemy.ext.declarative import declarative_base
 
 from API.database import DB, get_database
-from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 conn = get_database()
