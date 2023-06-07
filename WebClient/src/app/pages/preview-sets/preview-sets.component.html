@@ -17,3 +17,7 @@
     </div>
   </div>
 </div>
+
+<app-modal [visible]="showModal" (okEvent)="confirmRemoveSet()" (cancelEvent)="showModal = false">
+  Czy na pewno chcesz usunąć zestaw?
+</app-modal>
