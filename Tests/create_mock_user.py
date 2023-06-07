@@ -38,13 +38,11 @@ app.add_middleware(
 
 
 def run_server():
-    print("Start")
     conn = get_database()
     database = DB(conn)
     database.drop_db()
     database.initialize_db()
     uvicorn.run("create_mock_user:app", port=8000, log_level="info")
-    print("Stop")
 
 
 @pytest.mark.skip(reason="helper function")
