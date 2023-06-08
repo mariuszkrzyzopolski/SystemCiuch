@@ -46,6 +46,7 @@ export class WardrobeConnectionComponent {
             },
             error => {
               this.disconnectFailed = true;
+              this.showDisconnect = false;
             }
           );
   }
