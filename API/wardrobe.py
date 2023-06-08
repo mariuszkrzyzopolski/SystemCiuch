@@ -1,7 +1,7 @@
 import datetime
 import sys
 
-from fastapi import APIRouter, Depends, Form, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -10,7 +10,7 @@ import Common.user_functions as ufunc
 from API.database import DB, get_database
 from Models.user import User
 from Models.wardrobe import Wardrobe
-from Validators.user import WardrobeLogin
+from Validators.user import WardrobeCode, WardrobeLogin
 
 sys.path.append("../")
 conn = get_database()
@@ -20,7 +20,7 @@ router = APIRouter(prefix="/wardrobe")
 
 @router.post("/connect")
 def user_connect(
-    wardrobe_code: str = Form(...), user: User = Depends(ufunc.get_current_user)
+    wardrobe_code: WardrobeCode, user: User = Depends(ufunc.get_current_user)
 ):
     with Session(database.conn) as session:
         q = select(Wardrobe).filter(
@@ -28,7 +28,9 @@ def user_connect(
         )
         if session.execute(q).first() is not None:
             raise HTTPException(status_code=400, detail="Wardrobe already registered")
-        new_wardrobe = Wardrobe(mail=user.mail, password=wardrobe_code, user=user)
+        new_wardrobe = Wardrobe(
+            mail=user.mail, password=wardrobe_code.wardrobe_code, user=user
+        )
         session.add(new_wardrobe)
         session.commit()
         return new_wardrobe
