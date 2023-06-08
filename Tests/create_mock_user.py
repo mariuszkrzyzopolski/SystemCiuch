@@ -79,7 +79,7 @@ def register_wardrobe(wardrobe_code, token):
     headers = {
         "Authorization": "Bearer " + token,
     }
-    response = requests.post(url, data=data, headers=headers)
+    response = requests.post(url, data=json.dumps(data), headers=headers)
     return response
 
 
