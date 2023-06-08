@@ -7,8 +7,12 @@ import { WardrobeService } from 'src/app/services/WardrobeService';
   styleUrls: ['./wardrobe-connection.component.css']
 })
 export class WardrobeConnectionComponent {
-
   wardrobeCode: string;
+  showSuccess = false;
+  showFailed = false;
+  showDisconnect = false;
+  disconnectSuccess = false;
+  disconnectFailed = false;
 
   constructor(private wardrobeService: WardrobeService) { }
 
@@ -16,13 +20,33 @@ export class WardrobeConnectionComponent {
     this.wardrobeService.connectToWardrobe(this.wardrobeCode)
       .subscribe(
         response => {
-          // Handle the response from the API
-          console.log(response);
+          this.showSuccess = true;
+          this.showDisconnect = true;
         },
         error => {
-          // Handle the error
-          console.error(error);
+          this.showFailed = true;
+          this.showDisconnect = true;
         }
       );
+  }
+
+  closeModal(){
+    this.showFailed = false;
+    this.showSuccess = false;
+    this.disconnectSuccess = false;
+    this.disconnectFailed = false;
+  }
+
+  disconnect() {
+    this.wardrobeService.disconnect()
+          .subscribe(
+            response => {
+              this.disconnectSuccess = true;
+              this.showDisconnect = false;
+            },
+            error => {
+              this.disconnectFailed = true;
+            }
+          );
   }
 }

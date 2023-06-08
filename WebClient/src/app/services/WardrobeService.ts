@@ -14,4 +14,8 @@ export class WardrobeService  {
     const requestBody = { wardrobe_code: wardrobeCode };
     return this.http.post(`${this.apiUrl}/connect`, requestBody);
   }
+
+  disconnect() {
+    return this.http.delete(`${this.apiUrl}/disconnect`);
+  }
 }
