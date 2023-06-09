@@ -11,11 +11,13 @@ from AI.color_recognition import color_to_df, rgb_to_color_name
 from AI.combine_set import chooseClothes, findClothes
 from AI.recognition_type import recognize_type
 from API.database import DB, get_database
+from API.wardrobe import wardrobes_command_list
 from Common.user_functions import get_current_user
 from Models.collection import Collection
 from Models.item import Item
 from Models.set import Set
 from Models.user import User
+from Models.wardrobe import Wardrobe
 
 conn = get_database()
 database = DB(conn)
@@ -106,6 +108,16 @@ def get_set(set_id, user: User = Depends(get_current_user)):
     with Session(database.conn) as session:
         q = select(Set).filter(Set.id == set_id).options(joinedload(Set.items))
         data = session.execute(q).mappings().first()
+
+        wardrobe = (
+            session.query(Wardrobe).filter(Wardrobe.id == user.id_wardrobe).first()
+        )
+        if wardrobe is not None:
+            id_list = []
+            items_list = data.get("Set").items
+            for item in items_list:
+                id_list.append(item.id)
+            wardrobes_command_list[user.mail] = id_list
         return data
 
 
@@ -227,4 +239,14 @@ def get_item(item_id, user: User = Depends(get_current_user)):
     with Session(database.conn) as session:
         q = select(Item).filter(Item.id == item_id)
         data = session.execute(q).mappings().first()
+
+        wardrobe = (
+            session.query(Wardrobe).filter(Wardrobe.id == user.id_wardrobe).first()
+        )
+        if wardrobe is not None:
+            id_list = []
+            item = data.get("Item")
+            id_list.append(item.id)
+            wardrobes_command_list[user.mail] = id_list
+
         return data

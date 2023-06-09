@@ -1,3 +1,4 @@
+# isort: skip_file
 import datetime
 import sys
 
@@ -6,8 +7,8 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 import API.collection as collection
-import Common.user_functions as ufunc
 from API.database import DB, get_database
+from Common.user_functions import create_access_token, expires_in, get_current_user
 from Models.user import User
 from Models.wardrobe import Wardrobe
 from Validators.user import WardrobeCode, WardrobeLogin
@@ -16,12 +17,11 @@ sys.path.append("../")
 conn = get_database()
 database = DB(conn)
 router = APIRouter(prefix="/wardrobe")
+wardrobes_command_list = {}
 
 
 @router.post("/connect")
-def user_connect(
-    wardrobe_code: WardrobeCode, user: User = Depends(ufunc.get_current_user)
-):
+def user_connect(wardrobe_code: WardrobeCode, user: User = Depends(get_current_user)):
     with Session(database.conn) as session:
         q = select(Wardrobe).filter(
             Wardrobe.mail == user.mail and Wardrobe.password == wardrobe_code
@@ -37,7 +37,7 @@ def user_connect(
 
 
 @router.delete("/disconnect")
-def user_disconnect(user: User = Depends(ufunc.get_current_user)):
+def user_disconnect(user: User = Depends(get_current_user)):
     with Session(database.conn) as session:
         data = session.query(Wardrobe).filter(Wardrobe.id == user.id_wardrobe).first()
         if data is not None:
@@ -56,16 +56,25 @@ def wardrobe_login(wardrobe: WardrobeLogin):
         if data is None:
             raise HTTPException(status_code=404, detail="Wardrobe not found")
         elif data.password == wardrobe.password:
-            access_token = ufunc.create_access_token(
+            access_token = create_access_token(
                 data={"sub": data.id}, expires_delta=datetime.timedelta(days=1)
             )
-            return {"token": access_token, "expiresIn": ufunc.expires_in(1)}
+            return {"token": access_token, "expiresIn": expires_in(1)}
         else:
             raise HTTPException(status_code=401, detail="Incorrect password")
 
 
+@router.get("/get_command")
+def get_command(wardrobe: Wardrobe = Depends(get_current_user)):
+    response = []
+    if wardrobe.mail in wardrobes_command_list:
+        response = wardrobes_command_list.get(wardrobe.mail)
+        wardrobes_command_list.pop(wardrobe.mail)
+    return response
+
+
 @router.get("/items")
-def get_items(wardrobe: Wardrobe = Depends(ufunc.get_current_user)):
+def get_items(wardrobe: Wardrobe = Depends(get_current_user)):
     with Session(database.conn) as session:
         user = session.query(User).filter(User.mail == wardrobe.mail).first()
         items = collection.get_items(user)

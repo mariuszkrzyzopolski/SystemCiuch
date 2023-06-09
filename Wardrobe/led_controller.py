@@ -1,4 +1,3 @@
-import argparse
 import time
 
 from rpi_ws281x import Color, PixelStrip
@@ -18,7 +17,7 @@ strip2.begin()
 strips = [strip1, strip2]
 
 
-def show_set(set: dict):
+def show_set(set: []):
     r = 0
     g = 0
     b = 0
@@ -33,12 +32,14 @@ def show_set(set: dict):
             b = i - 512
         elif 768 <= i < 1024:
             b = 1024 - i - 1
-        set[0]["strip"].setPixelColor(set[0]["position"], Color(r, g, b))
-        set[1]["strip"].setPixelColor(set[1]["position"], Color(r, g, b))
-        set[2]["strip"].setPixelColor(set[2]["position"], Color(r, g, b))
 
-        strip1.show()
-        strip2.show()
+        for item in set:
+            if int(item["LED_PIN"]) == 12:
+                strip1.setPixelColor(int(item["position"]), Color(r, g, b))
+                strip1.show()
+            elif int(item["LED_PIN"]) == 13:
+                strip2.setPixelColor(int(item["position"]), Color(r, g, b))
+                strip2.show()
         time.sleep(0.05)
     off_all()
 
@@ -96,16 +97,18 @@ def start_rainbow():
     off_all()
 
 
+"""
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     args = parser.parse_args()
     print("Press Ctrl-C to quit.")
-    dictionary = {
-        0: {"strip": strip1, "position": 14},
-        1: {"strip": strip2, "position": 4},
-        2: {"strip": strip1, "position": 27},
-    }
-    # off_all()
+    dictionary = [
+        {"LED_PIN": 12, "position": 0},
+        {"LED_PIN": 12, "position": 1},
+        {"LED_PIN": 13, "position": 2},
+    ]
+    off_all()
     # start_rainbow()
     # pixel_rainbow(strip1, 5)
     show_set(dictionary)
+"""

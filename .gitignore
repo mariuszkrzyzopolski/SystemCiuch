@@ -3,6 +3,7 @@
 venv/
 ENV/
 __pycache__
+__pycache__/
 
 # IDE
 .idea/
@@ -13,3 +14,4 @@ __pycache__
 # User data
 Images/Users/
 *.db
+Wardrobe/shelf_db.json
