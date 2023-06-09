@@ -151,7 +151,7 @@ def recognize_type(
     model = Net(len(class_names)).to(device)
     model.load_state_dict(
         torch.load(
-            "../AI/recognition_type_torch_model.pth", map_location=torch.device("cpu")
+            "AI/recognition_type_torch_model.pth", map_location=torch.device("cpu")
         )
     )
 
