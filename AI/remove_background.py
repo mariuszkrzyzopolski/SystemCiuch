@@ -121,6 +121,8 @@ def find_peak(dictionary: dict, peak_center: int):
     """
     points = {i: 0 for i in range(256)}
     keys = {i: 0 for i in range(256)}
+    start = 0
+    stop = 0
     for r in range(1, len(dictionary)):
         if peak_center - r <= 0:
             peak_center = 0 + r

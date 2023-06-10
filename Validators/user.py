@@ -23,3 +23,7 @@ class EditUser(BaseModel):
 class WardrobeLogin(BaseModel):
     mail: str
     password: str
+
+
+class WardrobeCode(BaseModel):
+    wardrobe_code: str

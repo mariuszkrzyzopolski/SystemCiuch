@@ -79,13 +79,13 @@ def register_wardrobe(wardrobe_code, token):
     headers = {
         "Authorization": "Bearer " + token,
     }
-    response = requests.post(url, data=data, headers=headers)
+    response = requests.post(url, data=json.dumps(data), headers=headers)
     return response
 
 
 @pytest.mark.skip(reason="helper function")
 def add_some_photos(token):
-    directory = os.getcwd() + "/../Images/Assets/"
+    directory = os.getcwd() + "/Images/Assets/"
     folders = ["dress", "jumpsuit", "outwear", "pants", "shoes", "skirt", "top"]
     url = "http://localhost:8000/collection/item"
 
@@ -145,7 +145,7 @@ if __name__ == "__main__":
         print(response.status_code, "Photos has not been added")
 
     src_file = "sql.db"
-    dst_file = "../API/sql.db"
+    dst_file = "API/sql.db"
 
     abs_src = os.path.abspath(src_file)
     abs_dst = os.path.abspath(dst_file)
