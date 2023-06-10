@@ -29,4 +29,8 @@ export class SetService {
   deleteSet(id: number): Observable<any> {
     return this.http.delete<any>(`${this.SETS_API_URL}/${id}`);
   }
+
+  viewSet(id: number): Observable<any> {
+    return this.http.get<any>(`${this.SETS_API_URL}/${id}`);
+  }
 }

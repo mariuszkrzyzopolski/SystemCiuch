@@ -9,6 +9,9 @@ import { SetService } from 'src/app/services/SetService';
 export class PreviewSetsComponent {
   sets: any[];
   showModal = false;
+  viewSuccess = false;
+  viewFailed = false;
+
   setId: number | null = null;
   constructor(private setService: SetService) { }
 
@@ -19,6 +22,17 @@ export class PreviewSetsComponent {
   removeSet(setId: number) {
     this.setId = setId;
     this.showModal = true;
+  }
+
+  viewSet(setId: number) {
+    this.setService.viewSet(setId).subscribe(
+      response => {
+        this.viewSuccess = true;
+      },
+      error => {
+        this.viewFailed = true;
+      }
+    );
   }
 
   confirmRemoveSet() {
@@ -36,6 +50,7 @@ export class PreviewSetsComponent {
       }
     );
   }
+
   loadData(){
     this.setService.getSets().subscribe(
       response => {
@@ -45,5 +60,10 @@ export class PreviewSetsComponent {
         console.error(error);
       }
     );
+  }
+
+  closeModal() {
+    this.viewFailed = false;
+    this.viewSuccess = false;
   }
 }
