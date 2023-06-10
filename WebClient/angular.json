@@ -23,7 +23,7 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              {"glob": "*/**.*", "input": "../Images/Users", "output": "/Users/"}
+              {"glob": "*/**.*", "input": "Images/Users", "output": "/Users/"}
             ],
             "styles": [
               "src/styles.css",
@@ -87,7 +87,7 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              {"glob": "*/**.*", "input": "../images/Users", "output": "/Users/"}
+              {"glob": "*/**.*", "input": "images/Users", "output": "/Users/"}
             ],
             "styles": [
               "src/styles.css"

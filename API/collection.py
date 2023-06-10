@@ -178,7 +178,7 @@ def post_item(
             f"Users/{user.id_collection}/"
             f"{datetime.datetime.timestamp(datetime.datetime.now())}.jpg"
         )
-        fimg.save_image(image, f"../Images/{new_filename}")
+        fimg.save_image(image, f"Images/{new_filename}")
 
         item = Item(
             type=type,

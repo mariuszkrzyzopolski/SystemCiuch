@@ -24,7 +24,7 @@ class TestItem(TestCase):
     def test_item_post_get_delete(self):
         url = "http://localhost:8000/collection/item"
 
-        directory = os.getcwd() + "/../Images/Assets/"
+        directory = os.getcwd() + "/Images/Assets/"
         folders = ["dress", "jumpsuit", "outwear", "pants", "shoes", "skirt", "top"]
 
         for folder in folders:

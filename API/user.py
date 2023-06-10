@@ -20,8 +20,6 @@ from Validators.user import User, UserLogin, EditUser
 
 from Models.collection import Collection
 
-sys.path.append("../")
-
 conn = get_database()
 database = DB(conn)
 router = APIRouter(prefix="/user")
@@ -57,8 +55,8 @@ def user_register(user: User):
         new_user.collection = new_collection
         session.add(new_collection)
         session.commit()
-        if not os.path.exists(f"../Images/Users/{new_collection.id}"):
-            os.makedirs(f"../Images/Users/{new_collection.id}")
+        if not os.path.exists(f"Images/Users/{new_collection.id}"):
+            os.makedirs(f"Images/Users/{new_collection.id}")
         access_token = create_access_token(
             data={"sub": new_user.id}, expires_delta=datetime.timedelta(days=1)
         )
