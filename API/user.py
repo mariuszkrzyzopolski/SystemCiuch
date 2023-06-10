@@ -1,7 +1,6 @@
 # isort: skip_file
 import datetime
 import os
-import sys
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
