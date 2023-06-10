@@ -22,7 +22,7 @@ class TestCollection(TestCase):
         self.token = response["token"]
 
     def test_collection_post_get_delete(self):
-        directory = os.getcwd() + "/../Images/Assets/"
+        directory = os.getcwd() + "/Images/Assets/"
         folders = ["dress", "jumpsuit", "outwear", "pants", "shoes", "skirt", "top"]
         url = "http://localhost:8000/collection/item"
 

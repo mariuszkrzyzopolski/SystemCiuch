@@ -1,5 +1,4 @@
 import datetime
-import sys
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
@@ -12,7 +11,6 @@ from Models.user import User
 from Models.wardrobe import Wardrobe
 from Validators.user import WardrobeCode, WardrobeLogin
 
-sys.path.append("../")
 conn = get_database()
 database = DB(conn)
 router = APIRouter(prefix="/wardrobe")
