@@ -7,5 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'wardrobe-app';
-  }
- 
+}
+
+export const env = {
+  url: 'http://0.0.0.0:8000',
+};

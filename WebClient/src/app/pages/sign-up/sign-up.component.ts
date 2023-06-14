@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SignUp } from '../../model/SignUp';
+import {env} from "../../app.component";
 
 @Component({
   selector: 'sign-up.component',
@@ -42,7 +43,7 @@ export class SignUpComponent implements OnInit {
   } 
 
   submitForm(signUp: SignUp) {
-    this.http.post('http://127.0.0.1:8000/user/register', signUp).subscribe(
+    this.http.post(env.url+'/user/register', signUp).subscribe(
       (response: any) => {
         if(response.token) {
           this.signupSuccess = true;
