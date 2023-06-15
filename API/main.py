@@ -1,3 +1,4 @@
+import os
 import random
 
 import uvicorn as uvicorn
@@ -28,6 +29,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+new_url = os.getenv("URL")
+if new_url:
+    origins.append(new_url)
+print(origins)
+
 
 if __name__ == "__main__":
     conn = get_database()

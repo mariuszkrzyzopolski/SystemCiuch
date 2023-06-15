@@ -2,14 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DTOCollection } from '../model/DTOCollection';
+import {env} from "../app.component";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CollectionService {
 
-  private apiUrl = 'http://localhost:8000/collection';
-  private collectionUrl = 'http://localhost:8000/collection/';
+  private apiUrl = env.url+'/collection';
+  private collectionUrl = env.url+'/collection/';
 
 
   constructor(private http: HttpClient) { }

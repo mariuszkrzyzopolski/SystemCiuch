@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import {  Injectable } from '@angular/core';
 import * as moment from "moment";
+import {env} from "../app.component";
 
 
 
@@ -12,7 +13,7 @@ export class AuthService {
   }
 
   login(email: string, password: string) {
-    return this.http.post<User>('http://127.0.0.1:8000/user/login', {mail: email, password})
+    return this.http.post<User>(env.url+'/user/login', {mail: email, password})
   }
   
   public setSession(authResult:any) {

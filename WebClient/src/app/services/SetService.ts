@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DTOSet } from '../model/DTOSet';
 import { Observable } from 'rxjs';
+import {env} from "../app.component";
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +10,8 @@ import { Observable } from 'rxjs';
 export class SetService {
 
    
-  private readonly SETS_API_URL = 'http://localhost:8000/collection/sets';
-  private readonly SET_SINGLE_API_UR = 'http://localhost:8000/collection/set';
+  private readonly SETS_API_URL = env.url+'/collection/sets';
+  private readonly SET_SINGLE_API_UR = env.url+'/collection/set';
   constructor(private http: HttpClient) { }
 
   addSet(firstItemId: number, secondItemId: number, thirdItemId: number) {

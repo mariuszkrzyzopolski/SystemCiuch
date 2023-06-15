@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AddClothes } from '../../model/AddClothes';
 import { Router } from '@angular/router';
+import {env} from "../../app.component";
 
 @Component({
   selector: 'app-add-clothes',
@@ -15,7 +16,7 @@ export class AddClothesComponent implements OnInit {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  type = ['Góra', 'Dół', 'Buty'];
+  type = ['Góra', 'Dół', 'Obuwie'];
   addclothesForm: FormGroup;
 
   ngOnInit() {
@@ -48,7 +49,7 @@ export class AddClothesComponent implements OnInit {
     formData.append("type", this.mapTypeToDto(addClothes.type));
     formData.append("image", addClothes.image);
 
-    this.http.post('http://127.0.0.1:8000/collection/item', formData).subscribe(
+    this.http.post(env.url+'/collection/item', formData).subscribe(
       (response) => this.router.navigate([ '/clothes-preview' ]),
       (error) => console.log(error)
     )
@@ -59,7 +60,7 @@ export class AddClothesComponent implements OnInit {
         return 'Upper garment';
       case 'Dół':
         return 'Lower garment';
-      case 'Buty':
+      case 'Obuwie':
         return 'Footwear'
       default:
         console.log(`Niepoprawny typ ubrania ${type}.`);

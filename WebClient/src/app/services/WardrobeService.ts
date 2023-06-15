@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {env} from "../app.component";
 
 @Injectable({
   providedIn: 'root'
 })
 export class WardrobeService  {
 
-  private apiUrl = 'http://localhost:8000/wardrobe';
+  private apiUrl = env.url+'/wardrobe';
 
   constructor(private http: HttpClient) { }
 
